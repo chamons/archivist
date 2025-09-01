@@ -12,16 +12,17 @@ impl Player {
 
     pub fn render(&self, ctx: &mut BTerm, camera: &Camera) {
         ctx.set_active_console(2);
+        let glyph = if camera.bounce { 21 } else { 41 };
         ctx.set(
             self.position.x - camera.left_x,
             self.position.y - camera.top_y,
             WHITE,
             BLACK,
-            21,
+            glyph,
         );
     }
 
-    pub fn update(&mut self, ctx: &mut BTerm, map: &Map) {
+    pub fn update(&mut self, ctx: &mut BTerm, map: &Map) -> bool {
         if let Some(key) = ctx.key {
             let delta = match key {
                 VirtualKeyCode::Left => Some(Point::new(-1, 0)),
@@ -35,8 +36,10 @@ impl Player {
                 let new_position = self.position + delta;
                 if map.can_enter(new_position) {
                     self.position = new_position;
+                    return true;
                 }
             }
         }
+        false
     }
 }

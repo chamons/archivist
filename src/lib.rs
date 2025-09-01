@@ -16,4 +16,8 @@ pub mod prelude {
 
     pub const CAMERA_VIEWPORT_WIDTH: i32 = SCREEN_WIDTH / 2;
     pub const CAMERA_DISPLAY_HEIGHT: i32 = SCREEN_HEIGHT / 2;
+
+    pub const SPRITE_SIZE: usize = 24;
+
+    pub const BOUNCE_FRAME: usize = 24;
 }
