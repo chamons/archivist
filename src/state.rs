@@ -4,6 +4,7 @@ use crate::prelude::*;
 pub struct State {
     map: Map,
     player: Player,
+    frame: usize,
 }
 
 impl State {
@@ -13,17 +14,22 @@ impl State {
         Self {
             map,
             player: Player::new(player_position),
+            frame: 0,
         }
     }
 }
 
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
+        self.frame += 1;
+        // Only clear text console as sprite "fonts" should draw every square
+        ctx.set_active_console(0);
         ctx.cls();
 
         self.player.update(ctx, &self.map);
 
-        self.map.render(ctx);
-        self.player.render(ctx);
+        let camera = Camera::new(&self.player);
+        self.player.render(ctx, &camera);
+        self.map.render(ctx, &camera);
     }
 }

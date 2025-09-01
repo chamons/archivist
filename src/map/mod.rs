@@ -35,15 +35,29 @@ impl Map {
         self.tiles[Self::index(point)] = tile;
     }
 
-    pub fn render(&self, ctx: &mut BTerm) {
-        for y in 0..SCREEN_HEIGHT {
-            for x in 0..SCREEN_WIDTH {
-                match self.get(Point::new(x, y)) {
-                    TileKind::Floor => ctx.set(x, y, YELLOW, BLACK, to_cp437('.')),
-                    TileKind::Wall => ctx.set(x, y, GREEN, BLACK, to_cp437('#')),
+    pub fn render(&self, ctx: &mut BTerm, camera: &Camera) {
+        let tile_color = ColorPair::new(WHITE, BLACK);
+
+        let mut draw_batch = DrawBatch::new();
+        draw_batch.target(1);
+
+        for y in camera.top_y..camera.bottom_y {
+            for x in camera.left_x..camera.right_x {
+                let position = Point::new(x, y);
+                if self.in_bounds(position) {
+                    let draw_position = Point::new(x - camera.left_x, y - camera.top_y);
+                    let tile = match self.get(position) {
+                        TileKind::Wall => 1,
+                        TileKind::Floor => 4,
+                    };
+                    draw_batch.set(draw_position, tile_color, tile);
                 }
             }
         }
+
+        draw_batch.submit(0).expect("Batch error");
+
+        render_draw_buffer(ctx).expect("Render error");
     }
 
     pub fn in_bounds(&self, point: Point) -> bool {

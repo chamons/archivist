@@ -1,0 +1,2 @@
+- Make sure font prints fine
+- Get license handled
