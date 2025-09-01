@@ -8,9 +8,11 @@ pub struct State {
 
 impl State {
     pub fn new() -> State {
+        let (map, player_position) = MapBuilder::build(&mut RandomNumberGenerator::new());
+
         Self {
-            map: Map::new(),
-            player: Player::new(Point::new(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)),
+            map,
+            player: Player::new(player_position),
         }
     }
 }

@@ -1,6 +1,7 @@
 mod map;
 mod player;
 mod state;
+mod util;
 
 pub mod prelude {
     pub use bracket_lib::prelude::*;

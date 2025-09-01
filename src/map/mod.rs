@@ -1,5 +1,8 @@
 use crate::prelude::*;
 
+mod builder;
+pub use builder::*;
+
 const NUM_TILES: usize = (SCREEN_WIDTH * SCREEN_HEIGHT) as usize;
 
 #[derive(Copy, Clone, PartialEq, Debug)]
@@ -28,12 +31,16 @@ impl Map {
         self.tiles[Self::index(point)]
     }
 
+    pub fn set(&mut self, point: Point, tile: TileKind) {
+        self.tiles[Self::index(point)] = tile;
+    }
+
     pub fn render(&self, ctx: &mut BTerm) {
         for y in 0..SCREEN_HEIGHT {
             for x in 0..SCREEN_WIDTH {
                 match self.get(Point::new(x, y)) {
-                    TileKind::Wall => ctx.set(x, y, YELLOW, BLACK, to_cp437('.')),
-                    TileKind::Floor => ctx.set(x, y, GREEN, BLACK, to_cp437('#')),
+                    TileKind::Floor => ctx.set(x, y, YELLOW, BLACK, to_cp437('.')),
+                    TileKind::Wall => ctx.set(x, y, GREEN, BLACK, to_cp437('#')),
                 }
             }
         }
