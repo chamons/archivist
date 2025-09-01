@@ -1,5 +1,5 @@
 use archivist::prelude::*;
-use bracket_lib::prelude::{BError, BTermBuilder, GameState, main_loop};
+use bracket_lib::prelude::{BError, BTermBuilder, main_loop};
 
 fn main() -> BError {
     let context = BTermBuilder::simple80x50()
