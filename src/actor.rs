@@ -16,7 +16,7 @@ impl CurrentActor {
                 let player = level.get_player();
                 get_player_action(player, ctx)
             }
-            CurrentActor::EnemyAction(id) => Some(RequestedAction::Wait(*id)),
+            CurrentActor::EnemyAction(id) => Some(wander_action(level, *id)),
         }
     }
 

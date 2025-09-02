@@ -2,7 +2,7 @@ use std::sync::atomic::AtomicU32;
 
 use crate::prelude::*;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct CharacterId(u32);
 
 impl CharacterId {
