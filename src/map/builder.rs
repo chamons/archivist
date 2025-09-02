@@ -8,7 +8,7 @@ pub struct MapBuilder {
 }
 
 impl MapBuilder {
-    pub fn build(rng: &mut RandomNumberGenerator) -> (Map, Vec<Character>, Player) {
+    pub fn build(rng: &mut RandomNumberGenerator) -> (Map, Vec<Character>) {
         let mut builder = MapBuilder {
             map: Map::new(),
             rooms: vec![],
@@ -17,10 +17,13 @@ impl MapBuilder {
         builder.fill(TileKind::Wall);
         builder.build_random_rooms(rng, 20);
         builder.build_corridors(rng);
-        let monsters = builder.spawn_monsters(rng);
-        let player = Player::new(builder.rooms[0].center());
+        let mut characters = builder.spawn_monsters(rng);
+        characters.push(Character::new(
+            builder.rooms[0].center(),
+            CharacterKind::Player,
+        ));
 
-        (builder.map, monsters, player)
+        (builder.map, characters)
     }
 
     fn fill(&mut self, tile: TileKind) {

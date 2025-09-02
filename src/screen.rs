@@ -39,8 +39,10 @@ impl<'a> Screen<'a> {
             .with_font("oryx_16bit_fantasy_world.png", SPRITE_SIZE, SPRITE_SIZE)
             // Terminal 0 - Text
             .with_simple_console(SCREEN_WIDTH, SCREEN_HEIGHT, "terminal8x8.png")
+            // We use sparse console here because "sprite fonts" don't play well with
+            // set everything to ' ' character cls
             // Terminal 1 - World
-            .with_simple_console_no_bg(
+            .with_sparse_console_no_bg(
                 CAMERA_VIEWPORT_WIDTH,
                 CAMERA_DISPLAY_HEIGHT,
                 "oryx_16bit_fantasy_world.png",
@@ -54,34 +56,14 @@ impl<'a> Screen<'a> {
     }
 
     pub fn clear(&mut self) {
-        self.ctx.set_active_console(0);
+        self.ctx.set_active_console(ScreenLayer::Text.into());
         self.ctx.cls();
 
-        self.ctx.set_active_console(1);
-        self.ctx.fill_region(
-            Rect::with_size(
-                0,
-                0,
-                CAMERA_VIEWPORT_WIDTH * SPRITE_SIZE as i32,
-                CAMERA_DISPLAY_HEIGHT * SPRITE_SIZE as i32,
-            ),
-            0,
-            BLACK,
-            BLACK,
-        );
+        self.ctx.set_active_console(ScreenLayer::World.into());
+        self.ctx.cls();
 
-        self.ctx.set_active_console(2);
-        self.ctx.fill_region(
-            Rect::with_size(
-                0,
-                0,
-                CAMERA_VIEWPORT_WIDTH * SPRITE_SIZE as i32,
-                CAMERA_DISPLAY_HEIGHT * SPRITE_SIZE as i32,
-            ),
-            0,
-            BLACK,
-            BLACK,
-        );
+        self.ctx.set_active_console(ScreenLayer::Creatures.into());
+        self.ctx.cls();
     }
 
     pub fn set_active(&mut self, layer: ScreenLayer) {
