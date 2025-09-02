@@ -35,11 +35,13 @@ impl Map {
         self.tiles[Self::index(point)] = tile;
     }
 
-    pub fn render(&self, ctx: &mut BTerm, camera: &Camera) {
+    pub fn render(&self, screen: &mut Screen) {
         let tile_color = ColorPair::new(WHITE, BLACK);
 
         let mut draw_batch = DrawBatch::new();
-        draw_batch.target(1);
+        draw_batch.target(ScreenLayer::World.into());
+
+        let camera = &screen.camera;
 
         for y in camera.top_y..camera.bottom_y {
             for x in camera.left_x..camera.right_x {
@@ -57,7 +59,7 @@ impl Map {
 
         draw_batch.submit(0).expect("Batch error");
 
-        render_draw_buffer(ctx).expect("Render error");
+        render_draw_buffer(screen.ctx).expect("Render error");
     }
 
     pub fn in_bounds(&self, point: Point) -> bool {

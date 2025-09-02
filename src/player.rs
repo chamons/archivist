@@ -10,16 +10,10 @@ impl Player {
         Self { position }
     }
 
-    pub fn render(&self, ctx: &mut BTerm, camera: &Camera) {
-        ctx.set_active_console(2);
-        let glyph = if camera.bounce { 21 } else { 41 };
-        ctx.set(
-            self.position.x - camera.left_x,
-            self.position.y - camera.top_y,
-            WHITE,
-            BLACK,
-            glyph,
-        );
+    pub fn render(&self, screen: &mut Screen) {
+        screen.set_active(ScreenLayer::Creatures);
+        let glyph: u16 = if screen.bounce() { 21 } else { 41 };
+        screen.set_sprite(self.position, glyph);
     }
 
     pub fn update(&mut self, ctx: &mut BTerm, map: &Map) -> bool {

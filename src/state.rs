@@ -31,38 +31,13 @@ impl GameState for State {
         needs_paint |= self.camera.update(&self.player, self.frame);
 
         if needs_paint {
+            let mut screen = Screen::new(ctx, &self.camera);
+
             // Only clear text console as sprite "fonts" should draw every square
-            ctx.set_active_console(0);
-            ctx.cls();
+            screen.clear();
 
-            ctx.set_active_console(1);
-            ctx.fill_region(
-                Rect::with_size(
-                    0,
-                    0,
-                    CAMERA_VIEWPORT_WIDTH * SPRITE_SIZE as i32,
-                    CAMERA_DISPLAY_HEIGHT * SPRITE_SIZE as i32,
-                ),
-                0,
-                BLACK,
-                BLACK,
-            );
-
-            ctx.set_active_console(2);
-            ctx.fill_region(
-                Rect::with_size(
-                    0,
-                    0,
-                    CAMERA_VIEWPORT_WIDTH * SPRITE_SIZE as i32,
-                    CAMERA_DISPLAY_HEIGHT * SPRITE_SIZE as i32,
-                ),
-                0,
-                BLACK,
-                BLACK,
-            );
-
-            self.player.render(ctx, &self.camera);
-            self.map.render(ctx, &self.camera);
+            self.player.render(&mut screen);
+            self.map.render(&mut screen);
         }
     }
 }
