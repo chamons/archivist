@@ -6,6 +6,7 @@ use crate::prelude::*;
 #[derive(Debug)]
 pub enum CurrentActor {
     PlayerAction,
+    EnemyAction(CharacterId),
 }
 
 impl CurrentActor {
@@ -15,6 +16,7 @@ impl CurrentActor {
                 let player = level.get_player();
                 get_player_action(player, ctx)
             }
+            CurrentActor::EnemyAction(id) => Some(RequestedAction::Wait(*id)),
         }
     }
 }

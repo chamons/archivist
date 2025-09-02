@@ -40,9 +40,11 @@ impl LevelState {
         self.characters.retain(|c| c.id != id);
     }
 
-    pub fn render(&self, screen: &mut Screen) {
+    pub fn render(&self, screen: &mut Screen, camera: &Camera) {
         for character in &self.characters {
-            character.render(screen);
+            if camera.is_in_view(character.position) {
+                character.render(screen);
+            }
         }
 
         self.map.render(screen);
@@ -72,11 +74,16 @@ impl State {
 
 pub enum RequestedAction {
     Move(CharacterId, Point),
+    Wait(CharacterId),
 }
 
 pub enum ResolvedAction {
     MoveActor(CharacterId, Point),
-    RemoveCharacter(CharacterId),
+    RemoveCharacter {
+        source: CharacterId,
+        target: CharacterId,
+    },
+    Wait(CharacterId),
 }
 
 impl State {
@@ -97,13 +104,17 @@ impl State {
                 if let Some(character_at_target) = character_at_target
                     && actor.is_player()
                 {
-                    Some(ResolvedAction::RemoveCharacter(character_at_target.id))
+                    Some(ResolvedAction::RemoveCharacter {
+                        target: character_at_target.id,
+                        source: id,
+                    })
                 } else if self.level.character_can_enter(target) {
                     Some(ResolvedAction::MoveActor(id, target))
                 } else {
                     None
                 }
             }
+            RequestedAction::Wait(id) => Some(ResolvedAction::Wait(id)),
         }
     }
 
@@ -112,15 +123,53 @@ impl State {
             match resolved_action {
                 ResolvedAction::MoveActor(id, point) => {
                     self.level.find_character_mut(id).position = point;
+                    self.spend_ticks(id, TICKS_MOVEMENT);
                     true
                 }
-                ResolvedAction::RemoveCharacter(id) => {
-                    self.level.remove_character(id);
+                ResolvedAction::RemoveCharacter { source, target } => {
+                    self.level.remove_character(target);
+                    self.spend_ticks(source, TICKS_TO_BUMP);
+                    true
+                }
+                ResolvedAction::Wait(id) => {
+                    self.spend_ticks(id, TICKS_TO_ACT);
                     true
                 }
             }
         } else {
             false
+        }
+    }
+
+    fn find_next_actor(&mut self) -> Option<CharacterId> {
+        self.level.characters.sort_by_key(|c| c.ticks);
+        if let Some(actor) = self.level.characters.last() {
+            let id = actor.id;
+            if actor.ticks < TICKS_TO_ACT {
+                let missing = TICKS_TO_ACT - actor.ticks;
+                self.add_ticks(missing);
+            }
+            Some(id)
+        } else {
+            None
+        }
+    }
+
+    fn add_ticks(&mut self, amount: i32) {
+        for character in &mut self.level.characters {
+            character.ticks += amount;
+        }
+    }
+
+    fn spend_ticks(&mut self, id: CharacterId, amount: i32) {
+        self.level.find_character_mut(id).ticks -= amount;
+
+        if let Some(next) = self.find_next_actor() {
+            if self.level.find_character(next).is_player() {
+                self.current_actor = CurrentActor::PlayerAction;
+            } else {
+                self.current_actor = CurrentActor::EnemyAction(next);
+            }
         }
     }
 }
@@ -144,7 +193,7 @@ impl GameState for State {
             // Only clear text console as sprite "fonts" should draw every square
             screen.clear();
 
-            self.level.render(&mut screen);
+            self.level.render(&mut screen, &self.camera);
         }
     }
 }

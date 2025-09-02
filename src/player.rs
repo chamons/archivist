@@ -19,6 +19,7 @@ pub fn get_player_action(player: &Character, ctx: &mut BTerm) -> Option<Requeste
                 player.id,
                 player.position + Point::new(0, 1),
             )),
+            VirtualKeyCode::Period => Some(RequestedAction::Wait(player.id)),
             _ => None,
         }
     } else {

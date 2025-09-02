@@ -32,4 +32,14 @@ impl Camera {
             false
         }
     }
+
+    pub fn is_in_view(&self, point: Point) -> bool {
+        let viewport = Rect {
+            x1: self.left_x,
+            x2: self.right_x,
+            y1: self.top_y,
+            y2: self.bottom_y,
+        };
+        viewport.point_in_rect(point)
+    }
 }
