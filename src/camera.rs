@@ -21,10 +21,10 @@ impl Camera {
     }
 
     pub fn update(&mut self, player: &Player, frame: usize) -> bool {
-        self.left_x = player.position.x - CAMERA_VIEWPORT_WIDTH / 2;
-        self.right_x = player.position.x + CAMERA_VIEWPORT_WIDTH / 2;
-        self.top_y = player.position.y - CAMERA_DISPLAY_HEIGHT / 2;
-        self.bottom_y = player.position.y + CAMERA_DISPLAY_HEIGHT / 2;
+        self.left_x = player.character.position.x - CAMERA_VIEWPORT_WIDTH / 2;
+        self.right_x = player.character.position.x + CAMERA_VIEWPORT_WIDTH / 2;
+        self.top_y = player.character.position.y - CAMERA_DISPLAY_HEIGHT / 2;
+        self.bottom_y = player.character.position.y + CAMERA_DISPLAY_HEIGHT / 2;
         if frame % BOUNCE_FRAME == 0 {
             self.bounce = !self.bounce;
             true

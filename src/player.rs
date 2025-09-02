@@ -2,18 +2,14 @@ use crate::prelude::*;
 
 #[derive(Debug)]
 pub struct Player {
-    pub position: Point,
+    pub character: Character,
 }
 
 impl Player {
     pub fn new(position: Point) -> Self {
-        Self { position }
-    }
-
-    pub fn render(&self, screen: &mut Screen) {
-        screen.set_active(ScreenLayer::Creatures);
-        let glyph: u16 = if screen.bounce() { 21 } else { 41 };
-        screen.set_sprite(self.position, glyph);
+        Self {
+            character: Character::new(position, CharacterKind::Player),
+        }
     }
 
     pub fn update(&mut self, ctx: &mut BTerm, map: &Map) -> bool {
@@ -27,9 +23,9 @@ impl Player {
             };
 
             if let Some(delta) = delta {
-                let new_position = self.position + delta;
+                let new_position = self.character.position + delta;
                 if map.can_enter(new_position) {
-                    self.position = new_position;
+                    self.character.position = new_position;
                     return true;
                 }
             }

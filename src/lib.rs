@@ -1,4 +1,5 @@
 mod camera;
+mod character;
 mod map;
 mod player;
 mod screen;
@@ -7,6 +8,7 @@ mod util;
 
 pub mod prelude {
     pub use crate::camera::*;
+    pub use crate::character::*;
     pub use crate::map::*;
     pub use crate::player::*;
     pub use crate::screen::*;

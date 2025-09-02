@@ -4,19 +4,21 @@ use crate::prelude::*;
 pub struct State {
     map: Map,
     player: Player,
+    enemies: Vec<Character>,
     frame: usize,
     camera: Camera,
 }
 
 impl State {
     pub fn new() -> State {
-        let (map, player_position) = MapBuilder::build(&mut RandomNumberGenerator::new());
+        let (map, enemies, player) = MapBuilder::build(&mut RandomNumberGenerator::new());
 
         Self {
             map,
-            player: Player::new(player_position),
+            player,
             frame: 0,
             camera: Camera::new(),
+            enemies,
         }
     }
 }
@@ -36,7 +38,12 @@ impl GameState for State {
             // Only clear text console as sprite "fonts" should draw every square
             screen.clear();
 
-            self.player.render(&mut screen);
+            self.player.character.render(&mut screen);
+
+            for enemy in &self.enemies {
+                enemy.render(&mut screen);
+            }
+
             self.map.render(&mut screen);
         }
     }
