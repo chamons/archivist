@@ -1,63 +1,105 @@
 use crate::prelude::*;
 
 #[derive(Debug)]
-pub struct State {
-    map: Map,
-    characters: Vec<Character>,
-    frame: usize,
-    camera: Camera,
+pub struct LevelState {
+    pub map: Map,
+    pub characters: Vec<Character>,
 }
 
-impl State {
-    pub fn new() -> State {
-        let (map, characters) = MapBuilder::build(&mut RandomNumberGenerator::new());
-
-        Self {
-            map,
-            frame: 0,
-            camera: Camera::new(),
-            characters,
-        }
-    }
-}
-
-pub enum RequestedAction {
-    Move(Point),
-}
-
-pub enum ResolvedAction {
-    MoveActor(Point),
-    RemoveCharacter(CharacterId),
-}
-
-impl State {
-    fn get_player(&self) -> &Character {
+impl LevelState {
+    pub fn get_player(&self) -> &Character {
         self.characters
             .iter()
             .find(|c| c.is_player())
             .expect("Player must still exist")
     }
 
-    fn resolve_action(
-        &self,
-        action: RequestedAction,
-        actor_id: CharacterId,
-    ) -> Option<ResolvedAction> {
-        let actor = self
+    pub fn find_character(&self, id: CharacterId) -> &Character {
+        self.characters
+            .iter()
+            .find(|c| c.id == id)
+            .expect("Action actor exists")
+    }
+
+    pub fn find_character_mut(&mut self, id: CharacterId) -> &mut Character {
+        self.characters
+            .iter_mut()
+            .find(|c| c.id == id)
+            .expect("Action actor exists")
+    }
+
+    pub fn find_character_at_position(&self, position: Point) -> Option<&Character> {
+        self.characters.iter().find(|c| c.position == position)
+    }
+
+    pub fn character_can_enter(&self, point: Point) -> bool {
+        self.map.in_bounds(point) && self.map.get(point) == TileKind::Floor
+    }
+
+    pub fn remove_character(&mut self, id: CharacterId) {
+        self.characters.retain(|c| c.id != id);
+    }
+
+    pub fn render(&self, screen: &mut Screen) {
+        for character in &self.characters {
+            character.render(screen);
+        }
+
+        self.map.render(screen);
+    }
+}
+
+#[derive(Debug)]
+pub struct State {
+    level: LevelState,
+    frame: usize,
+    camera: Camera,
+    current_actor: CurrentActor,
+}
+
+impl State {
+    pub fn new() -> State {
+        let level = MapBuilder::build(&mut RandomNumberGenerator::new());
+
+        Self {
+            level,
+            frame: 0,
+            camera: Camera::new(),
+            current_actor: CurrentActor::PlayerAction,
+        }
+    }
+}
+
+pub enum RequestedAction {
+    Move(CharacterId, Point),
+}
+
+pub enum ResolvedAction {
+    MoveActor(CharacterId, Point),
+    RemoveCharacter(CharacterId),
+}
+
+impl State {
+    pub fn get_player(&self) -> &Character {
+        self.level
             .characters
             .iter()
-            .find(|c| c.id == actor_id)
-            .expect("Action actor exists");
+            .find(|c| c.is_player())
+            .expect("Player must still exist")
+    }
 
+    fn resolve_action(&self, action: RequestedAction) -> Option<ResolvedAction> {
         match action {
-            RequestedAction::Move(target) => {
-                let character_at_target = self.characters.iter().find(|c| c.position == target);
+            RequestedAction::Move(id, target) => {
+                let actor = self.level.find_character(id);
+
+                let character_at_target = self.level.find_character_at_position(target);
                 if let Some(character_at_target) = character_at_target
                     && actor.is_player()
                 {
                     Some(ResolvedAction::RemoveCharacter(character_at_target.id))
-                } else if self.map.can_enter(target) {
-                    Some(ResolvedAction::MoveActor(target))
+                } else if self.level.character_can_enter(target) {
+                    Some(ResolvedAction::MoveActor(id, target))
                 } else {
                     None
                 }
@@ -65,19 +107,15 @@ impl State {
         }
     }
 
-    fn process_action(&mut self, action: RequestedAction, actor_id: CharacterId) -> bool {
-        if let Some(resolved_action) = self.resolve_action(action, actor_id) {
+    fn process_action(&mut self, action: RequestedAction) -> bool {
+        if let Some(resolved_action) = self.resolve_action(action) {
             match resolved_action {
-                ResolvedAction::MoveActor(point) => {
-                    self.characters
-                        .iter_mut()
-                        .find(|c| c.id == actor_id)
-                        .expect("Actor exists")
-                        .position = point;
+                ResolvedAction::MoveActor(id, point) => {
+                    self.level.find_character_mut(id).position = point;
                     true
                 }
-                ResolvedAction::RemoveCharacter(character_id) => {
-                    self.characters.retain(|c| c.id != character_id);
+                ResolvedAction::RemoveCharacter(id) => {
+                    self.level.remove_character(id);
                     true
                 }
             }
@@ -91,15 +129,13 @@ impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
         self.frame += 1;
 
-        // Only paint if we are on the first frame, the player did something, or our animation bounce changed
+        // Only paint if we are on the first frame, the current actor did something, or our animation bounce changed
         let mut needs_paint = self.frame == 1;
 
-        {
-            let player = self.get_player();
-            if let Some(action) = get_player_action(player, ctx) {
-                needs_paint |= self.process_action(action, player.id);
-            }
+        if let Some(action) = self.current_actor.act(&self.level, ctx) {
+            needs_paint |= self.process_action(action);
         }
+
         needs_paint |= self.camera.update(self.get_player().position, self.frame);
 
         if needs_paint {
@@ -108,11 +144,7 @@ impl GameState for State {
             // Only clear text console as sprite "fonts" should draw every square
             screen.clear();
 
-            for character in &self.characters {
-                character.render(&mut screen);
-            }
-
-            self.map.render(&mut screen);
+            self.level.render(&mut screen);
         }
     }
 }

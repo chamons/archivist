@@ -26,6 +26,7 @@ pub struct Character {
     pub position: Point,
     pub kind: CharacterKind,
     pub id: CharacterId,
+    pub ticks: i32,
 }
 
 impl Character {
@@ -34,6 +35,7 @@ impl Character {
             position,
             kind,
             id: CharacterId::next(),
+            ticks: 0,
         }
     }
 

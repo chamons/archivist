@@ -8,7 +8,7 @@ pub struct MapBuilder {
 }
 
 impl MapBuilder {
-    pub fn build(rng: &mut RandomNumberGenerator) -> (Map, Vec<Character>) {
+    pub fn build(rng: &mut RandomNumberGenerator) -> LevelState {
         let mut builder = MapBuilder {
             map: Map::new(),
             rooms: vec![],
@@ -23,7 +23,10 @@ impl MapBuilder {
             CharacterKind::Player,
         ));
 
-        (builder.map, characters)
+        LevelState {
+            map: builder.map,
+            characters,
+        }
     }
 
     fn fill(&mut self, tile: TileKind) {

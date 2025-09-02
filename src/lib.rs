@@ -1,3 +1,4 @@
+mod actor;
 mod camera;
 mod character;
 mod map;
@@ -7,6 +8,7 @@ mod state;
 mod util;
 
 pub mod prelude {
+    pub use crate::actor::*;
     pub use crate::camera::*;
     pub use crate::character::*;
     pub use crate::map::*;
