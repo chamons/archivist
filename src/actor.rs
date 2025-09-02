@@ -19,4 +19,11 @@ impl CurrentActor {
             CurrentActor::EnemyAction(id) => Some(RequestedAction::Wait(*id)),
         }
     }
+
+    pub fn needs_to_wait(&self) -> bool {
+        match self {
+            CurrentActor::PlayerAction => true,
+            CurrentActor::EnemyAction(_) => false,
+        }
+    }
 }

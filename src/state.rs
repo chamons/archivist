@@ -178,14 +178,24 @@ impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
         self.frame += 1;
 
-        // Only paint if we are on the first frame, the current actor did something, or our animation bounce changed
-        let mut needs_paint = self.frame == 1;
+        let mut needs_paint = false;
+        loop {
+            // Only paint if we are on the first frame
+            needs_paint |= self.frame == 1;
 
-        if let Some(action) = self.current_actor.act(&self.level, ctx) {
-            needs_paint |= self.process_action(action);
+            // The current actor did something
+            if let Some(action) = self.current_actor.act(&self.level, ctx) {
+                needs_paint |= self.process_action(action);
+            }
+
+            // Or our animation bounce changed
+            needs_paint |= self.camera.update(self.get_player().position, self.frame);
+
+            // We continue looping until the current actor needs to wait
+            if self.current_actor.needs_to_wait() {
+                break;
+            }
         }
-
-        needs_paint |= self.camera.update(self.get_player().position, self.frame);
 
         if needs_paint {
             let mut screen = Screen::new(ctx, &self.camera);
