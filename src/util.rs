@@ -5,6 +5,7 @@ use macroquad::{
     math::Vec2,
 };
 use rand::{Rng, rngs::StdRng};
+use serde::{Deserialize, Serialize};
 
 pub trait RandExt {
     fn flip(&mut self) -> bool;
@@ -19,7 +20,7 @@ impl RandExt for StdRng {
 // Point and Rect in macroquad use f32
 // but that doesn't make any sense for roguelike grids
 
-#[derive(Hash, PartialEq, Eq, Clone, Copy, Debug)]
+#[derive(Hash, PartialEq, Eq, Clone, Copy, Debug, Serialize, Deserialize, Default)]
 pub struct Point {
     pub x: i32,
     pub y: i32,

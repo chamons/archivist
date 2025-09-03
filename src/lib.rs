@@ -2,6 +2,7 @@ mod actor;
 mod ai;
 mod camera;
 mod character;
+mod data;
 mod health;
 mod level;
 mod map;
@@ -15,6 +16,7 @@ pub mod prelude {
     pub use crate::ai::*;
     pub use crate::camera::*;
     pub use crate::character::*;
+    pub use crate::data::*;
     pub use crate::health::*;
     pub use crate::level::*;
     pub use crate::map::*;
@@ -31,6 +33,8 @@ pub mod prelude {
     pub use macroquad::color::*;
     pub use macroquad::input::{KeyCode, is_key_pressed};
     pub use macroquad::math::Rect as MRect;
+
+    pub use serde::{Deserialize, Serialize};
 
     pub const SCREEN_WIDTH: i32 = 80;
     pub const SCREEN_HEIGHT: i32 = 50;

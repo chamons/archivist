@@ -7,6 +7,7 @@ use crate::{prelude::*, util::RandExt};
 pub struct MapBuilder {
     map: Map,
     rooms: Vec<Rect>,
+    data: Data,
 }
 
 impl MapBuilder {
@@ -14,17 +15,17 @@ impl MapBuilder {
         let mut builder = MapBuilder {
             map: Map::new(),
             rooms: vec![],
+            data: Data::load().expect("Able to load data"),
         };
 
         builder.fill(TileKind::Wall);
         builder.build_random_rooms(rng, 20);
         builder.build_corridors(rng);
-        let mut characters = builder.spawn_monsters(rng);
-        characters.push(Character::new(
-            builder.rooms[0].center(),
-            CharacterKind::Player,
-            20,
-        ));
+        let mut characters = builder.spawn_monsters(rng, 1);
+
+        let mut player = builder.data.get_character("Player");
+        player.position = builder.rooms[0].center();
+        characters.push(player);
 
         LevelState {
             map: builder.map,
@@ -36,18 +37,16 @@ impl MapBuilder {
         self.map.tiles.iter_mut().for_each(|t| *t = tile);
     }
 
-    fn spawn_monsters(&self, rng: &mut StdRng) -> Vec<Character> {
+    fn spawn_monsters(&self, rng: &mut StdRng, difficulty: u32) -> Vec<Character> {
+        let enemies = self.data.get_enemies_at_level(difficulty);
         self.rooms
             .iter()
             .skip(1)
             .map(|r| {
-                let (kind, health) = match rng.random_range(0..4) {
-                    0 => (CharacterKind::Rat, 4),
-                    1 => (CharacterKind::Bat, 5),
-                    2 => (CharacterKind::Slime, 8),
-                    _ => (CharacterKind::Spider, 12),
-                };
-                Character::new(r.center(), kind, health)
+                let name = enemies.choose(rng).unwrap();
+                let mut enemy = self.data.get_character(name);
+                enemy.position = r.center();
+                enemy
             })
             .collect()
     }

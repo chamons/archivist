@@ -1,0 +1,46 @@
+[
+    {
+        "name": "Player",
+        "max_health": 10,
+        "base_sprite_tile": {
+            "x": 1,
+            "y": 1
+        }
+    },
+    {
+        "name": "Bat",
+        "max_health": 5,
+        "difficulty": 1,
+        "base_sprite_tile": {
+            "x": 3,
+            "y": 13
+        }
+    },
+    {
+        "name": "Rat",
+        "max_health": 4,
+        "difficulty": 1,
+        "base_sprite_tile": {
+            "x": 8,
+            "y": 13
+        }
+    },
+    {
+        "name": "Slime",
+        "max_health": 8,
+        "difficulty": 1,
+        "base_sprite_tile": {
+            "x": 2,
+            "y": 13
+        }
+    },
+    {
+        "name": "Spider",
+        "max_health": 12,
+        "difficulty": 1,
+        "base_sprite_tile": {
+            "x": 7,
+            "y": 13
+        }
+    }
+]
