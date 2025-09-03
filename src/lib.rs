@@ -2,6 +2,7 @@ mod actor;
 mod ai;
 mod camera;
 mod character;
+mod damage;
 mod data;
 mod health;
 mod level;
@@ -16,6 +17,7 @@ pub mod prelude {
     pub use crate::ai::*;
     pub use crate::camera::*;
     pub use crate::character::*;
+    pub use crate::damage::*;
     pub use crate::data::*;
     pub use crate::health::*;
     pub use crate::level::*;

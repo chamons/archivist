@@ -2,12 +2,13 @@ use crate::prelude::*;
 
 const CHARACTERS_JSON: &str = include_str!("../data/characters.json");
 
-#[derive(Debug, Serialize, Deserialize, Hash, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct CharacterInfo {
     pub name: String,
     pub max_health: u32,
     pub difficulty: Option<u32>,
     pub base_sprite_tile: Point,
+    pub weapon: Weapon,
 }
 
 pub struct Data {
@@ -35,6 +36,7 @@ impl Data {
             ticks: 0,
             health: Health::new(character_info.max_health as i32),
             base_sprite_tile: character_info.base_sprite_tile,
+            weapon: character_info.weapon.clone(),
         }
     }
 

@@ -33,9 +33,10 @@ pub enum RequestedAction {
 
 pub enum ResolvedAction {
     MoveActor(CharacterId, Point),
-    RemoveCharacter {
+    DamageCharacter {
         source: CharacterId,
         target: CharacterId,
+        weapon: Weapon,
     },
     Wait(CharacterId),
 }
@@ -58,9 +59,10 @@ impl State {
                 if let Some(character_at_target) = character_at_target
                     && actor.is_player()
                 {
-                    Some(ResolvedAction::RemoveCharacter {
+                    Some(ResolvedAction::DamageCharacter {
                         target: character_at_target.id,
                         source: id,
+                        weapon: actor.weapon.clone(),
                     })
                 } else if self.level.character_can_enter(target) {
                     Some(ResolvedAction::MoveActor(id, target))
@@ -79,8 +81,16 @@ impl State {
                     self.level.find_character_mut(id).position = point;
                     self.spend_ticks(id, TICKS_MOVEMENT);
                 }
-                ResolvedAction::RemoveCharacter { source, target } => {
-                    self.level.remove_character(target);
+                ResolvedAction::DamageCharacter {
+                    source,
+                    target,
+                    weapon,
+                } => {
+                    let target_character = self.level.find_character_mut(target);
+                    target_character.health.current -= weapon.damage;
+                    if target_character.health.is_dead() {
+                        self.level.remove_character(target);
+                    }
                     self.spend_ticks(source, TICKS_TO_BUMP);
                 }
                 ResolvedAction::Wait(id) => {

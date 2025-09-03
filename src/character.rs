@@ -22,6 +22,7 @@ pub struct Character {
     pub ticks: i32,
     pub health: Health,
     pub base_sprite_tile: Point,
+    pub weapon: Weapon,
 }
 
 impl Character {

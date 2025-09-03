@@ -10,4 +10,8 @@ impl Health {
     pub fn new(max: i32) -> Self {
         Self { current: max, max }
     }
+
+    pub fn is_dead(&self) -> bool {
+        self.current <= 0
+    }
 }

@@ -5,6 +5,13 @@
         "base_sprite_tile": {
             "x": 1,
             "y": 1
+        },
+        "weapon": {
+            "name": "Dagger",
+            "damage": 2,
+            "kinds": [
+                "Physical"
+            ]
         }
     },
     {
@@ -14,6 +21,13 @@
         "base_sprite_tile": {
             "x": 3,
             "y": 13
+        },
+        "weapon": {
+            "name": "Bite",
+            "damage": 1,
+            "kinds": [
+                "Physical"
+            ]
         }
     },
     {
@@ -23,6 +37,13 @@
         "base_sprite_tile": {
             "x": 8,
             "y": 13
+        },
+        "weapon": {
+            "name": "Bite",
+            "damage": 1,
+            "kinds": [
+                "Physical"
+            ]
         }
     },
     {
@@ -32,6 +53,13 @@
         "base_sprite_tile": {
             "x": 2,
             "y": 13
+        },
+        "weapon": {
+            "name": "Slam",
+            "damage": 2,
+            "kinds": [
+                "Physical"
+            ]
         }
     },
     {
@@ -41,6 +69,13 @@
         "base_sprite_tile": {
             "x": 7,
             "y": 13
+        },
+        "weapon": {
+            "name": "Bite",
+            "damage": 1,
+            "kinds": [
+                "Poison"
+            ]
         }
     }
 ]
