@@ -1,4 +1,9 @@
-use macroquad::math::Vec2;
+use crate::prelude::*;
+
+use macroquad::{
+    color::{Color, GREEN},
+    math::Vec2,
+};
 use rand::{Rng, rngs::StdRng};
 
 pub trait RandExt {
@@ -93,5 +98,14 @@ impl Rect {
                 f(Point::new(x, y));
             }
         }
+    }
+}
+
+pub fn color_for_health(percentage: f32) -> Color {
+    match percentage {
+        x if x > 0.8 => GREEN,
+        x if x > 0.6 => YELLOW,
+        x if x > 0.3 => ORANGE,
+        _ => RED,
     }
 }

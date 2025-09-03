@@ -1,6 +1,3 @@
-- Add health
-- Add HUD
-- Add lifebar on enemies
 - Add basic damage system
 - Add death
 - Add title screen

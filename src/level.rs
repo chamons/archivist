@@ -66,7 +66,7 @@ impl LevelState {
             LIFE_PADDING_Y,
             (screen_width() - LIFE_PADDING_X * 2.0) * health_percentage,
             16.0,
-            RED,
+            color_for_health(health_percentage),
         );
 
         screen.draw_centered_text(

@@ -1,5 +1,7 @@
 use std::sync::atomic::AtomicU32;
 
+use macroquad::shapes::draw_rectangle;
+
 use crate::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -47,6 +49,17 @@ impl Character {
             self.position,
             self.get_spite_tile(screen.camera.bounce),
         );
+
+        let health_percentage = self.health.current as f32 / self.health.max as f32;
+        if !self.is_player() && health_percentage < 1.0 {
+            draw_rectangle(
+                (self.position.x - screen.camera.left_x) as f32 * 24.0,
+                (self.position.y - screen.camera.top_y) as f32 * 24.0,
+                24.0 * health_percentage,
+                4.0,
+                color_for_health(health_percentage),
+            );
+        }
     }
 
     fn get_spite_tile(&self, bounce: bool) -> Point {
