@@ -1,3 +1,5 @@
+use macroquad::{shapes::draw_rectangle, window::screen_width};
+
 use crate::prelude::*;
 
 #[derive(Debug)]
@@ -40,38 +42,58 @@ impl LevelState {
         self.characters.retain(|c| c.id != id);
     }
 
-    pub fn render(&self, screen: &mut Screen, camera: &Camera) {
+    pub fn render(&self, screen: &Screen) {
+        self.map.render(screen);
+
         for character in &self.characters {
-            if camera.is_in_view(character.position) {
+            if screen.camera.is_in_view(character.position) {
                 character.render(screen);
             }
         }
 
-        self.map.render(screen);
-
         self.render_hud(screen);
     }
 
-    fn render_hud(&self, screen: &mut Screen) {
+    fn render_hud(&self, screen: &Screen) {
         let health = self.get_player().health.clone();
+        let health_percentage = health.current as f32 / health.max as f32;
 
-        let mut draw_batch = DrawBatch::new();
-        draw_batch.target(ScreenLayer::Text.into());
-        draw_batch.print_centered(1, "Explore the Dungeon. Cursor keys to move.");
-        draw_batch.bar_horizontal(
-            Point::zero(),
-            SCREEN_WIDTH * 2,
-            health.current,
-            health.max,
-            ColorPair::new(RED, BLACK),
+        const LIFE_PADDING_X: f32 = 4.0;
+        const LIFE_PADDING_Y: f32 = 2.0;
+        draw_rectangle(0.0, 0.0, screen_width(), 18.0, BLACK);
+        draw_rectangle(
+            LIFE_PADDING_X,
+            LIFE_PADDING_Y,
+            (screen_width() - LIFE_PADDING_X * 2.0) * health_percentage,
+            16.0,
+            RED,
         );
-        draw_batch.print_color_centered(
-            0,
-            format!(" Health: {} / {} ", health.current, health.max),
-            ColorPair::new(WHITE, RED),
-        );
-        draw_batch.submit(0).expect("Batch error");
 
-        render_draw_buffer(screen.ctx).expect("Render error");
+        screen.draw_centered_text(
+            &format!("{}/{}", health.current, health.max),
+            17,
+            15.0,
+            None,
+        );
+
+        screen.draw_centered_text(
+            "Explore the Dungeon. Cursor keys to move.",
+            21,
+            35.0,
+            Some(BLACK),
+        );
+
+        // draw_batch.bar_horizontal(
+        //     Point::zero(),
+        //     SCREEN_WIDTH * 2,
+        //     health.current,
+        //     health.max,
+        //     ColorPair::new(RED, BLACK),
+        // );
+        // draw_batch.print_color_centered(
+        //     0,
+        //     format!(" Health: {} / {} ", health.current, health.max),
+        //     ColorPair::new(WHITE, RED),
+        // );
     }
 }

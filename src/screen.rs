@@ -1,90 +1,115 @@
+use macroquad::{
+    shapes::draw_rectangle,
+    text::{draw_text, measure_text},
+    texture::{DrawTextureParams, Texture2D, build_textures_atlas, draw_texture_ex},
+    window::screen_width,
+};
+
 use crate::prelude::*;
 
-pub enum ScreenLayer {
-    Text,
-    World,
+pub enum TileSet {
     Creatures,
+    FX,
+    Items,
+    Tiles,
+    World,
 }
 
-impl Into<usize> for ScreenLayer {
-    fn into(self) -> usize {
-        match self {
-            ScreenLayer::Text => 2,
-            ScreenLayer::World => 0,
-            ScreenLayer::Creatures => 1,
+pub struct Screen {
+    pub creatures: Texture2D,
+    pub fx: Texture2D,
+    pub items: Texture2D,
+    pub tiles: Texture2D,
+    pub world: Texture2D,
+    pub text: Texture2D,
+    pub camera: Camera,
+}
+
+impl Screen {
+    pub async fn new() -> Self {
+        let creatures =
+            macroquad::texture::load_texture("resources/oryx_16bit_fantasy_creatures_trans.png")
+                .await
+                .expect("Unable to load art");
+        let fx = macroquad::texture::load_texture("resources/oryx_16bit_fantasy_fx_trans.png")
+            .await
+            .expect("Unable to load art");
+        let items =
+            macroquad::texture::load_texture("resources/oryx_16bit_fantasy_items_trans.png")
+                .await
+                .expect("Unable to load art");
+        let tiles = macroquad::texture::load_texture("resources/oryx_16bit_fantasy_tiles.png")
+            .await
+            .expect("Unable to load art");
+        let world =
+            macroquad::texture::load_texture("resources/oryx_16bit_fantasy_world_trans.png")
+                .await
+                .expect("Unable to load art");
+        let text = macroquad::texture::load_texture("resources/terminal8x8.png")
+            .await
+            .expect("Unable to load art");
+
+        build_textures_atlas();
+
+        let camera = Camera::new();
+        Self {
+            creatures,
+            fx,
+            items,
+            tiles,
+            world,
+            text,
+            camera,
         }
     }
-}
 
-/// With multiple virtual consoles, a single place to keep it all straight
-pub struct Screen<'a> {
-    pub ctx: &'a mut BTerm,
-    pub camera: &'a Camera,
-}
-
-impl<'a> Screen<'a> {
-    pub fn new(ctx: &'a mut BTerm, camera: &'a Camera) -> Self {
-        Self { ctx, camera }
-    }
-
-    pub fn console_window_config() -> BTermBuilder {
-        BTermBuilder::new()
-            .with_title("The Archivist")
-            .with_fps_cap(30.0)
-            .with_dimensions(CAMERA_VIEWPORT_WIDTH, CAMERA_DISPLAY_HEIGHT)
-            .with_tile_dimensions(SPRITE_SIZE, SPRITE_SIZE)
-            .with_resource_path("resources/")
-            .with_font("terminal8x8.png", 8, 8)
-            .with_font("oryx_16bit_fantasy_creatures.png", SPRITE_SIZE, SPRITE_SIZE)
-            .with_font("oryx_16bit_fantasy_world.png", SPRITE_SIZE, SPRITE_SIZE)
-            // We use sparse console here because "sprite fonts" don't play well with
-            // set everything to ' ' character cls
-            // Terminal 0 - World
-            .with_sparse_console(
-                CAMERA_VIEWPORT_WIDTH,
-                CAMERA_DISPLAY_HEIGHT,
-                "oryx_16bit_fantasy_world.png",
-            )
-            // Terminal 1 - Creatures
-            .with_sparse_console_no_bg(
-                CAMERA_VIEWPORT_WIDTH,
-                CAMERA_DISPLAY_HEIGHT,
-                "oryx_16bit_fantasy_creatures.png",
-            )
-            // Terminal 2 - Text
-            .with_simple_console_no_bg(
-                CAMERA_VIEWPORT_WIDTH * 2,
-                CAMERA_DISPLAY_HEIGHT * 2,
-                "terminal8x8.png",
-            )
-    }
-
-    pub fn clear(&mut self) {
-        self.ctx.set_active_console(ScreenLayer::Text.into());
-        self.ctx.cls();
-
-        self.ctx.set_active_console(ScreenLayer::World.into());
-        self.ctx.cls();
-
-        self.ctx.set_active_console(ScreenLayer::Creatures.into());
-        self.ctx.cls();
-    }
-
-    pub fn set_active(&mut self, layer: ScreenLayer) {
-        self.ctx.set_active_console(layer.into());
-    }
-
-    pub fn bounce(&self) -> bool {
-        self.camera.bounce
-    }
-
-    pub fn set_sprite<G: Into<FontCharType>>(&mut self, position: Point, glyph: G) {
-        self.ctx.set(
-            position.x - self.camera.left_x,
-            position.y - self.camera.top_y,
+    pub fn draw_sprite(&self, set: TileSet, position: Point, tile: Point) {
+        let texture = self.get_texture(set);
+        let screen_x: f32 = (position.x - self.camera.left_x) as f32;
+        let screen_y: f32 = (position.y - self.camera.top_y) as f32;
+        draw_texture_ex(
+            texture,
+            24. * screen_x,
+            24. * screen_y,
             WHITE,
-            BLACK,
-            glyph.into(),
+            DrawTextureParams {
+                source: Some(MRect::new(
+                    tile.x as f32 * 24.0,
+                    tile.y as f32 * 24.0,
+                    24.0,
+                    24.0,
+                )),
+                ..Default::default()
+            },
         );
+    }
+
+    fn get_texture(&self, set: TileSet) -> &Texture2D {
+        match set {
+            TileSet::Creatures => &self.creatures,
+            TileSet::FX => &self.fx,
+            TileSet::Items => &self.items,
+            TileSet::Tiles => &self.tiles,
+            TileSet::World => &self.world,
+        }
+    }
+
+    pub fn draw_centered_text(&self, text: &str, size: u16, y: f32, background: Option<Color>) {
+        let text_size = measure_text(text, None, size, 1.0);
+        let text_x = screen_width() / 2.0 - text_size.width / 2.0;
+
+        if let Some(background) = background {
+            const BACKGROUND_PADDING: f32 = 2.0;
+
+            draw_rectangle(
+                text_x - BACKGROUND_PADDING,
+                y - text_size.offset_y - BACKGROUND_PADDING,
+                text_size.width + BACKGROUND_PADDING * 2.0,
+                text_size.height + BACKGROUND_PADDING * 2.0,
+                background,
+            );
+        }
+
+        draw_text(text, text_x, y, size as f32, WHITE);
     }
 }

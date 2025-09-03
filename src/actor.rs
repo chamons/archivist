@@ -10,11 +10,11 @@ pub enum CurrentActor {
 }
 
 impl CurrentActor {
-    pub fn act(&mut self, level: &LevelState, ctx: &mut BTerm) -> Option<RequestedAction> {
+    pub fn act(&mut self, level: &LevelState) -> Option<RequestedAction> {
         match self {
             CurrentActor::PlayerAction => {
                 let player = level.get_player();
-                get_player_action(player, ctx)
+                get_player_action(player)
             }
             CurrentActor::EnemyAction(id) => Some(wander_action(level, *id)),
         }

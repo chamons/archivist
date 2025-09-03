@@ -1,5 +1,7 @@
 use std::cmp::{max, min};
 
+use rand::Rng;
+
 use crate::{prelude::*, util::RandExt};
 
 pub struct MapBuilder {

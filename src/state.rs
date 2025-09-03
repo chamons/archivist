@@ -1,4 +1,5 @@
 use log::debug;
+use macroquad::window::clear_background;
 
 use crate::prelude::*;
 
@@ -6,7 +7,6 @@ use crate::prelude::*;
 pub struct State {
     level: LevelState,
     frame: usize,
-    camera: Camera,
     current_actor: CurrentActor,
 }
 
@@ -21,7 +21,6 @@ impl State {
         Self {
             level,
             frame: 0,
-            camera: Camera::new(),
             current_actor: CurrentActor::PlayerAction,
         }
     }
@@ -73,26 +72,21 @@ impl State {
         }
     }
 
-    fn process_action(&mut self, action: RequestedAction) -> bool {
+    fn process_action(&mut self, action: RequestedAction) {
         if let Some(resolved_action) = self.resolve_action(action) {
             match resolved_action {
                 ResolvedAction::MoveActor(id, point) => {
                     self.level.find_character_mut(id).position = point;
                     self.spend_ticks(id, TICKS_MOVEMENT);
-                    true
                 }
                 ResolvedAction::RemoveCharacter { source, target } => {
                     self.level.remove_character(target);
                     self.spend_ticks(source, TICKS_TO_BUMP);
-                    true
                 }
                 ResolvedAction::Wait(id) => {
                     self.spend_ticks(id, TICKS_TO_ACT);
-                    true
                 }
             }
-        } else {
-            false
         }
     }
 
@@ -130,36 +124,29 @@ impl State {
     }
 }
 
-impl GameState for State {
-    fn tick(&mut self, ctx: &mut BTerm) {
-        self.frame += 1;
+pub async fn main() {
+    let mut state = State::new();
+    let mut screen = Screen::new().await;
+    loop {
+        state.frame += 1;
+        clear_background(BLACK);
 
-        let mut needs_paint = false;
         loop {
-            // Only paint if we are on the first frame
-            needs_paint |= self.frame == 1;
-
-            // The current actor did something
-            if let Some(action) = self.current_actor.act(&self.level, ctx) {
-                needs_paint |= self.process_action(action);
+            if let Some(action) = state.current_actor.act(&state.level) {
+                state.process_action(action);
             }
 
-            // Or our animation bounce changed
-            needs_paint |= self.camera.update(self.get_player().position, self.frame);
+            screen
+                .camera
+                .update(state.get_player().position, state.frame);
 
             // We continue looping until the current actor needs to wait
-            if self.current_actor.needs_to_wait() {
+            if state.current_actor.needs_to_wait() {
                 break;
             }
         }
 
-        if needs_paint {
-            let mut screen = Screen::new(ctx, &self.camera);
-
-            // Only clear text console as sprite "fonts" should draw every square
-            screen.clear();
-
-            self.level.render(&mut screen, &self.camera);
-        }
+        state.level.render(&screen);
+        macroquad::window::next_frame().await
     }
 }

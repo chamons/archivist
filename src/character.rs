@@ -41,22 +41,26 @@ impl Character {
         }
     }
 
-    pub fn render(&self, screen: &mut Screen) {
-        screen.set_active(ScreenLayer::Creatures);
-        screen.set_sprite(self.position, self.get_glyph(screen.bounce()));
+    pub fn render(&self, screen: &Screen) {
+        screen.draw_sprite(
+            TileSet::Creatures,
+            self.position,
+            self.get_spite_tile(screen.camera.bounce),
+        );
     }
 
-    fn get_glyph(&self, bounce: bool) -> u16 {
-        let base = match self.kind {
-            CharacterKind::Player => 21,
-            CharacterKind::Bat => 263,
-            CharacterKind::Slime => 262,
-            CharacterKind::Rat => 268,
-            CharacterKind::Spider => 267,
+    fn get_spite_tile(&self, bounce: bool) -> Point {
+        let mut tile = match self.kind {
+            CharacterKind::Player => Point::new(1, 1),
+            CharacterKind::Bat => Point::new(3, 13),
+            CharacterKind::Slime => Point::new(2, 13),
+            CharacterKind::Rat => Point::new(8, 13),
+            CharacterKind::Spider => Point::new(7, 13),
         };
-
-        // Each row is 20 wide
-        if bounce { base + 20 } else { base }
+        if bounce {
+            tile.y += 1;
+        }
+        tile
     }
 
     pub fn is_player(&self) -> bool {

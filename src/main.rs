@@ -1,11 +1,18 @@
-use archivist::prelude::*;
-use bracket_lib::prelude::{BError, main_loop};
 use env_logger::Logger;
+use macroquad::window::Conf;
 
-fn main() -> BError {
+fn window_conf() -> Conf {
+    Conf {
+        window_title: "The Archivist".to_string(),
+        window_width: 1024,
+        window_height: 800,
+        ..Default::default()
+    }
+}
+
+#[macroquad::main(window_conf)]
+async fn main() {
     let _logger = Logger::from_default_env();
 
-    let context = Screen::console_window_config().build()?;
-
-    main_loop(context, State::new())
+    archivist::prelude::main().await;
 }

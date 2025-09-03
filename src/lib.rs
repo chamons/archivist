@@ -21,13 +21,16 @@ pub mod prelude {
     pub use crate::player::*;
     pub use crate::screen::*;
     pub use crate::state::*;
+    pub use crate::util::*;
 
-    pub use bracket_lib::prelude::*;
-    pub use rand::Rng;
     pub use rand::RngCore;
     pub use rand::SeedableRng;
     pub use rand::rngs::StdRng;
     pub use rand::seq::IndexedRandom;
+
+    pub use macroquad::color::*;
+    pub use macroquad::input::{KeyCode, is_key_pressed};
+    pub use macroquad::math::Rect as MRect;
 
     pub const SCREEN_WIDTH: i32 = 80;
     pub const SCREEN_HEIGHT: i32 = 50;
@@ -37,7 +40,7 @@ pub mod prelude {
 
     pub const SPRITE_SIZE: usize = 24;
 
-    pub const BOUNCE_FRAME: usize = 24;
+    pub const BOUNCE_FRAME: usize = 60;
 
     pub const TICKS_TO_ACT: i32 = 100;
     pub const TICKS_MOVEMENT: i32 = 100;

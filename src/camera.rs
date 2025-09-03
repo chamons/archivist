@@ -20,26 +20,18 @@ impl Camera {
         }
     }
 
-    pub fn update(&mut self, player_position: Point, frame: usize) -> bool {
+    pub fn update(&mut self, player_position: Point, frame: usize) {
         self.left_x = player_position.x - CAMERA_VIEWPORT_WIDTH / 2;
         self.right_x = player_position.x + CAMERA_VIEWPORT_WIDTH / 2;
         self.top_y = player_position.y - CAMERA_DISPLAY_HEIGHT / 2;
         self.bottom_y = player_position.y + CAMERA_DISPLAY_HEIGHT / 2;
         if frame % BOUNCE_FRAME == 0 {
             self.bounce = !self.bounce;
-            true
-        } else {
-            false
         }
     }
 
     pub fn is_in_view(&self, point: Point) -> bool {
-        let viewport = Rect {
-            x1: self.left_x,
-            x2: self.right_x,
-            y1: self.top_y,
-            y2: self.bottom_y,
-        };
-        viewport.point_in_rect(point)
+        let viewport = Rect::new(self.left_x, self.right_x, self.top_y, self.bottom_y);
+        viewport.contains(point)
     }
 }

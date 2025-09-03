@@ -3,7 +3,7 @@ use crate::prelude::*;
 pub fn wander_action(level: &LevelState, id: CharacterId) -> RequestedAction {
     let enemy = level.find_character(id);
     let options = adjacent_squares(level, enemy.position);
-    let selection = options.choose(&mut rand::rng());
+    let selection = options.choose(&mut ::rand::rng());
     match selection {
         Some(position) => RequestedAction::Move(id, *position),
         None => RequestedAction::Wait(id),
