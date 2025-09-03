@@ -23,7 +23,11 @@ pub mod prelude {
     pub use crate::state::*;
 
     pub use bracket_lib::prelude::*;
-    pub use rand::prelude::*;
+    pub use rand::Rng;
+    pub use rand::RngCore;
+    pub use rand::SeedableRng;
+    pub use rand::rngs::StdRng;
+    pub use rand::seq::IndexedRandom;
 
     pub const SCREEN_WIDTH: i32 = 80;
     pub const SCREEN_HEIGHT: i32 = 50;
