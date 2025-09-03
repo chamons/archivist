@@ -1,2 +1,6 @@
-- Add ticks to all characters
-- After an action is taken, remove ticks, find next character and set them as current actor
+- Add health
+- Add HUD
+- Add lifebar on enemies
+- Add basic damage system
+- Add death
+- Add title screen

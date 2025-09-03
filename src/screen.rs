@@ -9,9 +9,9 @@ pub enum ScreenLayer {
 impl Into<usize> for ScreenLayer {
     fn into(self) -> usize {
         match self {
-            ScreenLayer::Text => 0,
-            ScreenLayer::World => 1,
-            ScreenLayer::Creatures => 2,
+            ScreenLayer::Text => 2,
+            ScreenLayer::World => 0,
+            ScreenLayer::Creatures => 1,
         }
     }
 }
@@ -37,21 +37,25 @@ impl<'a> Screen<'a> {
             .with_font("terminal8x8.png", 8, 8)
             .with_font("oryx_16bit_fantasy_creatures.png", SPRITE_SIZE, SPRITE_SIZE)
             .with_font("oryx_16bit_fantasy_world.png", SPRITE_SIZE, SPRITE_SIZE)
-            // Terminal 0 - Text
-            .with_simple_console(SCREEN_WIDTH, SCREEN_HEIGHT, "terminal8x8.png")
             // We use sparse console here because "sprite fonts" don't play well with
             // set everything to ' ' character cls
-            // Terminal 1 - World
-            .with_sparse_console_no_bg(
+            // Terminal 0 - World
+            .with_sparse_console(
                 CAMERA_VIEWPORT_WIDTH,
                 CAMERA_DISPLAY_HEIGHT,
                 "oryx_16bit_fantasy_world.png",
             )
-            // Terminal 2 - Creatures
+            // Terminal 1 - Creatures
             .with_sparse_console_no_bg(
                 CAMERA_VIEWPORT_WIDTH,
                 CAMERA_DISPLAY_HEIGHT,
                 "oryx_16bit_fantasy_creatures.png",
+            )
+            // Terminal 2 - Text
+            .with_simple_console_no_bg(
+                CAMERA_VIEWPORT_WIDTH * 2,
+                CAMERA_DISPLAY_HEIGHT * 2,
+                "terminal8x8.png",
             )
     }
 

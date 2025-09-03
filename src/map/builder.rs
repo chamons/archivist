@@ -21,6 +21,7 @@ impl MapBuilder {
         characters.push(Character::new(
             builder.rooms[0].center(),
             CharacterKind::Player,
+            20,
         ));
 
         LevelState {
@@ -38,13 +39,13 @@ impl MapBuilder {
             .iter()
             .skip(1)
             .map(|r| {
-                let kind = match rng.range(0, 4) {
-                    0 => CharacterKind::Rat,
-                    1 => CharacterKind::Bat,
-                    2 => CharacterKind::Slime,
-                    _ => CharacterKind::Spider,
+                let (kind, health) = match rng.range(0, 4) {
+                    0 => (CharacterKind::Rat, 4),
+                    1 => (CharacterKind::Bat, 5),
+                    2 => (CharacterKind::Slime, 8),
+                    _ => (CharacterKind::Spider, 12),
                 };
-                Character::new(r.center(), kind)
+                Character::new(r.center(), kind, health)
             })
             .collect()
     }

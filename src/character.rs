@@ -27,15 +27,17 @@ pub struct Character {
     pub kind: CharacterKind,
     pub id: CharacterId,
     pub ticks: i32,
+    pub health: Health,
 }
 
 impl Character {
-    pub fn new(position: Point, kind: CharacterKind) -> Self {
+    pub fn new(position: Point, kind: CharacterKind, max_health: i32) -> Self {
         Self {
             position,
             kind,
             id: CharacterId::next(),
             ticks: 0,
+            health: Health::new(max_health),
         }
     }
 
