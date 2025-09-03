@@ -1,3 +1,5 @@
+use log::debug;
+
 use crate::prelude::*;
 
 #[derive(Debug)]
@@ -10,7 +12,11 @@ pub struct State {
 
 impl State {
     pub fn new() -> State {
-        let level = MapBuilder::build(&mut RandomNumberGenerator::new());
+        let seed = rand::rng().next_u64();
+        let mut rng = StdRng::seed_from_u64(seed);
+        debug!("Generating map with seed {seed}");
+
+        let level = MapBuilder::build(&mut rng);
 
         Self {
             level,

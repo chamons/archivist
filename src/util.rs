@@ -1,11 +1,11 @@
-use bracket_lib::random::RandomNumberGenerator;
+use rand::{Rng, rngs::StdRng};
 
 pub trait RandExt {
     fn flip(&mut self) -> bool;
 }
 
-impl RandExt for RandomNumberGenerator {
+impl RandExt for StdRng {
     fn flip(&mut self) -> bool {
-        self.range(0, 2) == 1
+        self.random_bool(0.5)
     }
 }

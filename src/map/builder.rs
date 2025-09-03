@@ -8,7 +8,7 @@ pub struct MapBuilder {
 }
 
 impl MapBuilder {
-    pub fn build(rng: &mut RandomNumberGenerator) -> LevelState {
+    pub fn build(rng: &mut StdRng) -> LevelState {
         let mut builder = MapBuilder {
             map: Map::new(),
             rooms: vec![],
@@ -34,12 +34,12 @@ impl MapBuilder {
         self.map.tiles.iter_mut().for_each(|t| *t = tile);
     }
 
-    fn spawn_monsters(&self, rng: &mut RandomNumberGenerator) -> Vec<Character> {
+    fn spawn_monsters(&self, rng: &mut StdRng) -> Vec<Character> {
         self.rooms
             .iter()
             .skip(1)
             .map(|r| {
-                let (kind, health) = match rng.range(0, 4) {
+                let (kind, health) = match rng.random_range(0..4) {
                     0 => (CharacterKind::Rat, 4),
                     1 => (CharacterKind::Bat, 5),
                     2 => (CharacterKind::Slime, 8),
@@ -50,13 +50,13 @@ impl MapBuilder {
             .collect()
     }
 
-    fn build_random_rooms(&mut self, rng: &mut RandomNumberGenerator, desired_room_count: usize) {
+    fn build_random_rooms(&mut self, rng: &mut StdRng, desired_room_count: usize) {
         while self.rooms.len() < desired_room_count {
             let room = Rect::with_size(
-                rng.range(1, SCREEN_WIDTH - 10),
-                rng.range(1, SCREEN_HEIGHT - 10),
-                rng.range(2, 10),
-                rng.range(2, 10),
+                rng.random_range(1..SCREEN_WIDTH - 10),
+                rng.random_range(1..SCREEN_HEIGHT - 10),
+                rng.random_range(2..10),
+                rng.random_range(2..10),
             );
             if !self.rooms.iter().any(|r| r.intersect(&room)) {
                 room.for_each(|p| {
@@ -79,7 +79,7 @@ impl MapBuilder {
         }
     }
 
-    fn build_corridors(&mut self, rng: &mut RandomNumberGenerator) {
+    fn build_corridors(&mut self, rng: &mut StdRng) {
         let mut rooms = self.rooms.clone();
 
         rooms.sort_by(|a, b| a.center().x.cmp(&b.center().x));
