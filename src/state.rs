@@ -122,7 +122,6 @@ impl State {
         if let Some(resolved_action) = self.resolve_action(action) {
             match resolved_action {
                 ResolvedAction::MoveActor(id, point) => {
-                    println!("Moving {id:?} to {point:?}");
                     self.level.find_character_mut(id).position = point;
                     self.spend_ticks(id, TICKS_MOVEMENT);
                     true
@@ -133,7 +132,6 @@ impl State {
                     true
                 }
                 ResolvedAction::Wait(id) => {
-                    println!("Waiting on {id:?}");
                     self.spend_ticks(id, TICKS_TO_ACT);
                     true
                 }
@@ -165,7 +163,6 @@ impl State {
     }
 
     fn spend_ticks(&mut self, id: CharacterId, amount: i32) {
-        println!("Spending {amount} ticks on {id:?}");
         self.level.find_character_mut(id).ticks -= amount;
 
         if let Some(next) = self.find_next_actor() {
