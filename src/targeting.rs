@@ -4,7 +4,7 @@ use macroquad::input::{
 };
 
 use crate::prelude::*;
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum BlinkInfo {
     Solid(usize),
     Blinking(usize),
@@ -35,10 +35,15 @@ impl BlinkInfo {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TargetingInfo {
     pub position: Point,
     pub blink: BlinkInfo,
+}
+
+pub enum HandleInputResponse {
+    Action(Option<RequestedAction>),
+    ChangeActor(CurrentActor),
 }
 
 impl TargetingInfo {
@@ -54,9 +59,9 @@ impl TargetingInfo {
         level: &LevelState,
         screen: &Screen,
         is_current_target_valid: bool,
-    ) -> Option<RequestedAction> {
+    ) -> HandleInputResponse {
         if is_key_pressed(KeyCode::Escape) {
-            Some(RequestedAction::CancelledTargeting)
+            HandleInputResponse::ChangeActor(CurrentActor::PlayerStandardAction)
         } else if is_key_pressed(KeyCode::Enter)
             || is_key_pressed(KeyCode::KpEnter)
             || is_mouse_button_released(MouseButton::Left)
@@ -64,26 +69,26 @@ impl TargetingInfo {
             if is_current_target_valid {
                 if let Some(target) = level.find_character_at_position(self.position) {
                     let player = level.get_player();
-                    Some(RequestedAction::DamageCharacter {
+                    HandleInputResponse::Action(Some(RequestedAction::DamageCharacter {
                         source: level.get_player().id,
                         target: target.id,
                         weapon: player.weapon.clone(),
-                    })
+                    }))
                 } else {
-                    None
+                    HandleInputResponse::Action(None)
                 }
             } else {
-                None
+                HandleInputResponse::Action(None)
             }
         } else if let Some(movement_delta) = handle_movement_key() {
             self.set_position(self.position + movement_delta);
-            None
+            HandleInputResponse::Action(None)
         } else if mouse_delta_position().length() > 0.0 {
             let mouse = mouse_position();
             let x = (mouse.0 / 24.0).floor() as i32 + screen.camera.left_x;
             let y = (mouse.1 / 24.0).floor() as i32 + screen.camera.top_y;
             self.set_position(Point::new(x, y));
-            None
+            HandleInputResponse::Action(None)
         } else if is_key_pressed(KeyCode::Tab) {
             let player_position = level.get_player().position;
             let visibility = level.map.compute_visibility(player_position);
@@ -118,9 +123,9 @@ impl TargetingInfo {
                 }
             }
 
-            None
+            HandleInputResponse::Action(None)
         } else {
-            None
+            HandleInputResponse::Action(None)
         }
     }
 

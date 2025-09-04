@@ -3,11 +3,12 @@ use crate::prelude::*;
 // In a turn based game, only sometimes does the player get to move
 // This contains what the current "thing takes it's turn" is
 // which could be an animation for example
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum CurrentActor {
     PlayerStandardAction,
     PlayerTargeting(TargetingInfo),
     EnemyAction(CharacterId),
+    Animation(AnimationInfo),
 }
 
 impl CurrentActor {
@@ -19,9 +20,19 @@ impl CurrentActor {
             }
             CurrentActor::PlayerTargeting(targeting_info) => {
                 let is_current_target_valid = Self::is_current_target_valid(targeting_info, level);
-                targeting_info.handle_input(level, screen, is_current_target_valid)
+                match targeting_info.handle_input(level, screen, is_current_target_valid) {
+                    HandleInputResponse::Action(requested_action) => requested_action,
+                    HandleInputResponse::ChangeActor(current_actor) => {
+                        *self = current_actor.clone();
+                        None
+                    }
+                }
             }
             CurrentActor::EnemyAction(id) => Some(default_action(level, *id)),
+            CurrentActor::Animation(animation_info) => {
+                *self = CurrentActor::Animation(animation_info.clone());
+                None
+            }
         }
     }
 
@@ -49,6 +60,7 @@ impl CurrentActor {
         match self {
             CurrentActor::PlayerStandardAction => true,
             CurrentActor::PlayerTargeting(_) => true,
+            CurrentActor::Animation(_) => true,
             CurrentActor::EnemyAction(_) => false,
         }
     }
