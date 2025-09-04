@@ -16,7 +16,7 @@ impl CurrentActor {
                 let player = level.get_player();
                 get_player_action(player)
             }
-            CurrentActor::EnemyAction(id) => Some(wander_action(level, *id)),
+            CurrentActor::EnemyAction(id) => Some(default_action(level, *id)),
         }
     }
 

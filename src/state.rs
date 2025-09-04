@@ -26,6 +26,7 @@ impl State {
     }
 }
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum RequestedAction {
     Move(CharacterId, Point),
     Wait(CharacterId),
@@ -56,9 +57,7 @@ impl State {
                 let actor = self.level.find_character(id);
 
                 let character_at_target = self.level.find_character_at_position(target);
-                if let Some(character_at_target) = character_at_target
-                    && actor.is_player()
-                {
+                if let Some(character_at_target) = character_at_target {
                     Some(ResolvedAction::DamageCharacter {
                         target: character_at_target.id,
                         source: id,

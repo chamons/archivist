@@ -41,7 +41,7 @@ pub fn get_player_action(player: &Character) -> Option<RequestedAction> {
             player.id,
             player.position + Point::new(1, -1),
         ))
-    } else if is_key_pressed(KeyCode::Period) {
+    } else if is_key_pressed(KeyCode::Period) || is_key_pressed(KeyCode::Kp5) {
         Some(RequestedAction::Wait(player.id))
     } else {
         None

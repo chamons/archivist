@@ -23,6 +23,13 @@ impl Map {
         }
     }
 
+    #[cfg(test)]
+    pub fn new_filled() -> Self {
+        Self {
+            tiles: vec![TileKind::Wall; NUM_TILES],
+        }
+    }
+
     fn index(point: Point) -> usize {
         ((point.y * SCREEN_WIDTH) + point.x) as usize
     }
