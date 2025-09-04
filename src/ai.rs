@@ -3,14 +3,17 @@ use crate::prelude::*;
 use pathfinding::prelude::bfs;
 
 pub fn default_action(level: &LevelState, id: CharacterId) -> RequestedAction {
-    // Later will be LOS
-    if let Some(distance) = distance_to_player(level, id)
-        && distance < 8
-    {
+    if can_see_player(level, id) {
         chase_attack_player(level, id)
     } else {
         wander_action(level, id)
     }
+}
+
+pub fn can_see_player(level: &LevelState, id: CharacterId) -> bool {
+    let enemy = level.find_character(id).position;
+    let player = level.get_player().position;
+    level.map.compute_visibility(enemy).get(player)
 }
 
 pub fn distance_to_player(level: &LevelState, id: CharacterId) -> Option<usize> {
