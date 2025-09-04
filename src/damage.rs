@@ -9,7 +9,7 @@ pub enum DamageKind {
     Poison,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Weapon {
     pub name: String,
     pub damage: i32,

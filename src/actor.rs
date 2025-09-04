@@ -85,7 +85,16 @@ impl TargetingInfo {
             || is_mouse_button_released(MouseButton::Left)
         {
             if is_current_target_valid {
-                Some(RequestedAction::Wait(level.get_player().id))
+                if let Some(target) = level.find_character_at_position(self.position) {
+                    let player = level.get_player();
+                    Some(RequestedAction::DamageCharacter {
+                        source: level.get_player().id,
+                        target: target.id,
+                        weapon: player.weapon.clone(),
+                    })
+                } else {
+                    None
+                }
             } else {
                 None
             }

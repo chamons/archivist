@@ -40,6 +40,11 @@ pub enum DebugRequest {
 #[derive(Debug, PartialEq, Eq)]
 pub enum RequestedAction {
     Move(CharacterId, Point),
+    DamageCharacter {
+        source: CharacterId,
+        target: CharacterId,
+        weapon: Weapon,
+    },
     Wait(CharacterId),
     PlayerTargeting,
     CancelledTargeting,
@@ -93,6 +98,15 @@ impl State {
                     None
                 }
             }
+            RequestedAction::DamageCharacter {
+                source,
+                target,
+                weapon,
+            } => Some(ResolvedAction::DamageCharacter {
+                source,
+                target,
+                weapon,
+            }),
             RequestedAction::Wait(id) => Some(ResolvedAction::Wait(id)),
             RequestedAction::PlayerTargeting => Some(ResolvedAction::PlayerTargeting),
             RequestedAction::CancelledTargeting => Some(ResolvedAction::CancelledTargeting),

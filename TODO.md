@@ -1,5 +1,4 @@
 - Ranged attack
-    - Attack
     - Animation
     - Enemy gets ranged attack
 - Skill Bar + Abilities
