@@ -10,6 +10,7 @@ mod map;
 mod player;
 mod screen;
 mod state;
+mod targeting;
 mod util;
 
 pub mod prelude {
@@ -25,6 +26,7 @@ pub mod prelude {
     pub use crate::player::*;
     pub use crate::screen::*;
     pub use crate::state::*;
+    pub use crate::targeting::*;
     pub use crate::util::*;
 
     pub use rand::RngCore;
