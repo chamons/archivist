@@ -1,5 +1,6 @@
+use adam_fov_rs::GridPoint;
 use macroquad::input::{
-    MouseButton, is_mouse_button_pressed, mouse_delta_position, mouse_position,
+    MouseButton, is_mouse_button_released, mouse_delta_position, mouse_position,
 };
 
 use crate::prelude::*;
@@ -71,26 +72,75 @@ impl TargetingInfo {
         }
     }
 
-    fn handle_input(&mut self, level: &LevelState, screen: &Screen) -> Option<RequestedAction> {
-        if is_key_pressed(KeyCode::Enter)
+    fn handle_input(
+        &mut self,
+        level: &LevelState,
+        screen: &Screen,
+        is_current_target_valid: bool,
+    ) -> Option<RequestedAction> {
+        if is_key_pressed(KeyCode::Escape) {
+            Some(RequestedAction::CancelledTargeting)
+        } else if is_key_pressed(KeyCode::Enter)
             || is_key_pressed(KeyCode::KpEnter)
-            || is_mouse_button_pressed(MouseButton::Left)
+            || is_mouse_button_released(MouseButton::Left)
         {
-            Some(RequestedAction::Wait(level.get_player().id))
+            if is_current_target_valid {
+                Some(RequestedAction::Wait(level.get_player().id))
+            } else {
+                None
+            }
         } else if let Some(movement_delta) = handle_movement_key() {
-            self.position = self.position + movement_delta;
-            self.blink.reset();
+            self.set_position(self.position + movement_delta);
             None
         } else if mouse_delta_position().length() > 0.0 {
             let mouse = mouse_position();
             let x = (mouse.0 / 24.0).floor() as i32 + screen.camera.left_x;
             let y = (mouse.1 / 24.0).floor() as i32 + screen.camera.top_y;
-            self.position = Point::new(x, y);
-            self.blink.reset();
+            self.set_position(Point::new(x, y));
+            None
+        } else if is_key_pressed(KeyCode::Tab) {
+            let player_position = level.get_player().position;
+            let visibility = level.map.compute_visibility(player_position);
+            let mut visible_enemies = level
+                .characters
+                .iter()
+                .filter(|c| !c.is_player() && visibility.get(c.position))
+                .collect::<Vec<_>>();
+            visible_enemies.sort_by_key(|e| player_position.king_dist(e.position));
+
+            let current_enemy = visible_enemies.iter().find(|e| e.position == self.position);
+            // If we have an enemy targeted
+            if current_enemy.is_some() {
+                // And there is more than one
+                if visible_enemies.len() > 1 {
+                    if let Some(current_index) = visible_enemies
+                        .iter()
+                        .position(|e| e.position == self.position)
+                    {
+                        // Move to the next one closest to player, wrapping around if needed
+                        if let Some(next_enemy) = visible_enemies.get(current_index + 1) {
+                            self.set_position(next_enemy.position);
+                        } else if let Some(first_enemy) = visible_enemies.first() {
+                            self.set_position(first_enemy.position);
+                        }
+                    }
+                }
+            } else {
+                // If not, pick closest one
+                if let Some(enemy) = visible_enemies.first() {
+                    self.set_position(enemy.position);
+                }
+            }
+
             None
         } else {
             None
         }
+    }
+
+    fn set_position(&mut self, point: Point) {
+        self.position = point;
+        self.blink.reset();
     }
 }
 
@@ -111,19 +161,32 @@ impl CurrentActor {
                 let player = level.get_player();
                 get_player_action(player)
             }
-            CurrentActor::PlayerTargeting(target) => target.handle_input(level, screen),
+            CurrentActor::PlayerTargeting(targeting_info) => {
+                let is_current_target_valid = Self::is_current_target_valid(targeting_info, level);
+                targeting_info.handle_input(level, screen, is_current_target_valid)
+            }
             CurrentActor::EnemyAction(id) => Some(default_action(level, *id)),
         }
     }
 
-    pub fn render(&mut self, screen: &Screen) {
+    pub fn render(&mut self, screen: &Screen, level: &LevelState) {
         if let CurrentActor::PlayerTargeting(targeting_info) = self {
             let should_draw = targeting_info.blink.tick();
 
             if should_draw {
-                screen.draw_targeting(targeting_info.position);
+                let color = if Self::is_current_target_valid(&targeting_info, level) {
+                    WHITE
+                } else {
+                    RED
+                };
+                screen.draw_targeting(targeting_info.position, color);
             }
         }
+    }
+
+    fn is_current_target_valid(targeting_info: &TargetingInfo, level: &LevelState) -> bool {
+        let character_target_target = level.find_character_at_position(targeting_info.position);
+        character_target_target.is_some() && !character_target_target.unwrap().is_player()
     }
 
     pub fn needs_to_wait(&self) -> bool {

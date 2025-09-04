@@ -143,10 +143,10 @@ impl Screen {
         );
     }
 
-    pub fn draw_targeting(&self, position: Point) {
+    pub fn draw_targeting(&self, position: Point, color: Color) {
         let screen_x: f32 = (position.x - self.camera.left_x) as f32;
         let screen_y: f32 = (position.y - self.camera.top_y) as f32;
-        draw_rectangle_lines(24.0 * screen_x, 24.0 * screen_y, 24.0, 24.0, 2.0, WHITE);
+        draw_rectangle_lines(24.0 * screen_x, 24.0 * screen_y, 24.0, 24.0, 2.0, color);
     }
 
     fn get_texture(&self, set: TileSet) -> &Texture2D {

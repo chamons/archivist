@@ -42,6 +42,7 @@ pub enum RequestedAction {
     Move(CharacterId, Point),
     Wait(CharacterId),
     PlayerTargeting,
+    CancelledTargeting,
     #[cfg(debug_assertions)]
     DebugMenu(DebugRequest),
 }
@@ -55,6 +56,7 @@ pub enum ResolvedAction {
     },
     Wait(CharacterId),
     PlayerTargeting,
+    CancelledTargeting,
     #[cfg(debug_assertions)]
     DebugMenu(DebugRequest),
 }
@@ -93,6 +95,7 @@ impl State {
             }
             RequestedAction::Wait(id) => Some(ResolvedAction::Wait(id)),
             RequestedAction::PlayerTargeting => Some(ResolvedAction::PlayerTargeting),
+            RequestedAction::CancelledTargeting => Some(ResolvedAction::CancelledTargeting),
             #[cfg(debug_assertions)]
             RequestedAction::DebugMenu(command) => Some(ResolvedAction::DebugMenu(command)),
         }
@@ -133,6 +136,9 @@ impl State {
                     self.current_actor = CurrentActor::PlayerTargeting(TargetingInfo::new(
                         self.get_player().position,
                     ));
+                }
+                ResolvedAction::CancelledTargeting => {
+                    self.current_actor = CurrentActor::PlayerStandardAction;
                 }
                 #[cfg(debug_assertions)]
                 ResolvedAction::DebugMenu(command) => {
@@ -256,7 +262,7 @@ pub async fn main() {
         }
 
         state.level.render(&mut screen);
-        state.current_actor.render(&screen);
+        state.current_actor.render(&screen, &state.level);
         macroquad::window::next_frame().await
     }
 }
