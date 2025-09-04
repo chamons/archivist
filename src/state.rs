@@ -237,7 +237,7 @@ pub async fn main() {
         clear_background(BLACK);
 
         loop {
-            if let Some(action) = state.current_actor.act(&state.level) {
+            if let Some(action) = state.current_actor.act(&state.level, &screen) {
                 state.process_action(action, &mut screen);
             }
 

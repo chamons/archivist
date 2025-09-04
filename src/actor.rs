@@ -1,3 +1,7 @@
+use macroquad::input::{
+    MouseButton, is_mouse_button_pressed, mouse_delta_position, mouse_position,
+};
+
 use crate::prelude::*;
 
 pub fn handle_movement_key() -> Option<Point> {
@@ -67,11 +71,21 @@ impl TargetingInfo {
         }
     }
 
-    fn handle_input(&mut self, level: &LevelState) -> Option<RequestedAction> {
-        if is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::KpEnter) {
+    fn handle_input(&mut self, level: &LevelState, screen: &Screen) -> Option<RequestedAction> {
+        if is_key_pressed(KeyCode::Enter)
+            || is_key_pressed(KeyCode::KpEnter)
+            || is_mouse_button_pressed(MouseButton::Left)
+        {
             Some(RequestedAction::Wait(level.get_player().id))
         } else if let Some(movement_delta) = handle_movement_key() {
             self.position = self.position + movement_delta;
+            self.blink.reset();
+            None
+        } else if mouse_delta_position().length() > 0.0 {
+            let mouse = mouse_position();
+            let x = (mouse.0 / 24.0).floor() as i32 + screen.camera.left_x;
+            let y = (mouse.1 / 24.0).floor() as i32 + screen.camera.top_y;
+            self.position = Point::new(x, y);
             self.blink.reset();
             None
         } else {
@@ -91,13 +105,13 @@ pub enum CurrentActor {
 }
 
 impl CurrentActor {
-    pub fn act(&mut self, level: &LevelState) -> Option<RequestedAction> {
+    pub fn act(&mut self, level: &LevelState, screen: &Screen) -> Option<RequestedAction> {
         match self {
             CurrentActor::PlayerStandardAction => {
                 let player = level.get_player();
                 get_player_action(player)
             }
-            CurrentActor::PlayerTargeting(target) => target.handle_input(level),
+            CurrentActor::PlayerTargeting(target) => target.handle_input(level, screen),
             CurrentActor::EnemyAction(id) => Some(default_action(level, *id)),
         }
     }

@@ -1,5 +1,4 @@
 - Ranged attack
-    - Target selection mouse
     - Attack
     - Animation
     - Enemy gets ranged attack
