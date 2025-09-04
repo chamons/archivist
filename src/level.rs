@@ -42,7 +42,7 @@ impl LevelState {
         self.characters.retain(|c| c.id != id);
     }
 
-    pub fn render(&self, screen: &Screen) {
+    pub fn render(&self, screen: &mut Screen) {
         self.map.render(screen);
 
         for character in &self.characters {
@@ -51,10 +51,11 @@ impl LevelState {
             }
         }
 
-        self.render_hud(screen);
+        self.render_hud();
+        screen.render_floating_text();
     }
 
-    fn render_hud(&self, screen: &Screen) {
+    fn render_hud(&self) {
         let health = self.get_player().health.clone();
         let health_percentage = health.current as f32 / health.max as f32;
 
@@ -69,31 +70,11 @@ impl LevelState {
             color_for_health(health_percentage),
         );
 
-        screen.draw_centered_text(
+        Screen::draw_centered_text(
             &format!("{}/{}", health.current, health.max),
             17,
             15.0,
             None,
         );
-
-        screen.draw_centered_text(
-            "Explore the Dungeon. Cursor keys to move.",
-            21,
-            35.0,
-            Some(BLACK),
-        );
-
-        // draw_batch.bar_horizontal(
-        //     Point::zero(),
-        //     SCREEN_WIDTH * 2,
-        //     health.current,
-        //     health.max,
-        //     ColorPair::new(RED, BLACK),
-        // );
-        // draw_batch.print_color_centered(
-        //     0,
-        //     format!(" Health: {} / {} ", health.current, health.max),
-        //     ColorPair::new(WHITE, RED),
-        // );
     }
 }

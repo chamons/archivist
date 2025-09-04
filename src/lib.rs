@@ -51,4 +51,6 @@ pub mod prelude {
     pub const TICKS_TO_ACT: i32 = 100;
     pub const TICKS_MOVEMENT: i32 = 100;
     pub const TICKS_TO_BUMP: i32 = 100;
+
+    pub const TICKS_FLOATING_TEXT: u32 = 120;
 }

@@ -1,1 +1,8 @@
 - Add title screen
+- Save/Load
+- LOS + Remembered Tiles
+- Ranged attack
+- Ranged Attack Animation
+- Picking up item (?) off floor
+- Exiting level
+- Skill Bar + Abilities

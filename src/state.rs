@@ -143,12 +143,12 @@ impl State {
     }
 }
 
-pub async fn handle_death(state: &State, screen: &Screen) -> State {
+pub async fn handle_death(state: &State, screen: &mut Screen) -> State {
     let mut death_frame = 0;
     loop {
         death_frame += 1;
         clear_background(BLACK);
-        state.level.render(&screen);
+        state.level.render(screen);
         draw_rectangle(
             0.0,
             0.0,
@@ -162,7 +162,7 @@ pub async fn handle_death(state: &State, screen: &Screen) -> State {
             },
         );
 
-        screen.draw_centered_text(
+        Screen::draw_centered_text(
             "You have died. Press any key to start again.",
             22,
             screen_height() / 2.0,
@@ -181,6 +181,9 @@ pub async fn handle_death(state: &State, screen: &Screen) -> State {
 pub async fn main() {
     let mut state = State::new();
     let mut screen = Screen::new().await;
+
+    screen.push_floating_text("Explore the Dungeon. Cursor keys to move.");
+
     loop {
         state.frame += 1;
         clear_background(BLACK);
@@ -191,7 +194,7 @@ pub async fn main() {
             }
 
             if state.is_player_dead() {
-                state = handle_death(&state, &screen).await;
+                state = handle_death(&state, &mut screen).await;
             }
 
             screen
@@ -204,7 +207,7 @@ pub async fn main() {
             }
         }
 
-        state.level.render(&screen);
+        state.level.render(&mut screen);
         macroquad::window::next_frame().await
     }
 }

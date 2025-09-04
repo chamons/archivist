@@ -15,6 +15,11 @@ pub enum TileSet {
     World,
 }
 
+pub struct FloatingText {
+    pub text: String,
+    pub timer: u32,
+}
+
 pub struct Screen {
     pub creatures: Texture2D,
     pub fx: Texture2D,
@@ -23,6 +28,8 @@ pub struct Screen {
     pub world: Texture2D,
     pub text: Texture2D,
     pub camera: Camera,
+
+    pub floating_text: Option<FloatingText>,
 }
 
 impl Screen {
@@ -60,6 +67,41 @@ impl Screen {
             world,
             text,
             camera,
+            floating_text: None,
+        }
+    }
+
+    pub fn push_floating_text(&mut self, text: &str) {
+        self.floating_text = Some(FloatingText {
+            text: text.to_string(),
+            timer: TICKS_FLOATING_TEXT,
+        });
+    }
+
+    pub fn render_floating_text(&mut self) {
+        if let Some(floating_text) = &mut self.floating_text {
+            floating_text.timer -= 1;
+            if floating_text.timer == 0 {
+                self.floating_text = None;
+            } else {
+                let foreground_fade = (20 + floating_text.timer as i32).min(60) as f32 / 60.0;
+                let text_color = Color::new(
+                    1.00 * foreground_fade,
+                    1.00 * foreground_fade,
+                    1.00 * foreground_fade,
+                    1.00,
+                );
+
+                let background_fade = (floating_text.timer as i32).min(15) as f32 / 15.0;
+                let background = Color::new(0.0, 0.0, 0.0, 1.00 * background_fade);
+                Self::draw_centered_text_with_color(
+                    &floating_text.text,
+                    21,
+                    35.0,
+                    text_color,
+                    Some(background),
+                );
+            }
         }
     }
 
@@ -94,7 +136,17 @@ impl Screen {
         }
     }
 
-    pub fn draw_centered_text(&self, text: &str, size: u16, y: f32, background: Option<Color>) {
+    pub fn draw_centered_text(text: &str, size: u16, y: f32, background: Option<Color>) {
+        Self::draw_centered_text_with_color(text, size, y, WHITE, background);
+    }
+
+    pub fn draw_centered_text_with_color(
+        text: &str,
+        size: u16,
+        y: f32,
+        text_color: Color,
+        background: Option<Color>,
+    ) {
         let text_size = measure_text(text, None, size, 1.0);
         let text_x = screen_width() / 2.0 - text_size.width / 2.0;
 
@@ -110,6 +162,6 @@ impl Screen {
             );
         }
 
-        draw_text(text, text_x, y, size as f32, WHITE);
+        draw_text(text, text_x, y, size as f32, text_color);
     }
 }
