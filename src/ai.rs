@@ -13,7 +13,11 @@ pub fn wander_action(level: &LevelState, id: CharacterId) -> RequestedAction {
 fn adjacent_squares(level: &LevelState, point: Point) -> Vec<Point> {
     [
         Point::new(-1, 0),
+        Point::new(-1, 1),
+        Point::new(-1, -1),
         Point::new(1, 0),
+        Point::new(1, 1),
+        Point::new(1, -1),
         Point::new(0, -1),
         Point::new(0, 1),
     ]
