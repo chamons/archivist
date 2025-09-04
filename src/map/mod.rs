@@ -1,6 +1,7 @@
 use crate::prelude::*;
 
 mod builder;
+use adam_fov_rs::compute_fov;
 pub use builder::*;
 
 const NUM_TILES: usize = (SCREEN_WIDTH * SCREEN_HEIGHT) as usize;
@@ -11,22 +12,49 @@ pub enum TileKind {
     Floor,
 }
 
+#[derive(Debug, Serialize, Clone, Copy, Deserialize)]
+pub struct MapTile {
+    pub kind: TileKind,
+    pub known: bool,
+}
+
+impl MapTile {
+    pub fn floor() -> Self {
+        MapTile {
+            kind: TileKind::Floor,
+            known: false,
+        }
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Map {
-    tiles: Vec<TileKind>,
+    tiles: Vec<MapTile>,
 }
 
 impl Map {
     pub fn new() -> Self {
         Self {
-            tiles: vec![TileKind::Floor; NUM_TILES],
+            tiles: vec![
+                MapTile {
+                    kind: TileKind::Floor,
+                    known: false
+                };
+                NUM_TILES
+            ],
         }
     }
 
     #[cfg(test)]
     pub fn new_filled() -> Self {
         Self {
-            tiles: vec![TileKind::Wall; NUM_TILES],
+            tiles: vec![
+                MapTile {
+                    kind: TileKind::Floor,
+                    known: false,
+                };
+                NUM_TILES
+            ],
         }
     }
 
@@ -34,27 +62,37 @@ impl Map {
         ((point.y * SCREEN_WIDTH) + point.x) as usize
     }
 
-    pub fn get(&self, point: Point) -> TileKind {
+    pub fn get(&self, point: Point) -> MapTile {
         self.tiles[Self::index(point)]
     }
 
-    pub fn set(&mut self, point: Point, tile: TileKind) {
+    pub fn set(&mut self, point: Point, tile: MapTile) {
         self.tiles[Self::index(point)] = tile;
     }
 
-    pub fn render(&self, screen: &Screen) {
+    pub fn set_known(&mut self, point: Point) {
+        self.tiles[Self::index(point)].known = true
+    }
+
+    pub fn render(&self, screen: &Screen, visibility: &VisibilityMap) {
         let camera = &screen.camera;
 
         for y in camera.top_y..camera.bottom_y {
             for x in camera.left_x..camera.right_x {
                 let position = Point::new(x, y);
                 if self.in_bounds(position) {
-                    let tile = match self.get(position) {
-                        // For unknown reasons world tiles are x/y flipped
-                        TileKind::Wall => Point::new(1, 1),
-                        TileKind::Floor => Point::new(4, 1),
-                    };
-                    screen.draw_sprite(TileSet::World, position, tile);
+                    let map_tile = self.get(position);
+                    if map_tile.known {
+                        let sprite_tile = match map_tile.kind {
+                            // For unknown reasons world tiles are x/y flipped
+                            TileKind::Wall => Point::new(1, 1),
+                            TileKind::Floor => Point::new(4, 1),
+                        };
+                        screen.draw_sprite(TileSet::World, position, sprite_tile);
+                        if !visibility.get(position) {
+                            screen.draw_fog(position);
+                        }
+                    }
                 }
             }
         }
@@ -65,6 +103,60 @@ impl Map {
     }
 
     pub fn can_enter(&self, point: Point) -> bool {
-        self.in_bounds(point) && self.get(point) == TileKind::Floor
+        self.in_bounds(point) && self.get(point).kind == TileKind::Floor
+    }
+
+    pub fn compute_visibility(&self, vision_point: Point) -> VisibilityMap {
+        let mut visibility = VisibilityMap::new();
+        compute_fov(
+            vision_point,
+            VISION,
+            [SCREEN_WIDTH, SCREEN_HEIGHT],
+            |p| {
+                let p = Point::new(p.x, p.y);
+                self.in_bounds(p) && self.get(p).kind == TileKind::Wall
+            },
+            |p| {
+                visibility.set_visible(Point::new(p.x, p.y));
+            },
+        );
+        visibility
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct VisibilityMap {
+    tiles: Vec<bool>,
+}
+
+impl VisibilityMap {
+    pub fn new() -> Self {
+        Self {
+            tiles: vec![false; NUM_TILES],
+        }
+    }
+
+    pub fn get(&self, point: Point) -> bool {
+        self.tiles[Map::index(point)]
+    }
+
+    pub fn set_visible(&mut self, point: Point) {
+        self.tiles[Map::index(point)] = true;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::prelude::*;
+
+    #[test]
+    fn test_visibility() {
+        let map = Map::new();
+        let v = map.compute_visibility(Point::new(5, 5));
+        for y in 6..14 {
+            assert!(v.get(Point::new(5, y)));
+        }
+        assert!(!v.get(Point::new(5, 14)));
+        assert!(!v.get(Point::new(5, 15)));
     }
 }

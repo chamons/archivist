@@ -1,7 +1,8 @@
-- LOS + Remembered Tiles
 - Ranged attack
 - Ranged Attack Animation
+- Skill Bar + Abilities
 - Picking up item (?) off floor
 - Exiting level
-- Skill Bar + Abilities
+- Multiple Levels
 - Add title screen
+- Save on exit

@@ -100,7 +100,12 @@ impl State {
         if let Some(resolved_action) = self.resolve_action(action) {
             match resolved_action {
                 ResolvedAction::MoveActor(id, point) => {
-                    self.level.find_character_mut(id).position = point;
+                    let actor = self.level.find_character_mut(id);
+                    actor.position = point;
+                    if actor.is_player() {
+                        self.level.update_visibility();
+                    }
+
                     self.spend_ticks(id, TICKS_MOVEMENT);
                 }
                 ResolvedAction::DamageCharacter {

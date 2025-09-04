@@ -47,6 +47,15 @@ impl std::ops::Add for Point {
     }
 }
 
+impl adam_fov_rs::GridPoint for Point {
+    fn xy(&self) -> adam_fov_rs::IVec2 {
+        adam_fov_rs::IVec2 {
+            x: self.x,
+            y: self.y,
+        }
+    }
+}
+
 impl Into<Vec2> for Point {
     fn into(self) -> Vec2 {
         Vec2 {

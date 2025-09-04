@@ -83,12 +83,15 @@ mod tests {
 
         let mut map = Map::new_filled();
         for y in 1..6 {
-            map.set(Point::new(1, y), TileKind::Floor);
+            map.set(
+                Point::new(1, y),
+                MapTile {
+                    kind: TileKind::Floor,
+                    known: true,
+                },
+            );
         }
-        let level = LevelState {
-            map,
-            characters: vec![player, bat],
-        };
+        let level = LevelState::new(map, vec![player, bat]);
         (id, level)
     }
 

@@ -27,14 +27,16 @@ impl MapBuilder {
         player.position = builder.rooms[0].center();
         characters.push(player);
 
-        LevelState {
-            map: builder.map,
-            characters,
-        }
+        LevelState::new(builder.map, characters)
     }
 
     fn fill(&mut self, tile: TileKind) {
-        self.map.tiles.iter_mut().for_each(|t| *t = tile);
+        self.map.tiles.iter_mut().for_each(|t| {
+            *t = MapTile {
+                kind: tile,
+                known: false,
+            }
+        });
     }
 
     fn spawn_monsters(&self, rng: &mut StdRng, difficulty: u32) -> Vec<Character> {
@@ -61,7 +63,7 @@ impl MapBuilder {
             );
             if !self.rooms.iter().any(|r| r.intersect(&room)) {
                 room.for_each(|p| {
-                    self.map.set(p, TileKind::Floor);
+                    self.map.set(p, MapTile::floor());
                 });
                 self.rooms.push(room);
             }
@@ -70,13 +72,13 @@ impl MapBuilder {
 
     fn build_vert_tunnel(&mut self, y1: i32, y2: i32, x: i32) {
         for y in min(y1, y2)..=max(y1, y2) {
-            self.map.set(Point::new(x, y), TileKind::Floor);
+            self.map.set(Point::new(x, y), MapTile::floor());
         }
     }
 
     fn build_horz_tunnel(&mut self, x1: i32, x2: i32, y: i32) {
         for x in min(x1, x2)..=max(x1, x2) {
-            self.map.set(Point::new(x, y), TileKind::Floor);
+            self.map.set(Point::new(x, y), MapTile::floor());
         }
     }
 

@@ -126,6 +126,23 @@ impl Screen {
         );
     }
 
+    pub fn draw_fog(&self, position: Point) {
+        let screen_x: f32 = (position.x - self.camera.left_x) as f32;
+        let screen_y: f32 = (position.y - self.camera.top_y) as f32;
+        draw_rectangle(
+            24.0 * screen_x,
+            24.0 * screen_y,
+            24.0,
+            24.0,
+            Color {
+                r: 0.0,
+                g: 0.0,
+                b: 0.0,
+                a: 0.60,
+            },
+        );
+    }
+
     fn get_texture(&self, set: TileSet) -> &Texture2D {
         match set {
             TileSet::Creatures => &self.creatures,

@@ -6,9 +6,20 @@ use crate::prelude::*;
 pub struct LevelState {
     pub map: Map,
     pub characters: Vec<Character>,
+    visibility: VisibilityMap,
 }
 
 impl LevelState {
+    pub fn new(map: Map, characters: Vec<Character>) -> Self {
+        let mut this = Self {
+            map,
+            characters,
+            visibility: VisibilityMap::new(),
+        };
+        this.update_visibility();
+        this
+    }
+
     pub fn get_player(&self) -> &Character {
         self.characters
             .iter()
@@ -35,7 +46,7 @@ impl LevelState {
     }
 
     pub fn character_can_enter(&self, point: Point) -> bool {
-        self.map.in_bounds(point) && self.map.get(point) == TileKind::Floor
+        self.map.in_bounds(point) && self.map.get(point).kind == TileKind::Floor
     }
 
     pub fn remove_character(&mut self, id: CharacterId) {
@@ -43,10 +54,12 @@ impl LevelState {
     }
 
     pub fn render(&self, screen: &mut Screen) {
-        self.map.render(screen);
+        self.map.render(screen, &self.visibility);
 
         for character in &self.characters {
-            if screen.camera.is_in_view(character.position) {
+            if screen.camera.is_in_view(character.position)
+                && self.visibility.get(character.position)
+            {
                 character.render(screen);
             }
         }
@@ -76,5 +89,17 @@ impl LevelState {
             15.0,
             None,
         );
+    }
+
+    pub fn update_visibility(&mut self) {
+        self.visibility = self.map.compute_visibility(self.get_player().position);
+        for x in 0..SCREEN_WIDTH {
+            for y in 0..SCREEN_HEIGHT {
+                let position = Point::new(x, y);
+                if self.visibility.get(position) {
+                    self.map.set_known(position);
+                }
+            }
+        }
     }
 }
