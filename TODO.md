@@ -1,3 +1,1 @@
-- Add basic damage system
-- Add death
 - Add title screen

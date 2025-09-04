@@ -1,5 +1,9 @@
 use log::debug;
-use macroquad::window::clear_background;
+use macroquad::{
+    input::get_keys_pressed,
+    shapes::draw_rectangle,
+    window::{clear_background, screen_height, screen_width},
+};
 
 use crate::prelude::*;
 
@@ -51,6 +55,10 @@ impl State {
             .expect("Player must still exist")
     }
 
+    pub fn is_player_dead(&self) -> bool {
+        self.get_player().health.is_dead()
+    }
+
     fn resolve_action(&self, action: RequestedAction) -> Option<ResolvedAction> {
         match action {
             RequestedAction::Move(id, target) => {
@@ -87,7 +95,9 @@ impl State {
                 } => {
                     let target_character = self.level.find_character_mut(target);
                     target_character.health.current -= weapon.damage;
-                    if target_character.health.is_dead() {
+
+                    // We do not remove the player character, death checks will happen after action resolution
+                    if target_character.health.is_dead() && !target_character.is_player() {
                         self.level.remove_character(target);
                     }
                     self.spend_ticks(source, TICKS_TO_BUMP);
@@ -133,6 +143,41 @@ impl State {
     }
 }
 
+pub async fn handle_death(state: &State, screen: &Screen) -> State {
+    let mut death_frame = 0;
+    loop {
+        death_frame += 1;
+        clear_background(BLACK);
+        state.level.render(&screen);
+        draw_rectangle(
+            0.0,
+            0.0,
+            screen_width(),
+            screen_height(),
+            Color {
+                r: 0.0,
+                g: 0.0,
+                b: 0.0,
+                a: 0.60,
+            },
+        );
+
+        screen.draw_centered_text(
+            "You have died. Press any key to start again.",
+            22,
+            screen_height() / 2.0,
+            Some(GRAY),
+        );
+
+        // Make sure keys pressed on frame of death don't trigger new game
+        if death_frame > 10 && get_keys_pressed().iter().len() > 0 {
+            return State::new();
+        }
+
+        macroquad::window::next_frame().await
+    }
+}
+
 pub async fn main() {
     let mut state = State::new();
     let mut screen = Screen::new().await;
@@ -143,6 +188,10 @@ pub async fn main() {
         loop {
             if let Some(action) = state.current_actor.act(&state.level) {
                 state.process_action(action);
+            }
+
+            if state.is_player_dead() {
+                state = handle_death(&state, &screen).await;
             }
 
             screen
