@@ -25,7 +25,7 @@ impl State {
         Self {
             level,
             frame: 0,
-            current_actor: CurrentActor::PlayerAction,
+            current_actor: CurrentActor::PlayerStandardAction,
         }
     }
 }
@@ -41,6 +41,7 @@ pub enum DebugRequest {
 pub enum RequestedAction {
     Move(CharacterId, Point),
     Wait(CharacterId),
+    PlayerTargeting,
     #[cfg(debug_assertions)]
     DebugMenu(DebugRequest),
 }
@@ -53,6 +54,7 @@ pub enum ResolvedAction {
         weapon: Weapon,
     },
     Wait(CharacterId),
+    PlayerTargeting,
     #[cfg(debug_assertions)]
     DebugMenu(DebugRequest),
 }
@@ -70,6 +72,7 @@ impl State {
         self.get_player().health.is_dead()
     }
 
+    // If we get rid of bump to attack we could drop this
     fn resolve_action(&self, action: RequestedAction) -> Option<ResolvedAction> {
         match action {
             RequestedAction::Move(id, target) => {
@@ -89,6 +92,7 @@ impl State {
                 }
             }
             RequestedAction::Wait(id) => Some(ResolvedAction::Wait(id)),
+            RequestedAction::PlayerTargeting => Some(ResolvedAction::PlayerTargeting),
             #[cfg(debug_assertions)]
             RequestedAction::DebugMenu(command) => Some(ResolvedAction::DebugMenu(command)),
         }
@@ -124,6 +128,11 @@ impl State {
                 }
                 ResolvedAction::Wait(id) => {
                     self.spend_ticks(id, TICKS_TO_ACT);
+                }
+                ResolvedAction::PlayerTargeting => {
+                    self.current_actor = CurrentActor::PlayerTargeting(TargetingInfo::new(
+                        self.get_player().position,
+                    ));
                 }
                 #[cfg(debug_assertions)]
                 ResolvedAction::DebugMenu(command) => {
@@ -170,7 +179,7 @@ impl State {
 
         if let Some(next) = self.find_next_actor() {
             if self.level.find_character(next).is_player() {
-                self.current_actor = CurrentActor::PlayerAction;
+                self.current_actor = CurrentActor::PlayerStandardAction;
             } else {
                 self.current_actor = CurrentActor::EnemyAction(next);
             }
@@ -247,6 +256,7 @@ pub async fn main() {
         }
 
         state.level.render(&mut screen);
+        state.current_actor.render(&screen);
         macroquad::window::next_frame().await
     }
 }

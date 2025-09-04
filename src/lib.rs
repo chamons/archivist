@@ -47,6 +47,8 @@ pub mod prelude {
     pub const SPRITE_SIZE: usize = 24;
 
     pub const BOUNCE_FRAME: usize = 60;
+    pub const TARGET_FRAME_BLINK: usize = 160;
+    pub const TARGET_FRAME_PAUSE_WINDOW: usize = 35;
 
     pub const TICKS_TO_ACT: i32 = 100;
     pub const TICKS_MOVEMENT: i32 = 100;

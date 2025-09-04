@@ -1,5 +1,5 @@
 use macroquad::{
-    shapes::draw_rectangle,
+    shapes::{draw_rectangle, draw_rectangle_lines},
     text::{draw_text, measure_text},
     texture::{DrawTextureParams, Texture2D, build_textures_atlas, draw_texture_ex},
     window::screen_width,
@@ -141,6 +141,12 @@ impl Screen {
                 a: 0.60,
             },
         );
+    }
+
+    pub fn draw_targeting(&self, position: Point) {
+        let screen_x: f32 = (position.x - self.camera.left_x) as f32;
+        let screen_y: f32 = (position.y - self.camera.top_y) as f32;
+        draw_rectangle_lines(24.0 * screen_x, 24.0 * screen_y, 24.0, 24.0, 2.0, WHITE);
     }
 
     fn get_texture(&self, set: TileSet) -> &Texture2D {

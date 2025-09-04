@@ -1,6 +1,8 @@
-
 - Ranged attack
-- Ranged Attack Animation
+    - Target selection mouse
+    - Attack
+    - Animation
+    - Enemy gets ranged attack
 - Skill Bar + Abilities
 - Picking up item (?) off floor
 - Exiting level
