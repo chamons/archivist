@@ -7,7 +7,7 @@ use macroquad::{
 
 use crate::prelude::*;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct State {
     level: LevelState,
     frame: usize,
@@ -30,10 +30,19 @@ impl State {
     }
 }
 
+#[cfg(debug_assertions)]
+#[derive(Debug, PartialEq, Eq)]
+pub enum DebugRequest {
+    Save,
+    Load,
+}
+
 #[derive(Debug, PartialEq, Eq)]
 pub enum RequestedAction {
     Move(CharacterId, Point),
     Wait(CharacterId),
+    #[cfg(debug_assertions)]
+    DebugMenu(DebugRequest),
 }
 
 pub enum ResolvedAction {
@@ -44,6 +53,8 @@ pub enum ResolvedAction {
         weapon: Weapon,
     },
     Wait(CharacterId),
+    #[cfg(debug_assertions)]
+    DebugMenu(DebugRequest),
 }
 
 impl State {
@@ -78,10 +89,14 @@ impl State {
                 }
             }
             RequestedAction::Wait(id) => Some(ResolvedAction::Wait(id)),
+            #[cfg(debug_assertions)]
+            RequestedAction::DebugMenu(command) => Some(ResolvedAction::DebugMenu(command)),
         }
     }
 
-    fn process_action(&mut self, action: RequestedAction) {
+    // Screen used in debug
+    #[allow(unused_variables)]
+    fn process_action(&mut self, action: RequestedAction, screen: &mut Screen) {
         if let Some(resolved_action) = self.resolve_action(action) {
             match resolved_action {
                 ResolvedAction::MoveActor(id, point) => {
@@ -104,6 +119,21 @@ impl State {
                 }
                 ResolvedAction::Wait(id) => {
                     self.spend_ticks(id, TICKS_TO_ACT);
+                }
+                #[cfg(debug_assertions)]
+                ResolvedAction::DebugMenu(command) => {
+                    screen.push_floating_text(&format!("Running debug command: {command:?}"));
+                    match command {
+                        DebugRequest::Save => {
+                            std::fs::write("dev.save", self.save()).expect("Unable to save");
+                        }
+                        DebugRequest::Load => {
+                            if let Ok(text) = std::fs::read("dev.save") {
+                                *self =
+                                    serde_json::from_slice(&text).expect("Unable to load dev save");
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -140,6 +170,10 @@ impl State {
                 self.current_actor = CurrentActor::EnemyAction(next);
             }
         }
+    }
+
+    pub fn save(&self) -> String {
+        serde_json::to_string(self).expect("Unable to save game")
     }
 }
 
@@ -190,7 +224,7 @@ pub async fn main() {
 
         loop {
             if let Some(action) = state.current_actor.act(&state.level) {
-                state.process_action(action);
+                state.process_action(action, &mut screen);
             }
 
             if state.is_player_dead() {

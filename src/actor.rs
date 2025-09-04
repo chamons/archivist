@@ -3,7 +3,7 @@ use crate::prelude::*;
 // In a turn based game, only sometimes does the player get to move
 // This contains what the current "thing takes it's turn" is
 // which could be an animation for example
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum CurrentActor {
     PlayerAction,
     EnemyAction(CharacterId),
