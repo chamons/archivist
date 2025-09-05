@@ -41,11 +41,6 @@ pub struct TargetingInfo {
     pub blink: BlinkInfo,
 }
 
-pub enum HandleInputResponse {
-    Action(Option<RequestedAction>),
-    ChangeActor(CurrentActor),
-}
-
 impl TargetingInfo {
     pub fn new(position: Point) -> Self {
         Self {
@@ -69,11 +64,17 @@ impl TargetingInfo {
             if is_current_target_valid {
                 if let Some(target) = level.find_character_at_position(self.position) {
                     let player = level.get_player();
-                    HandleInputResponse::Action(Some(RequestedAction::DamageCharacter {
-                        source: level.get_player().id,
-                        target: target.id,
-                        weapon: player.weapon.clone(),
-                    }))
+                    HandleInputResponse::ChangeActor(CurrentActor::Animation(AnimationInfo::new(
+                        player.position,
+                        target.position,
+                        level,
+                        Point::new(1, 1),
+                        RequestedAction::DamageCharacter {
+                            source: level.get_player().id,
+                            target: target.id,
+                            weapon: player.weapon.clone(),
+                        },
+                    )))
                 } else {
                     HandleInputResponse::Action(None)
                 }
@@ -126,6 +127,19 @@ impl TargetingInfo {
             HandleInputResponse::Action(None)
         } else {
             HandleInputResponse::Action(None)
+        }
+    }
+
+    pub fn render(&mut self, screen: &Screen, level: &LevelState) {
+        let should_draw = self.blink.tick();
+
+        if should_draw {
+            let color = if CurrentActor::is_current_target_valid(&self, level) {
+                WHITE
+            } else {
+                RED
+            };
+            screen.draw_targeting(self.position, color);
         }
     }
 

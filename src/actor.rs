@@ -11,6 +11,11 @@ pub enum CurrentActor {
     Animation(AnimationInfo),
 }
 
+pub enum HandleInputResponse {
+    Action(Option<RequestedAction>),
+    ChangeActor(CurrentActor),
+}
+
 impl CurrentActor {
     pub fn act(&mut self, level: &LevelState, screen: &Screen) -> Option<RequestedAction> {
         match self {
@@ -29,29 +34,27 @@ impl CurrentActor {
                 }
             }
             CurrentActor::EnemyAction(id) => Some(default_action(level, *id)),
-            CurrentActor::Animation(animation_info) => {
-                *self = CurrentActor::Animation(animation_info.clone());
-                None
-            }
+            CurrentActor::Animation(animation_info) => match animation_info.handle_input() {
+                HandleInputResponse::Action(requested_action) => requested_action,
+                HandleInputResponse::ChangeActor(current_actor) => {
+                    *self = current_actor.clone();
+                    None
+                }
+            },
         }
     }
 
     pub fn render(&mut self, screen: &Screen, level: &LevelState) {
-        if let CurrentActor::PlayerTargeting(targeting_info) = self {
-            let should_draw = targeting_info.blink.tick();
-
-            if should_draw {
-                let color = if Self::is_current_target_valid(&targeting_info, level) {
-                    WHITE
-                } else {
-                    RED
-                };
-                screen.draw_targeting(targeting_info.position, color);
+        match self {
+            CurrentActor::PlayerTargeting(targeting_info) => {
+                targeting_info.render(screen, level);
             }
+            CurrentActor::Animation(animation_info) => animation_info.render(screen),
+            _ => {}
         }
     }
 
-    fn is_current_target_valid(targeting_info: &TargetingInfo, level: &LevelState) -> bool {
+    pub fn is_current_target_valid(targeting_info: &TargetingInfo, level: &LevelState) -> bool {
         let character_target_target = level.find_character_at_position(targeting_info.position);
         character_target_target.is_some() && !character_target_target.unwrap().is_player()
     }

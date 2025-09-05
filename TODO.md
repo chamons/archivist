@@ -1,6 +1,5 @@
-- Ranged attack
-    - Animation
-    - Enemy gets ranged attack
+- Why are paths not straight?
+- Enemy gets ranged attack
 - Skill Bar + Abilities
 - Rests
 - Picking up item (?) off floor

@@ -10,24 +10,15 @@ pub fn default_action(level: &LevelState, id: CharacterId) -> RequestedAction {
     }
 }
 
-pub fn can_see_player(level: &LevelState, id: CharacterId) -> bool {
-    let enemy = level.find_character(id).position;
-    let player = level.get_player().position;
-    level.map.compute_visibility(enemy).get(player)
-}
-
-pub fn distance_to_player(level: &LevelState, id: CharacterId) -> Option<usize> {
-    let enemy = level.find_character(id).position;
-    let player = level.get_player().position;
-
-    bfs(&enemy, |p| adjacent_squares(level, *p), |p| *p == player).map(|path| path.iter().len())
-}
-
 pub fn chase_attack_player(level: &LevelState, id: CharacterId) -> RequestedAction {
     let enemy = level.find_character(id).position;
     let player = level.get_player().position;
 
-    let path = bfs(&enemy, |p| adjacent_squares(level, *p), |p| *p == player);
+    let path = bfs(
+        &enemy,
+        |p| adjacent_squares(level, *p, PathCharacterOptions::AllowEmptyOrPlayer),
+        |p| *p == player,
+    );
     if let Some(path) = path {
         // First position on path is current
         RequestedAction::Move(id, path[1])
@@ -38,36 +29,16 @@ pub fn chase_attack_player(level: &LevelState, id: CharacterId) -> RequestedActi
 
 pub fn wander_action(level: &LevelState, id: CharacterId) -> RequestedAction {
     let enemy = level.find_character(id);
-    let options = adjacent_squares(level, enemy.position);
+    let options = adjacent_squares(
+        level,
+        enemy.position,
+        PathCharacterOptions::AllowEmptyOrPlayer,
+    );
     let selection = options.choose(&mut ::rand::rng());
     match selection {
         Some(position) => RequestedAction::Move(id, *position),
         None => RequestedAction::Wait(id),
     }
-}
-
-fn adjacent_squares(level: &LevelState, point: Point) -> Vec<Point> {
-    [
-        Point::new(-1, 0),
-        Point::new(-1, 1),
-        Point::new(-1, -1),
-        Point::new(1, 0),
-        Point::new(1, 1),
-        Point::new(1, -1),
-        Point::new(0, -1),
-        Point::new(0, 1),
-    ]
-    .map(|offset| offset + point)
-    .into_iter()
-    .filter(|p| {
-        let can_enter = level.character_can_enter(*p);
-        let empty_or_enemy = match level.find_character_at_position(*p) {
-            Some(c) => c.is_player(),
-            None => true,
-        };
-        can_enter && empty_or_enemy
-    })
-    .collect()
 }
 
 #[cfg(test)]

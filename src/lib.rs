@@ -8,6 +8,7 @@ mod data;
 mod health;
 mod level;
 mod map;
+mod path;
 mod player;
 mod screen;
 mod state;
@@ -25,6 +26,7 @@ pub mod prelude {
     pub use crate::health::*;
     pub use crate::level::*;
     pub use crate::map::*;
+    pub use crate::path::*;
     pub use crate::player::*;
     pub use crate::screen::*;
     pub use crate::state::*;
@@ -59,6 +61,8 @@ pub mod prelude {
     pub const TICKS_TO_BUMP: i32 = 100;
 
     pub const TICKS_FLOATING_TEXT: u32 = 120;
+
+    pub const ANIMATION_TICKS_PER_TILE: usize = 6;
 
     pub const VISION: usize = 8;
 }
