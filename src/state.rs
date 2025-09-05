@@ -68,13 +68,17 @@ impl State {
     fn process_action(&mut self, action: RequestedAction, screen: &mut Screen) {
         match action {
             RequestedAction::Move(id, point) => {
-                let actor = self.level.find_character_mut(id);
-                actor.position = point;
-                if actor.is_player() {
-                    self.level.update_visibility();
-                }
+                if self.level.find_character_at_position(point).is_none()
+                    && self.level.map.can_enter(point)
+                {
+                    let actor = self.level.find_character_mut(id);
+                    actor.position = point;
+                    if actor.is_player() {
+                        self.level.update_visibility();
+                    }
 
-                spend_ticks(&mut self.level, &mut self.current_actor, id, TICKS_MOVEMENT);
+                    spend_ticks(&mut self.level, &mut self.current_actor, id, TICKS_MOVEMENT);
+                }
             }
             RequestedAction::WeaponAttack {
                 source,
