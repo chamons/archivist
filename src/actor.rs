@@ -46,7 +46,7 @@ impl CurrentActor {
         }
     }
 
-    pub fn render(&mut self, screen: &Screen, level: &LevelState) {
+    pub fn render(&self, screen: &Screen, level: &LevelState) {
         match self {
             CurrentActor::PlayerTargeting(targeting_info) => {
                 targeting_info.render(screen, level);

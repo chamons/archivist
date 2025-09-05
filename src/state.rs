@@ -11,7 +11,7 @@ use crate::prelude::*;
 pub struct State {
     level: LevelState,
     frame: usize,
-    current_actor: CurrentActor,
+    pub current_actor: CurrentActor,
 }
 
 impl State {
@@ -74,7 +74,7 @@ impl State {
                     self.level.update_visibility();
                 }
 
-                self.spend_ticks(id, TICKS_MOVEMENT);
+                spend_ticks(&mut self.level, &mut self.current_actor, id, TICKS_MOVEMENT);
             }
             RequestedAction::WeaponAttack {
                 source,
@@ -88,10 +88,15 @@ impl State {
                 if target_character.health.is_dead() && !target_character.is_player() {
                     self.level.remove_character(target);
                 }
-                self.spend_ticks(source, TICKS_TO_BUMP);
+                spend_ticks(
+                    &mut self.level,
+                    &mut self.current_actor,
+                    source,
+                    TICKS_TO_BUMP,
+                );
             }
             RequestedAction::Wait(id) => {
-                self.spend_ticks(id, TICKS_TO_ACT);
+                spend_ticks(&mut self.level, &mut self.current_actor, id, TICKS_TO_ACT);
             }
             #[cfg(debug_assertions)]
             RequestedAction::DebugMenu(command) => {
@@ -106,39 +111,6 @@ impl State {
                         }
                     }
                 }
-            }
-        }
-    }
-
-    fn find_next_actor(&mut self) -> Option<CharacterId> {
-        // Sort by ticks with id as tiebreaker
-        self.level.characters.sort_by_key(|c| (c.ticks, c.id));
-        if let Some(actor) = self.level.characters.last() {
-            let id = actor.id;
-            if actor.ticks < TICKS_TO_ACT {
-                let missing = TICKS_TO_ACT - actor.ticks;
-                self.add_ticks(missing);
-            }
-            Some(id)
-        } else {
-            None
-        }
-    }
-
-    fn add_ticks(&mut self, amount: i32) {
-        for character in &mut self.level.characters {
-            character.ticks += amount;
-        }
-    }
-
-    fn spend_ticks(&mut self, id: CharacterId, amount: i32) {
-        self.level.find_character_mut(id).ticks -= amount;
-
-        if let Some(next) = self.find_next_actor() {
-            if self.level.find_character(next).is_player() {
-                self.current_actor = CurrentActor::PlayerStandardAction;
-            } else {
-                self.current_actor = CurrentActor::EnemyAction(next);
             }
         }
     }
@@ -214,6 +186,7 @@ pub async fn main() {
 
         state.level.render(&mut screen);
         state.current_actor.render(&screen, &state.level);
+
         macroquad::window::next_frame().await
     }
 }

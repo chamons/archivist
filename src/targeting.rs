@@ -11,22 +11,27 @@ pub enum BlinkInfo {
 }
 
 impl BlinkInfo {
-    pub fn tick(&mut self) -> bool {
+    pub fn tick(&mut self) {
         match self {
             BlinkInfo::Solid(ticks) => {
                 *ticks -= 1;
                 if *ticks == 0 {
                     *self = BlinkInfo::Blinking(TARGET_FRAME_PAUSE_WINDOW);
                 }
-                true
             }
             BlinkInfo::Blinking(ticks) => {
                 *ticks -= 1;
                 if *ticks == 0 {
                     *self = BlinkInfo::Solid(TARGET_FRAME_BLINK);
                 }
-                false
             }
+        }
+    }
+
+    pub fn should_draw(&self) -> bool {
+        match self {
+            BlinkInfo::Solid(_) => true,
+            BlinkInfo::Blinking(_) => false,
         }
     }
 
@@ -55,6 +60,8 @@ impl TargetingInfo {
         screen: &Screen,
         is_current_target_valid: bool,
     ) -> HandleInputResponse {
+        self.tick();
+
         if is_key_pressed(KeyCode::Escape) {
             HandleInputResponse::ChangeActor(CurrentActor::PlayerStandardAction)
         } else if is_key_pressed(KeyCode::Enter)
@@ -130,10 +137,12 @@ impl TargetingInfo {
         }
     }
 
-    pub fn render(&mut self, screen: &Screen, level: &LevelState) {
-        let should_draw = self.blink.tick();
+    pub fn tick(&mut self) {
+        self.blink.tick();
+    }
 
-        if should_draw {
+    pub fn render(&self, screen: &Screen, level: &LevelState) {
+        if self.blink.should_draw() {
             let color = if CurrentActor::is_current_target_valid(&self, level) {
                 WHITE
             } else {

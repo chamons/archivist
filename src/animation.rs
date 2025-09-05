@@ -49,7 +49,7 @@ impl AnimationInfo {
         }
     }
 
-    pub fn render(&mut self, screen: &Screen) {
+    pub fn render(&self, screen: &Screen) {
         if let Some(position) = self.path.first() {
             screen.draw_sprite(TileSet::FX, *position, self.sprite_tile);
         }
