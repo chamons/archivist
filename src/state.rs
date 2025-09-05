@@ -51,19 +51,6 @@ pub enum RequestedAction {
     DebugMenu(DebugRequest),
 }
 
-pub enum ResolvedAction {
-    MoveActor(CharacterId, Point),
-    DamageCharacter {
-        source: CharacterId,
-        target: CharacterId,
-        weapon: Weapon,
-    },
-    Wait(CharacterId),
-    PlayerTargeting,
-    #[cfg(debug_assertions)]
-    DebugMenu(DebugRequest),
-}
-
 impl State {
     pub fn get_player(&self) -> &Character {
         self.level
@@ -77,89 +64,50 @@ impl State {
         self.get_player().health.is_dead()
     }
 
-    // If we get rid of bump to attack we could drop this
-    fn resolve_action(&self, action: RequestedAction) -> Option<ResolvedAction> {
+    // Screen used in debug
+    #[allow(unused_variables)]
+    fn process_action(&mut self, action: RequestedAction, screen: &mut Screen) {
         match action {
-            RequestedAction::Move(id, target) => {
-                let actor = self.level.find_character(id);
-
-                let character_at_target = self.level.find_character_at_position(target);
-                if let Some(character_at_target) = character_at_target {
-                    Some(ResolvedAction::DamageCharacter {
-                        target: character_at_target.id,
-                        source: id,
-                        weapon: actor.weapon.clone(),
-                    })
-                } else if self.level.character_can_enter(target) {
-                    Some(ResolvedAction::MoveActor(id, target))
-                } else {
-                    None
+            RequestedAction::Move(id, point) => {
+                let actor = self.level.find_character_mut(id);
+                actor.position = point;
+                if actor.is_player() {
+                    self.level.update_visibility();
                 }
+
+                self.spend_ticks(id, TICKS_MOVEMENT);
             }
             RequestedAction::DamageCharacter {
                 source,
                 target,
                 weapon,
-            } => Some(ResolvedAction::DamageCharacter {
-                source,
-                target,
-                weapon,
-            }),
-            RequestedAction::Wait(id) => Some(ResolvedAction::Wait(id)),
-            RequestedAction::PlayerTargeting => Some(ResolvedAction::PlayerTargeting),
+            } => {
+                let target_character = self.level.find_character_mut(target);
+                target_character.health.current -= weapon.damage;
+
+                // We do not remove the player character, death checks will happen after action resolution
+                if target_character.health.is_dead() && !target_character.is_player() {
+                    self.level.remove_character(target);
+                }
+                self.spend_ticks(source, TICKS_TO_BUMP);
+            }
+            RequestedAction::Wait(id) => {
+                self.spend_ticks(id, TICKS_TO_ACT);
+            }
+            RequestedAction::PlayerTargeting => {
+                self.current_actor =
+                    CurrentActor::PlayerTargeting(TargetingInfo::new(self.get_player().position));
+            }
             #[cfg(debug_assertions)]
-            RequestedAction::DebugMenu(command) => Some(ResolvedAction::DebugMenu(command)),
-        }
-    }
-
-    // Screen used in debug
-    #[allow(unused_variables)]
-    fn process_action(&mut self, action: RequestedAction, screen: &mut Screen) {
-        if let Some(resolved_action) = self.resolve_action(action) {
-            match resolved_action {
-                ResolvedAction::MoveActor(id, point) => {
-                    let actor = self.level.find_character_mut(id);
-                    actor.position = point;
-                    if actor.is_player() {
-                        self.level.update_visibility();
+            RequestedAction::DebugMenu(command) => {
+                screen.push_floating_text(&format!("Running debug command: {command:?}"));
+                match command {
+                    DebugRequest::Save => {
+                        std::fs::write("dev.save", self.save()).expect("Unable to save");
                     }
-
-                    self.spend_ticks(id, TICKS_MOVEMENT);
-                }
-                ResolvedAction::DamageCharacter {
-                    source,
-                    target,
-                    weapon,
-                } => {
-                    let target_character = self.level.find_character_mut(target);
-                    target_character.health.current -= weapon.damage;
-
-                    // We do not remove the player character, death checks will happen after action resolution
-                    if target_character.health.is_dead() && !target_character.is_player() {
-                        self.level.remove_character(target);
-                    }
-                    self.spend_ticks(source, TICKS_TO_BUMP);
-                }
-                ResolvedAction::Wait(id) => {
-                    self.spend_ticks(id, TICKS_TO_ACT);
-                }
-                ResolvedAction::PlayerTargeting => {
-                    self.current_actor = CurrentActor::PlayerTargeting(TargetingInfo::new(
-                        self.get_player().position,
-                    ));
-                }
-                #[cfg(debug_assertions)]
-                ResolvedAction::DebugMenu(command) => {
-                    screen.push_floating_text(&format!("Running debug command: {command:?}"));
-                    match command {
-                        DebugRequest::Save => {
-                            std::fs::write("dev.save", self.save()).expect("Unable to save");
-                        }
-                        DebugRequest::Load => {
-                            if let Ok(text) = std::fs::read("dev.save") {
-                                *self =
-                                    serde_json::from_slice(&text).expect("Unable to load dev save");
-                            }
+                    DebugRequest::Load => {
+                        if let Ok(text) = std::fs::read("dev.save") {
+                            *self = serde_json::from_slice(&text).expect("Unable to load dev save");
                         }
                     }
                 }
