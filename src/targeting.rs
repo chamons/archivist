@@ -69,7 +69,7 @@ impl TargetingInfo {
                         target.position,
                         level,
                         Point::new(1, 1),
-                        RequestedAction::DamageCharacter {
+                        RequestedAction::WeaponAttack {
                             source: level.get_player().id,
                             target: target.id,
                             weapon: player.weapon.clone(),

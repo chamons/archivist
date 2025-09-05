@@ -144,7 +144,7 @@ pub fn handle_movement_key() -> Option<Point> {
 
 pub fn handle_move_bump(actor: &Character, dest: Point, level: &LevelState) -> RequestedAction {
     if let Some(target) = level.find_character_at_position(dest) {
-        RequestedAction::DamageCharacter {
+        RequestedAction::WeaponAttack {
             source: actor.id,
             target: target.id,
             weapon: actor.weapon.clone(),

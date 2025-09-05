@@ -40,7 +40,7 @@ pub enum DebugRequest {
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub enum RequestedAction {
     Move(CharacterId, Point),
-    DamageCharacter {
+    WeaponAttack {
         source: CharacterId,
         target: CharacterId,
         weapon: Weapon,
@@ -77,7 +77,7 @@ impl State {
 
                 self.spend_ticks(id, TICKS_MOVEMENT);
             }
-            RequestedAction::DamageCharacter {
+            RequestedAction::WeaponAttack {
                 source,
                 target,
                 weapon,
