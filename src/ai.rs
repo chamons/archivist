@@ -11,19 +11,20 @@ pub fn default_action(level: &LevelState, id: CharacterId) -> RequestedAction {
 }
 
 pub fn chase_attack_player(level: &LevelState, id: CharacterId) -> RequestedAction {
-    let enemy = level.find_character(id).position;
-    let player = level.get_player().position;
+    let enemy = level.find_character(id);
+    let player = level.get_player();
 
     let path = bfs(
-        &enemy,
+        &enemy.position,
         |p| adjacent_squares(level, *p, PathCharacterOptions::AllowEmptyOrPlayer),
-        |p| *p == player,
+        |p| *p == player.position,
     );
     if let Some(path) = path {
         // First position on path is current
-        RequestedAction::Move(id, path[1])
+        let dest = path[1];
+        handle_move_bump(enemy, dest, level)
     } else {
-        wander_action(level, id)
+        wander_action(level, enemy.id)
     }
 }
 

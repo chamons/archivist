@@ -1,10 +1,11 @@
 use crate::prelude::*;
 
-pub fn get_player_action(player: &Character) -> Option<RequestedAction> {
+pub fn get_player_action(player: &Character, level: &LevelState) -> Option<RequestedAction> {
     if let Some(movement_delta) = handle_movement_key() {
-        Some(RequestedAction::Move(
-            player.id,
+        Some(handle_move_bump(
+            player,
             player.position + movement_delta,
+            level,
         ))
     } else if is_key_pressed(KeyCode::Period) || is_key_pressed(KeyCode::Kp5) {
         Some(RequestedAction::Wait(player.id))

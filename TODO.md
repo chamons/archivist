@@ -1,4 +1,3 @@
-- Why are paths not straight?
 - Enemy gets ranged attack
 - Skill Bar + Abilities
 - Rests
@@ -9,3 +8,13 @@
 - Save on exit
 - Monsters should remember last place saw player and move to there before wandering
 - Mouse over enemies tooltip
+- More Maps:
+    - Cellular Automata
+    - Drunken Walks
+    - Prefabs?
+    - Multi level with stairs
+    - BSP
+    - Diffusion Limited
+    - Wave collapse
+- Map Themes
+- Package for distribution

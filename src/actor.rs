@@ -21,7 +21,7 @@ impl CurrentActor {
         match self {
             CurrentActor::PlayerStandardAction => {
                 let player = level.get_player();
-                get_player_action(player)
+                get_player_action(player, level)
             }
             CurrentActor::PlayerTargeting(targeting_info) => {
                 let is_current_target_valid = Self::is_current_target_valid(targeting_info, level);
