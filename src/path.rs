@@ -47,13 +47,13 @@ pub fn adjacent_squares(
 ) -> Vec<Point> {
     [
         Point::new(-1, 0),
-        Point::new(-1, 1),
-        Point::new(-1, -1),
         Point::new(1, 0),
-        Point::new(1, 1),
-        Point::new(1, -1),
         Point::new(0, -1),
         Point::new(0, 1),
+        Point::new(-1, 1),
+        Point::new(-1, -1),
+        Point::new(1, 1),
+        Point::new(1, -1),
     ]
     .map(|offset| offset + point)
     .into_iter()

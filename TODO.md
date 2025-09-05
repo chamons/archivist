@@ -8,3 +8,4 @@
 - Add title screen
 - Save on exit
 - Monsters should remember last place saw player and move to there before wandering
+- Mouse over enemies tooltip
