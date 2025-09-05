@@ -21,26 +21,28 @@ impl CurrentActor {
         match self {
             CurrentActor::PlayerStandardAction => {
                 let player = level.get_player();
-                get_player_action(player, level)
+                self.process_input_response(get_player_action(player, level))
             }
             CurrentActor::PlayerTargeting(targeting_info) => {
                 let is_current_target_valid = Self::is_current_target_valid(targeting_info, level);
-                match targeting_info.handle_input(level, screen, is_current_target_valid) {
-                    HandleInputResponse::Action(requested_action) => requested_action,
-                    HandleInputResponse::ChangeActor(current_actor) => {
-                        *self = current_actor.clone();
-                        None
-                    }
-                }
+                let response = targeting_info.handle_input(level, screen, is_current_target_valid);
+                self.process_input_response(response)
             }
             CurrentActor::EnemyAction(id) => Some(default_action(level, *id)),
-            CurrentActor::Animation(animation_info) => match animation_info.handle_input() {
-                HandleInputResponse::Action(requested_action) => requested_action,
-                HandleInputResponse::ChangeActor(current_actor) => {
-                    *self = current_actor.clone();
-                    None
-                }
-            },
+            CurrentActor::Animation(animation_info) => {
+                let response = animation_info.handle_input();
+                self.process_input_response(response)
+            }
+        }
+    }
+
+    fn process_input_response(&mut self, response: HandleInputResponse) -> Option<RequestedAction> {
+        match response {
+            HandleInputResponse::Action(requested_action) => requested_action,
+            HandleInputResponse::ChangeActor(current_actor) => {
+                *self = current_actor.clone();
+                None
+            }
         }
     }
 

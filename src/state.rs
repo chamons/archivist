@@ -46,7 +46,6 @@ pub enum RequestedAction {
         weapon: Weapon,
     },
     Wait(CharacterId),
-    PlayerTargeting,
     #[cfg(debug_assertions)]
     DebugMenu(DebugRequest),
 }
@@ -93,10 +92,6 @@ impl State {
             }
             RequestedAction::Wait(id) => {
                 self.spend_ticks(id, TICKS_TO_ACT);
-            }
-            RequestedAction::PlayerTargeting => {
-                self.current_actor =
-                    CurrentActor::PlayerTargeting(TargetingInfo::new(self.get_player().position));
             }
             #[cfg(debug_assertions)]
             RequestedAction::DebugMenu(command) => {

@@ -1,35 +1,37 @@
 use crate::prelude::*;
 
-pub fn get_player_action(player: &Character, level: &LevelState) -> Option<RequestedAction> {
+pub fn get_player_action(player: &Character, level: &LevelState) -> HandleInputResponse {
     if let Some(movement_delta) = handle_movement_key() {
-        Some(handle_move_bump(
+        HandleInputResponse::Action(Some(handle_move_bump(
             player,
             player.position + movement_delta,
             level,
-        ))
+        )))
     } else if is_key_pressed(KeyCode::Period) || is_key_pressed(KeyCode::Kp5) {
-        Some(RequestedAction::Wait(player.id))
+        HandleInputResponse::Action(Some(RequestedAction::Wait(player.id)))
     } else if is_key_pressed(KeyCode::T) {
-        Some(RequestedAction::PlayerTargeting)
+        HandleInputResponse::ChangeActor(CurrentActor::PlayerTargeting(TargetingInfo::new(
+            player.position,
+        )))
     } else if is_key_pressed(KeyCode::F1) {
         #[cfg(debug_assertions)]
         {
-            Some(RequestedAction::DebugMenu(DebugRequest::Save))
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::Save)))
         }
         #[cfg(not(debug_assertions))]
         {
-            None
+            HandleInputResponse::Action(None)
         }
     } else if is_key_pressed(KeyCode::F2) {
         #[cfg(debug_assertions)]
         {
-            Some(RequestedAction::DebugMenu(DebugRequest::Load))
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::Load)))
         }
         #[cfg(not(debug_assertions))]
         {
-            None
+            HandleInputResponse::Action(None)
         }
     } else {
-        None
+        HandleInputResponse::Action(None)
     }
 }
