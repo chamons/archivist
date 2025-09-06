@@ -1,6 +1,7 @@
+use directories::ProjectDirs;
 use log::debug;
 use macroquad::{
-    input::get_keys_pressed,
+    input::{get_keys_pressed, is_key_down, is_quit_requested, prevent_quit},
     shapes::draw_rectangle,
     window::{clear_background, screen_height, screen_width},
 };
@@ -98,7 +99,7 @@ impl State {
                 screen.push_floating_text(&format!("Running debug command: {command:?}"));
                 match command {
                     DebugRequest::Save => {
-                        std::fs::write("dev.save", self.save()).expect("Unable to save");
+                        std::fs::write("dev.save", self.save_to_string()).expect("Unable to save");
                     }
                     DebugRequest::Load => {
                         if let Ok(text) = std::fs::read("dev.save") {
@@ -115,8 +116,47 @@ impl State {
         }
     }
 
-    pub fn save(&self) -> String {
+    pub fn save_to_string(&self) -> String {
         serde_json::to_string(self).expect("Unable to save game")
+    }
+
+    pub fn save_to_disk(&self) {
+        if let Some(dirs) = ProjectDirs::from("com", "", "Archivist") {
+            match std::fs::create_dir_all(dirs.data_dir()) {
+                Ok(_) => {
+                    let mut path = dirs.data_dir().to_path_buf();
+                    path.push("game.sav");
+                    if let Err(e) = std::fs::write(path, self.save_to_string()) {
+                        eprintln!("Unable to save game: {e:?}");
+                    }
+                }
+                Err(e) => {
+                    eprintln!("Unable to create game game location: {e:?}");
+                }
+            }
+        }
+    }
+
+    pub fn load_from_disk() -> Option<Self> {
+        if let Some(dirs) = ProjectDirs::from("com", "", "Archivist") {
+            let mut path = dirs.data_dir().to_path_buf();
+            path.push("game.sav");
+
+            if let Ok(text) = std::fs::read(&path) {
+                match serde_json::from_slice(&text) {
+                    Ok(state) => {
+                        if std::fs::remove_file(path).is_err() {
+                            eprintln!("Unable to delete game after load.");
+                        }
+                        return Some(state);
+                    }
+                    Err(e) => {
+                        eprintln!("Unable to load game: {e:?}");
+                    }
+                }
+            }
+        }
+        None
     }
 }
 
@@ -156,16 +196,32 @@ pub async fn handle_death(state: &State, screen: &mut Screen) -> State {
 }
 
 pub async fn main() {
-    let mut state = State::new();
+    prevent_quit();
     let mut screen = Screen::new().await;
 
-    screen.push_floating_text("Explore the Dungeon. Cursor keys to move.");
+    let mut state = if let Some(state) = State::load_from_disk() {
+        screen.push_floating_text("Welcome back.");
+
+        state
+    } else {
+        screen.push_floating_text("Explore the Dungeon. Cursor keys to move.");
+
+        State::new()
+    };
 
     loop {
         state.frame += 1;
         clear_background(BLACK);
 
         loop {
+            if is_quit_requested()
+                || (is_key_pressed(KeyCode::Q)
+                    && (is_key_down(KeyCode::LeftShift) || is_key_down(KeyCode::RightShift)))
+            {
+                state.save_to_disk();
+                return;
+            }
+
             if let Some(action) = state.current_actor.act(&state.level, &mut screen) {
                 state.process_action(action, &mut screen);
             }

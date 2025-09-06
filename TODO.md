@@ -2,7 +2,6 @@
 - Exiting level (with loot)
 - Add title screen
 - Add victory screen
-- Save on exit
 
 # Phase 1 - Multi-runs in a game
 - Screen between levels
@@ -21,6 +20,8 @@
 - Lots of abilities, enemies
 
 # Phase 4 - Final Tweaks
+- Sound?
+- Music?
 - Doors and keys?
 - Package for distribution
 
