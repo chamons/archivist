@@ -1,4 +1,3 @@
-- Rests
 - Picking up item (?) off floor
 - Exiting level
 - Multiple Levels

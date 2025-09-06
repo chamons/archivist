@@ -18,6 +18,10 @@ impl Health {
     pub fn increase(&mut self, amount: i32) {
         self.current = (self.current + amount).min(self.max);
     }
+
+    pub fn percentage(&self) -> f32 {
+        self.current as f32 / self.max as f32
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -37,5 +41,9 @@ impl Will {
 
     pub fn increase(&mut self, amount: i32) {
         self.current = (self.current + amount).min(self.max);
+    }
+
+    pub fn percentage(&self) -> f32 {
+        self.current as f32 / self.max as f32
     }
 }

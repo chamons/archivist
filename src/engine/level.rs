@@ -72,7 +72,7 @@ impl LevelState {
         let player = self.get_player();
 
         let health = player.health.clone();
-        let health_percentage = health.current as f32 / health.max as f32;
+        let health_percentage = health.percentage();
 
         const BAR_PADDING_X: f32 = 4.0;
         const BAR_PADDING_Y: f32 = 2.0;
@@ -93,7 +93,7 @@ impl LevelState {
         );
 
         let will = player.will.clone();
-        let will_percentage = will.current as f32 / will.max as f32;
+        let will_percentage = will.percentage();
 
         draw_rectangle(
             BAR_PADDING_X,

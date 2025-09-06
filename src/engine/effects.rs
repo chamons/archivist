@@ -39,8 +39,42 @@ fn apply_healing(level: &mut LevelState, target: CharacterId, amount: i32) {
     target_character.health.increase(amount);
 }
 
-pub fn character_wait(state: &mut State, id: CharacterId) {
+pub fn character_wait(state: &mut State, id: CharacterId, screen: &mut Screen) {
+    if !is_hostile_nearby(state, id) {
+        rest(state, id, screen);
+    }
     spend_ticks(state, id, TICKS_TO_ACT);
+}
+
+fn rest(state: &mut State, id: CharacterId, screen: &mut Screen) {
+    let actor = state.level.find_character_mut(id);
+    let mut rested = false;
+    if actor.health.percentage() < REST_HEALTH_PERCENTAGE {
+        actor.health.current += 1;
+        rested = true;
+    }
+    if actor.will.percentage() < REST_WILL_PERCENTAGE {
+        actor.will.current += 1;
+        rested = true;
+    }
+    if rested {
+        screen.push_floating_text("Resting...");
+    }
+}
+
+fn is_hostile_nearby(state: &State, id: CharacterId) -> bool {
+    let actor = state.level.find_character(id);
+    let visibility = state.level.map.compute_visibility(actor.position);
+    if actor.is_player() {
+        state
+            .level
+            .characters
+            .iter()
+            .filter(|c| !c.is_player())
+            .any(|c| visibility.get(c.position))
+    } else {
+        visibility.get(state.get_player().position)
+    }
 }
 
 pub fn apply_effect(

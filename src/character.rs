@@ -35,7 +35,7 @@ impl Character {
             self.get_spite_tile(screen.camera.bounce),
         );
 
-        let health_percentage = self.health.current as f32 / self.health.max as f32;
+        let health_percentage = self.health.percentage();
         if !self.is_player() && health_percentage < 1.0 {
             draw_rectangle(
                 (self.position.x - screen.camera.left_x) as f32 * 24.0,

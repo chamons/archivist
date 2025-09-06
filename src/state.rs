@@ -85,7 +85,7 @@ impl State {
                 weapon_attack(self, source, target, weapon);
             }
             RequestedAction::Wait(id) => {
-                character_wait(self, id);
+                character_wait(self, id, screen);
             }
             RequestedAction::UseEffect {
                 source,
