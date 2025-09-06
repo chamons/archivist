@@ -1,18 +1,13 @@
 use crate::prelude::*;
 
-pub fn spend_ticks(
-    level: &mut LevelState,
-    current_actor: &mut CurrentActor,
-    id: CharacterId,
-    amount: i32,
-) {
-    level.find_character_mut(id).ticks -= amount;
+pub fn spend_ticks(state: &mut State, id: CharacterId, amount: i32) {
+    state.level.find_character_mut(id).ticks -= amount;
 
-    if let Some(next) = find_next_actor(level) {
-        if level.find_character(next).is_player() {
-            *current_actor = CurrentActor::PlayerStandardAction;
+    if let Some(next) = find_next_actor(&mut state.level) {
+        if state.level.find_character(next).is_player() {
+            state.current_actor = CurrentActor::PlayerStandardAction;
         } else {
-            *current_actor = CurrentActor::EnemyAction(next);
+            state.current_actor = CurrentActor::EnemyAction(next);
         }
     }
 }

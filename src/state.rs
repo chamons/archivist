@@ -9,7 +9,7 @@ use crate::prelude::*;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct State {
-    level: LevelState,
+    pub level: LevelState,
     frame: usize,
     pub current_actor: CurrentActor,
 }
@@ -67,40 +67,18 @@ impl State {
     #[allow(unused_variables)]
     fn process_action(&mut self, action: RequestedAction, screen: &mut Screen) {
         match action {
-            RequestedAction::Move(id, point) => {
-                if self.level.find_character_at_position(point).is_none()
-                    && self.level.map.can_enter(point)
-                {
-                    let actor = self.level.find_character_mut(id);
-                    actor.position = point;
-                    if actor.is_player() {
-                        self.level.update_visibility();
-                    }
-
-                    spend_ticks(&mut self.level, &mut self.current_actor, id, TICKS_MOVEMENT);
-                }
+            RequestedAction::Move(id, dest) => {
+                move_character(self, id, dest);
             }
             RequestedAction::WeaponAttack {
                 source,
                 target,
                 weapon,
             } => {
-                let target_character = self.level.find_character_mut(target);
-                target_character.health.current -= weapon.damage;
-
-                // We do not remove the player character, death checks will happen after action resolution
-                if target_character.health.is_dead() && !target_character.is_player() {
-                    self.level.remove_character(target);
-                }
-                spend_ticks(
-                    &mut self.level,
-                    &mut self.current_actor,
-                    source,
-                    TICKS_TO_BUMP,
-                );
+                weapon_attack(self, source, target, weapon);
             }
             RequestedAction::Wait(id) => {
-                spend_ticks(&mut self.level, &mut self.current_actor, id, TICKS_TO_ACT);
+                character_wait(self, id);
             }
             #[cfg(debug_assertions)]
             RequestedAction::DebugMenu(command) => {
