@@ -1,5 +1,3 @@
-- Enemy gets ranged attack
-- Max range in targeting
 - Rests
 - Picking up item (?) off floor
 - Exiting level

@@ -3,7 +3,7 @@ use crate::prelude::*;
 // In a turn based game, only sometimes does the player get to move
 // This contains what the current "thing takes it's turn" is
 // which could be an animation for example
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CurrentActor {
     PlayerStandardAction,
     PlayerTargeting(TargetingInfo),
@@ -11,6 +11,7 @@ pub enum CurrentActor {
     Animation(AnimationInfo),
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum HandleInputResponse {
     Action(Option<RequestedAction>),
     ChangeActor(CurrentActor),
@@ -28,7 +29,10 @@ impl CurrentActor {
                 let response = targeting_info.handle_input(level, screen, is_current_target_valid);
                 self.process_input_response(response)
             }
-            CurrentActor::EnemyAction(id) => Some(default_action(level, *id)),
+            CurrentActor::EnemyAction(id) => {
+                let response = default_ai_action(level, *id);
+                self.process_input_response(response)
+            }
             CurrentActor::Animation(animation_info) => {
                 let response = animation_info.handle_input();
                 self.process_input_response(response)
@@ -58,7 +62,17 @@ impl CurrentActor {
 
     pub fn is_current_target_valid(targeting_info: &TargetingInfo, level: &LevelState) -> bool {
         let character_target_target = level.find_character_at_position(targeting_info.position);
-        character_target_target.is_some() && !character_target_target.unwrap().is_player()
+        let valid_target =
+            character_target_target.is_some() && !character_target_target.unwrap().is_player();
+
+        let within_distance = clear_line_between(
+            level,
+            targeting_info.source_position,
+            targeting_info.position,
+            targeting_info.max_range,
+        );
+
+        valid_target && within_distance
     }
 
     pub fn needs_to_wait(&self) -> bool {

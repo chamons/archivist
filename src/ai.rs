@@ -2,15 +2,103 @@ use crate::prelude::*;
 
 use pathfinding::prelude::bfs;
 
-pub fn default_action(level: &LevelState, id: CharacterId) -> RequestedAction {
+pub fn default_ai_action(level: &LevelState, id: CharacterId) -> HandleInputResponse {
     if can_see_player(level, id) {
-        chase_attack_player(level, id)
+        if let Some(action) = check_skill_usage(level, id) {
+            action
+        } else {
+            chase_attack_player(level, id)
+        }
     } else {
         wander_action(level, id)
     }
 }
 
-pub fn chase_attack_player(level: &LevelState, id: CharacterId) -> RequestedAction {
+pub fn check_skill_usage(level: &LevelState, id: CharacterId) -> Option<HandleInputResponse> {
+    let enemy = level.find_character(id);
+    if enemy.skills.is_empty() {
+        return None;
+    }
+
+    for skill in &enemy.skills {
+        if enemy.will.has_enough(skill.cost) {
+            match &skill.targeting {
+                SkillTargeting::Caster => {
+                    if wants_caster_effect(&skill.effect, enemy) {
+                        return Some(HandleInputResponse::Action(Some(
+                            RequestedAction::UseEffect {
+                                source: id,
+                                target: id,
+                                effect: skill.effect.clone(),
+                                cost: skill.cost,
+                            },
+                        )));
+                    }
+                }
+                SkillTargeting::Ranged { max_range, sprite } => {
+                    if let Some((target_id, target_position)) =
+                        find_ranged_target(enemy, &skill.effect, *max_range, level)
+                    {
+                        return Some(HandleInputResponse::ChangeActor(CurrentActor::Animation(
+                            AnimationInfo::new(
+                                enemy.position,
+                                target_position,
+                                level,
+                                sprite.clone(),
+                                RequestedAction::UseEffect {
+                                    source: id,
+                                    target: target_id,
+                                    effect: skill.effect.clone(),
+                                    cost: skill.cost,
+                                },
+                            ),
+                        )));
+                    }
+                }
+            }
+        }
+    }
+
+    None
+}
+
+fn wants_caster_effect(effect: &Effect, enemy: &Character) -> bool {
+    match effect {
+        Effect::ApplyDamage { .. } | Effect::ApplyWeaponDamage => false,
+        Effect::Heal { amount } => enemy.health.max - enemy.health.current >= *amount,
+    }
+}
+
+fn find_ranged_target(
+    enemy: &Character,
+    effect: &Effect,
+    max_range: u32,
+    level: &LevelState,
+) -> Option<(CharacterId, Point)> {
+    match effect {
+        Effect::ApplyDamage { .. } | Effect::ApplyWeaponDamage => {
+            let player = level.get_player();
+            if clear_line_between(level, enemy.position, player.position, max_range) {
+                Some((player.id, player.position))
+            } else {
+                None
+            }
+        }
+        Effect::Heal { amount } => {
+            for character in &level.characters {
+                if !character.is_player()
+                    && clear_line_between(level, enemy.position, character.position, max_range)
+                    && character.health.max - character.health.current >= *amount
+                {
+                    return Some((character.id, character.position));
+                }
+            }
+            None
+        }
+    }
+}
+
+pub fn chase_attack_player(level: &LevelState, id: CharacterId) -> HandleInputResponse {
     let enemy = level.find_character(id);
     let player = level.get_player();
 
@@ -22,13 +110,13 @@ pub fn chase_attack_player(level: &LevelState, id: CharacterId) -> RequestedActi
     if let Some(path) = path {
         // First position on path is current
         let dest = path[1];
-        handle_move_bump(enemy, dest, level)
+        HandleInputResponse::Action(Some(handle_move_bump(enemy, dest, level)))
     } else {
         wander_action(level, enemy.id)
     }
 }
 
-pub fn wander_action(level: &LevelState, id: CharacterId) -> RequestedAction {
+pub fn wander_action(level: &LevelState, id: CharacterId) -> HandleInputResponse {
     let enemy = level.find_character(id);
     let options = adjacent_squares(
         level,
@@ -37,8 +125,8 @@ pub fn wander_action(level: &LevelState, id: CharacterId) -> RequestedAction {
     );
     let selection = options.choose(&mut ::rand::rng());
     match selection {
-        Some(position) => RequestedAction::Move(id, *position),
-        None => RequestedAction::Wait(id),
+        Some(position) => HandleInputResponse::Action(Some(RequestedAction::Move(id, *position))),
+        None => HandleInputResponse::Action(Some(RequestedAction::Wait(id))),
     }
 }
 
@@ -46,42 +134,14 @@ pub fn wander_action(level: &LevelState, id: CharacterId) -> RequestedAction {
 mod tests {
     use crate::prelude::*;
 
-    fn create_test_map() -> (CharacterId, LevelState) {
-        let data = Data::load().unwrap();
-
-        let mut player = data.get_character("Player");
-        player.position = Point::new(1, 1);
-
-        let mut bat = data.get_character("Bat");
-        bat.position = Point::new(1, 5);
-        let id = bat.id;
-
-        let mut map = Map::new_filled();
-        for y in 1..6 {
-            map.set(
-                Point::new(1, y),
-                MapTile {
-                    kind: TileKind::Floor,
-                    known: true,
-                },
-            );
-        }
-        let level = LevelState::new(map, vec![player, bat]);
-        (id, level)
-    }
-
-    #[test]
-    fn distance() {
-        let (id, level) = create_test_map();
-
-        assert_eq!(Some(5), distance_to_player(&level, id));
-    }
-
     #[test]
     fn chases_player() {
         let (id, level) = create_test_map();
 
         let action = chase_attack_player(&level, id);
-        assert_eq!(action, RequestedAction::Move(id, Point::new(1, 4)));
+        assert_eq!(
+            action,
+            HandleInputResponse::Action(Some(RequestedAction::Move(id, Point::new(1, 4))))
+        );
     }
 }

@@ -5,9 +5,12 @@
         "effect": "ApplyWeaponDamage",
         "targeting": {
             "Ranged": {
-                "SingleFrame": {
-                    "x": 1,
-                    "y": 1
+                "max_range": 6,
+                "sprite": {
+                    "SingleFrame": {
+                        "x": 1,
+                        "y": 1
+                    }
                 }
             }
         }
@@ -22,9 +25,12 @@
         },
         "targeting": {
             "Ranged": {
-                "Directional": {
-                    "x": 1,
-                    "y": 12
+                "max_range": 6,
+                "sprite": {
+                    "Directional": {
+                        "x": 1,
+                        "y": 12
+                    }
                 }
             }
         }
@@ -38,5 +44,25 @@
             }
         },
         "targeting": "Caster"
+    },
+    {
+        "name": "Spit",
+        "cost": 1,
+        "effect": {
+            "ApplyDamage": {
+                "damage": 2
+            }
+        },
+        "targeting": {
+            "Ranged": {
+                "max_range": 4,
+                "sprite": {
+                    "Directional": {
+                        "x": 1,
+                        "y": 17
+                    }
+                }
+            }
+        }
     }
 ]

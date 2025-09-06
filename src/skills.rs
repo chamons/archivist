@@ -3,7 +3,10 @@ use crate::prelude::*;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum SkillTargeting {
     Caster,
-    Ranged(AnimationSpriteKind),
+    Ranged {
+        max_range: u32,
+        sprite: AnimationSpriteKind,
+    },
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

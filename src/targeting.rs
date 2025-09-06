@@ -4,7 +4,7 @@ use macroquad::input::{
 };
 
 use crate::prelude::*;
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum BlinkInfo {
     Solid(usize),
     Blinking(usize),
@@ -40,26 +40,30 @@ impl BlinkInfo {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TargetEffect {
     pub effect: Effect,
     pub cost: i32,
     pub spite: AnimationSpriteKind,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TargetingInfo {
+    pub source_position: Point,
     pub position: Point,
     pub blink: BlinkInfo,
     pub effect: TargetEffect,
+    pub max_range: u32,
 }
 
 impl TargetingInfo {
-    pub fn new(position: Point, effect: TargetEffect) -> Self {
+    pub fn new(position: Point, effect: TargetEffect, max_range: u32) -> Self {
         Self {
             position,
+            source_position: position,
             effect,
             blink: BlinkInfo::Solid(TARGET_FRAME_BLINK),
+            max_range,
         }
     }
 

@@ -67,12 +67,15 @@
             "kinds": [
                 "Physical"
             ]
-        }
+        },
+        "skills": [
+            "Heal"
+        ]
     },
     {
         "name": "Spider",
         "max_health": 12,
-        "max_will": 2,
+        "max_will": 1,
         "difficulty": 1,
         "base_sprite_tile": {
             "x": 7,
@@ -84,6 +87,9 @@
             "kinds": [
                 "Physical"
             ]
-        }
+        },
+        "skills": [
+            "Spit"
+        ]
     }
 ]

@@ -188,3 +188,28 @@ pub fn handle_move_bump(actor: &Character, dest: Point, level: &LevelState) -> R
         RequestedAction::Move(actor.id, dest)
     }
 }
+
+#[cfg(test)]
+pub fn create_test_map() -> (CharacterId, LevelState) {
+    let data = Data::load().unwrap();
+
+    let mut player = data.get_character("Player");
+    player.position = Point::new(1, 1);
+
+    let mut bat = data.get_character("Bat");
+    bat.position = Point::new(1, 5);
+    let id = bat.id;
+
+    let mut map = Map::new_filled();
+    for y in 1..6 {
+        map.set(
+            Point::new(1, y),
+            MapTile {
+                kind: TileKind::Floor,
+                known: true,
+            },
+        );
+    }
+    let level = LevelState::new(map, vec![player, bat]);
+    (id, level)
+}

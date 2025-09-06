@@ -26,15 +26,16 @@ pub fn get_player_action(
                             cost: skill.cost,
                         }))
                     }
-                    SkillTargeting::Ranged(animation_sprite_kind) => {
+                    SkillTargeting::Ranged { max_range, sprite } => {
                         HandleInputResponse::ChangeActor(CurrentActor::PlayerTargeting(
                             TargetingInfo::new(
                                 player.position,
                                 TargetEffect {
                                     effect: skill.effect.clone(),
-                                    spite: animation_sprite_kind.clone(),
+                                    spite: sprite.clone(),
                                     cost: skill.cost,
                                 },
+                                *max_range,
                             ),
                         ))
                     }

@@ -1,12 +1,12 @@
 use crate::prelude::*;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum AnimationSpriteKind {
     SingleFrame(Point),
     Directional(Point),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AnimationInfo {
     pub path: Vec<Point>,
     pub kind: AnimationSpriteKind,
