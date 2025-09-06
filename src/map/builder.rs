@@ -1,4 +1,7 @@
-use std::cmp::{max, min};
+use std::{
+    cmp::{max, min},
+    collections::HashSet,
+};
 
 use adam_fov_rs::GridPoint;
 use rand::Rng;
@@ -19,9 +22,17 @@ impl MapBuilder {
             data: Data::load().expect("Able to load data"),
         };
 
-        builder.fill(TileKind::Wall);
-        builder.build_random_rooms(rng, 20);
-        builder.build_corridors(rng);
+        loop {
+            builder.fill(TileKind::Wall);
+            builder.build_random_rooms(rng, 20);
+            builder.build_corridors(rng);
+            if Self::check_connectivity(&builder.map, builder.rooms[0].center()) {
+                break;
+            } else {
+                builder.clear();
+            }
+        }
+
         let mut characters = builder.spawn_monsters(rng, 1);
 
         let mut player = builder.data.get_character("Player");
@@ -31,6 +42,39 @@ impl MapBuilder {
         let items = builder.place_items();
 
         LevelState::new(builder.map, characters, items)
+    }
+
+    fn clear(&mut self) {
+        self.map = Map::new();
+        self.rooms = vec![];
+    }
+
+    fn check_connectivity(map: &Map, start: Point) -> bool {
+        let mut visited = HashSet::new();
+        let mut to_visit = vec![start];
+
+        while let Some(next) = to_visit.pop() {
+            let new = visited.insert(next);
+            if new {
+                for adj in next.adjacent() {
+                    if map.in_bounds(adj) && map.get(adj).kind == TileKind::Floor {
+                        to_visit.push(adj);
+                    }
+                }
+            }
+        }
+
+        for x in 0..SCREEN_WIDTH {
+            for y in 0..SCREEN_HEIGHT {
+                let current = Point::new(x, y);
+                if map.get(current).kind == TileKind::Floor {
+                    if !visited.contains(&current) {
+                        return false;
+                    }
+                }
+            }
+        }
+        true
     }
 
     fn place_items(&mut self) -> Vec<(Point, Item)> {
@@ -131,5 +175,24 @@ impl MapBuilder {
                 );
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::prelude::*;
+
+    #[test]
+    fn check_connectivity() {
+        let mut map = Map::new_filled();
+
+        map.set(Point::new(1, 1), MapTile::floor());
+        map.set(Point::new(1, 2), MapTile::floor());
+        map.set(Point::new(1, 3), MapTile::floor());
+
+        assert!(MapBuilder::check_connectivity(&map, Point::new(1, 1)));
+
+        map.set(Point::new(1, 5), MapTile::floor());
+        assert!(!MapBuilder::check_connectivity(&map, Point::new(1, 1)));
     }
 }

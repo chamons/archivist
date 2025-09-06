@@ -34,6 +34,22 @@ impl Point {
     pub fn zero() -> Self {
         Self { x: 0, y: 0 }
     }
+
+    pub fn adjacent(&self) -> Vec<Point> {
+        [
+            Point::new(-1, 0),
+            Point::new(1, 0),
+            Point::new(0, -1),
+            Point::new(0, 1),
+            Point::new(-1, 1),
+            Point::new(-1, -1),
+            Point::new(1, 1),
+            Point::new(1, -1),
+        ]
+        .map(|offset| offset + *self)
+        .into_iter()
+        .collect()
+    }
 }
 
 impl std::ops::Add for Point {

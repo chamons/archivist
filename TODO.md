@@ -1,4 +1,3 @@
-- Verify room connectivity
 - Exiting level
 - Multiple Levels
 - Add title screen

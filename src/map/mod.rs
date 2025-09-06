@@ -50,7 +50,7 @@ impl Map {
         Self {
             tiles: vec![
                 MapTile {
-                    kind: TileKind::Floor,
+                    kind: TileKind::Wall,
                     known: false,
                 };
                 NUM_TILES
@@ -121,6 +121,19 @@ impl Map {
             },
         );
         visibility
+    }
+
+    #[allow(dead_code)]
+    pub fn dump_map_to_console(&self) {
+        for x in 0..SCREEN_WIDTH {
+            for y in 0..SCREEN_HEIGHT {
+                match self.get(Point::new(x, y)).kind {
+                    TileKind::Floor => print!("."),
+                    TileKind::Wall => print!("#"),
+                }
+            }
+            println!("");
+        }
     }
 }
 
