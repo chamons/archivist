@@ -35,6 +35,7 @@ impl State {
 pub enum DebugRequest {
     Save,
     Load,
+    DumpState,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
@@ -91,6 +92,11 @@ impl State {
                         if let Ok(text) = std::fs::read("dev.save") {
                             *self = serde_json::from_slice(&text).expect("Unable to load dev save");
                         }
+                    }
+                    DebugRequest::DumpState => {
+                        let log = serde_json::to_string_pretty(&self.level)
+                            .expect("Unable to dump state");
+                        std::fs::write("dev.log", log).expect("Unable to write dump");
                     }
                 }
             }

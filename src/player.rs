@@ -31,6 +31,15 @@ pub fn get_player_action(player: &Character, level: &LevelState) -> HandleInputR
         {
             HandleInputResponse::Action(None)
         }
+    } else if is_key_pressed(KeyCode::F3) {
+        #[cfg(debug_assertions)]
+        {
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::DumpState)))
+        }
+        #[cfg(not(debug_assertions))]
+        {
+            HandleInputResponse::Action(None)
+        }
     } else {
         HandleInputResponse::Action(None)
     }
