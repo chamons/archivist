@@ -46,6 +46,11 @@ pub enum RequestedAction {
         target: CharacterId,
         weapon: Weapon,
     },
+    UseEffect {
+        source: CharacterId,
+        target: CharacterId,
+        effect: Effect,
+    },
     Wait(CharacterId),
     #[cfg(debug_assertions)]
     DebugMenu(DebugRequest),
@@ -80,6 +85,13 @@ impl State {
             }
             RequestedAction::Wait(id) => {
                 character_wait(self, id);
+            }
+            RequestedAction::UseEffect {
+                source,
+                target,
+                effect,
+            } => {
+                apply_effect(self, source, target, effect);
             }
             #[cfg(debug_assertions)]
             RequestedAction::DebugMenu(command) => {

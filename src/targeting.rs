@@ -41,15 +41,23 @@ impl BlinkInfo {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct TargetEffect {
+    pub effect: Effect,
+    pub spite: AnimationSpriteKind,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TargetingInfo {
     pub position: Point,
     pub blink: BlinkInfo,
+    pub effect: TargetEffect,
 }
 
 impl TargetingInfo {
-    pub fn new(position: Point) -> Self {
+    pub fn new(position: Point, effect: TargetEffect) -> Self {
         Self {
             position,
+            effect,
             blink: BlinkInfo::Solid(TARGET_FRAME_BLINK),
         }
     }
@@ -75,11 +83,11 @@ impl TargetingInfo {
                         player.position,
                         target.position,
                         level,
-                        Point::new(1, 1),
-                        RequestedAction::WeaponAttack {
+                        self.effect.spite.clone(),
+                        RequestedAction::UseEffect {
                             source: level.get_player().id,
                             target: target.id,
-                            weapon: player.weapon.clone(),
+                            effect: self.effect.effect.clone(),
                         },
                     )))
                 } else {

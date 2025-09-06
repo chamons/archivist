@@ -1,5 +1,6 @@
 - Enemy gets ranged attack
 - Skill Bar + Abilities
+- Max range in targeting
 - Rests
 - Picking up item (?) off floor
 - Exiting level

@@ -12,6 +12,20 @@ pub fn get_player_action(player: &Character, level: &LevelState) -> HandleInputR
     } else if is_key_pressed(KeyCode::T) {
         HandleInputResponse::ChangeActor(CurrentActor::PlayerTargeting(TargetingInfo::new(
             player.position,
+            TargetEffect {
+                effect: Effect::ApplyWeaponDamage {
+                    weapon: player.weapon.clone(),
+                },
+                spite: AnimationSpriteKind::SingleFrame(Point::new(1, 1)),
+            },
+        )))
+    } else if is_key_pressed(KeyCode::F) {
+        HandleInputResponse::ChangeActor(CurrentActor::PlayerTargeting(TargetingInfo::new(
+            player.position,
+            TargetEffect {
+                effect: Effect::ApplyDamage { damage: 2 },
+                spite: AnimationSpriteKind::Directional(Point::new(1, 12)),
+            },
         )))
     } else if is_key_pressed(KeyCode::F1) {
         #[cfg(debug_assertions)]

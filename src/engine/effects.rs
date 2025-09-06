@@ -1,7 +1,9 @@
 use crate::prelude::*;
 
-pub enum Effects {
-    WeaponDamage(),
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
+pub enum Effect {
+    ApplyWeaponDamage { weapon: Weapon },
+    ApplyDamage { damage: i32 },
 }
 
 pub fn move_character(state: &mut State, id: CharacterId, dest: Point) {
@@ -17,16 +19,30 @@ pub fn move_character(state: &mut State, id: CharacterId, dest: Point) {
 }
 
 pub fn weapon_attack(state: &mut State, source: CharacterId, target: CharacterId, weapon: Weapon) {
-    let target_character = state.level.find_character_mut(target);
-    target_character.health.current -= weapon.damage;
+    apply_damage(&mut state.level, target, weapon.damage);
+    spend_ticks(state, source, TICKS_TO_ACT);
+}
+
+fn apply_damage(level: &mut LevelState, target: CharacterId, damage: i32) {
+    let target_character = level.find_character_mut(target);
+    target_character.health.current -= damage;
 
     // We do not remove the player character, death checks will happen after action resolution
     if target_character.health.is_dead() && !target_character.is_player() {
-        state.level.remove_character(target);
+        level.remove_character(target);
     }
-    spend_ticks(state, source, TICKS_TO_ACT);
 }
 
 pub fn character_wait(state: &mut State, id: CharacterId) {
     spend_ticks(state, id, TICKS_TO_ACT);
+}
+
+pub fn apply_effect(state: &mut State, source: CharacterId, target: CharacterId, effect: Effect) {
+    match effect {
+        Effect::ApplyWeaponDamage { weapon } => weapon_attack(state, source, target, weapon),
+        Effect::ApplyDamage { damage } => {
+            apply_damage(&mut state.level, target, damage);
+        }
+    }
+    spend_ticks(state, source, TICKS_TO_ACT);
 }
