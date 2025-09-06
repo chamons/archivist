@@ -2,7 +2,7 @@ use macroquad::{shapes::draw_rectangle, text::draw_text, window::screen_width};
 
 use crate::prelude::*;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LevelState {
     pub map: Map,
     pub characters: Vec<Character>,

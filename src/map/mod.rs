@@ -35,7 +35,7 @@ impl MapTile {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Map {
     tiles: Vec<MapTile>,
 }
@@ -147,7 +147,7 @@ impl Map {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VisibilityMap {
     tiles: Vec<bool>,
 }

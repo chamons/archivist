@@ -1,7 +1,3 @@
-# Phase 0 - Simple one level game
-- Add title screen
-- Add victory screen
-
 # Phase 1 - Multi-runs in a game
 - Screen between levels
 - Heal up and get stronger between levels

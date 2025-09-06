@@ -128,6 +128,8 @@ pub fn ascend_stars(state: &mut State, screen: &mut Screen) {
         if has_runestone {
             screen.push_floating_text("Congrats, you win!");
             spend_ticks(state, player.id, TICKS_TO_ACT);
+
+            state.completed = true;
         } else {
             screen.push_floating_text("Retrieve the Runestone first!");
         }
