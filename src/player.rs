@@ -1,3 +1,5 @@
+use macroquad::input::is_key_down;
+
 use crate::prelude::*;
 
 pub fn get_player_action(
@@ -13,6 +15,10 @@ pub fn get_player_action(
         )))
     } else if is_key_pressed(KeyCode::Period) || is_key_pressed(KeyCode::Kp5) {
         HandleInputResponse::Action(Some(RequestedAction::Wait(player.id)))
+    } else if is_key_pressed(KeyCode::Comma)
+        && (is_key_down(KeyCode::LeftShift) || is_key_down(KeyCode::RightShift))
+    {
+        HandleInputResponse::Action(Some(RequestedAction::Stairs))
     } else if let Some(index) = skill_index_from_number_key_pressed() {
         if let Some(skill) = player.skills.get(index) {
             if skill.cost.can_pay(player) {

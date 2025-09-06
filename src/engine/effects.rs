@@ -119,3 +119,17 @@ pub fn apply_skill(state: &mut State, source: CharacterId, target: CharacterId, 
     }
     spend_ticks(state, source, TICKS_TO_ACT);
 }
+
+pub fn ascend_stars(state: &mut State, screen: &mut Screen) {
+    let player = state.get_player();
+    let on_exit = state.level.map.get(player.position).kind == TileKind::Exit;
+    let has_runestone = player.carried_items.iter().any(|i| i.name == "Runestone");
+    if on_exit {
+        if has_runestone {
+            screen.push_floating_text("Congrats, you win!");
+            spend_ticks(state, player.id, TICKS_TO_ACT);
+        } else {
+            screen.push_floating_text("Retrieve the Runestone first!");
+        }
+    }
+}

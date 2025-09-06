@@ -53,6 +53,7 @@ pub enum RequestedAction {
         skill_name: String,
     },
     Wait(CharacterId),
+    Stairs,
     #[cfg(debug_assertions)]
     DebugMenu(DebugRequest),
 }
@@ -94,6 +95,7 @@ impl State {
             } => {
                 apply_skill(self, source, target, &skill_name);
             }
+            RequestedAction::Stairs => ascend_stars(self, screen),
             #[cfg(debug_assertions)]
             RequestedAction::DebugMenu(command) => {
                 screen.push_floating_text(&format!("Running debug command: {command:?}"));
@@ -204,7 +206,7 @@ pub async fn main() {
 
         state
     } else {
-        screen.push_floating_text("Explore the Dungeon. Cursor keys to move.");
+        screen.push_floating_text("Explore the Dungeon. Find the Runestone and return to ascend.");
 
         State::new()
     };

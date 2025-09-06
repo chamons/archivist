@@ -48,7 +48,7 @@ impl LevelState {
     }
 
     pub fn character_can_enter(&self, point: Point) -> bool {
-        self.map.in_bounds(point) && self.map.get(point).kind == TileKind::Floor
+        self.map.in_bounds(point) && self.map.get(point).can_enter()
     }
 
     pub fn remove_character(&mut self, id: CharacterId) {

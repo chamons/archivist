@@ -39,6 +39,14 @@ impl MapBuilder {
         player.position = builder.rooms[0].center();
         characters.push(player);
 
+        builder.map.set(
+            builder.rooms[0].center(),
+            MapTile {
+                kind: TileKind::Exit,
+                known: true,
+            },
+        );
+
         let items = builder.place_items();
 
         LevelState::new(builder.map, characters, items)
@@ -57,7 +65,7 @@ impl MapBuilder {
             let new = visited.insert(next);
             if new {
                 for adj in next.adjacent() {
-                    if map.in_bounds(adj) && map.get(adj).kind == TileKind::Floor {
+                    if map.in_bounds(adj) && map.get(adj).can_enter() {
                         to_visit.push(adj);
                     }
                 }
@@ -67,7 +75,7 @@ impl MapBuilder {
         for x in 0..SCREEN_WIDTH {
             for y in 0..SCREEN_HEIGHT {
                 let current = Point::new(x, y);
-                if map.get(current).kind == TileKind::Floor {
+                if map.get(current).can_enter() {
                     if !visited.contains(&current) {
                         return false;
                     }

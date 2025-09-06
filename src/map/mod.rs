@@ -10,6 +10,7 @@ const NUM_TILES: usize = (SCREEN_WIDTH * SCREEN_HEIGHT) as usize;
 pub enum TileKind {
     Wall,
     Floor,
+    Exit,
 }
 
 #[derive(Debug, Serialize, Clone, Copy, Deserialize)]
@@ -23,6 +24,13 @@ impl MapTile {
         MapTile {
             kind: TileKind::Floor,
             known: false,
+        }
+    }
+
+    pub fn can_enter(&self) -> bool {
+        match self.kind {
+            TileKind::Wall => false,
+            TileKind::Floor | TileKind::Exit => true,
         }
     }
 }
@@ -87,6 +95,7 @@ impl Map {
                             // For unknown reasons world tiles are x/y flipped
                             TileKind::Wall => Point::new(1, 1),
                             TileKind::Floor => Point::new(4, 1),
+                            TileKind::Exit => Point::new(8, 1),
                         };
                         screen.draw_sprite(TileSet::World, position, sprite_tile);
                         if !visibility.get(position) {
@@ -103,7 +112,7 @@ impl Map {
     }
 
     pub fn can_enter(&self, point: Point) -> bool {
-        self.in_bounds(point) && self.get(point).kind == TileKind::Floor
+        self.in_bounds(point) && self.get(point).can_enter()
     }
 
     pub fn compute_visibility(&self, vision_point: Point) -> VisibilityMap {
@@ -130,6 +139,7 @@ impl Map {
                 match self.get(Point::new(x, y)).kind {
                     TileKind::Floor => print!("."),
                     TileKind::Wall => print!("#"),
+                    TileKind::Exit => print!("<"),
                 }
             }
             println!("");

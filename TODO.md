@@ -1,5 +1,4 @@
 # Phase 0 - Simple one level game
-- Exiting level (with loot)
 - Add title screen
 - Add victory screen
 
@@ -17,9 +16,11 @@
 # Phase 3 Content
 - Some levels should be multi-floor
 - Map Themes
+- Tile variations
 - Lots of abilities, enemies
 
 # Phase 4 - Final Tweaks
+- Fancy tab
 - Sound?
 - Music?
 - Doors and keys?
