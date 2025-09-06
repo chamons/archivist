@@ -43,6 +43,7 @@ impl BlinkInfo {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TargetEffect {
     pub effect: Effect,
+    pub cost: i32,
     pub spite: AnimationSpriteKind,
 }
 
@@ -88,6 +89,7 @@ impl TargetingInfo {
                             source: level.get_player().id,
                             target: target.id,
                             effect: self.effect.effect.clone(),
+                            cost: self.effect.cost,
                         },
                     )))
                 } else {

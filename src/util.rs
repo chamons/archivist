@@ -122,6 +122,30 @@ impl Rect {
     }
 }
 
+pub fn color_for_will(percentage: f32) -> Color {
+    match percentage {
+        x if x > 0.8 => Color {
+            r: 0.28,
+            g: 0.64,
+            b: 1.0,
+            a: 1.0,
+        },
+        x if x > 0.6 => BLUE,
+        x if x > 0.3 => Color {
+            r: 0.0,
+            g: 0.36,
+            b: 0.72,
+            a: 1.0,
+        },
+        _ => Color {
+            r: 0.0,
+            g: 0.28,
+            b: 0.56,
+            a: 1.0,
+        },
+    }
+}
+
 pub fn color_for_health(percentage: f32) -> Color {
     match percentage {
         x if x > 0.8 => GREEN,

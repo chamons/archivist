@@ -17,11 +17,11 @@ pub enum HandleInputResponse {
 }
 
 impl CurrentActor {
-    pub fn act(&mut self, level: &LevelState, screen: &Screen) -> Option<RequestedAction> {
+    pub fn act(&mut self, level: &LevelState, screen: &mut Screen) -> Option<RequestedAction> {
         match self {
             CurrentActor::PlayerStandardAction => {
                 let player = level.get_player();
-                self.process_input_response(get_player_action(player, level))
+                self.process_input_response(get_player_action(player, level, screen))
             }
             CurrentActor::PlayerTargeting(targeting_info) => {
                 let is_current_target_valid = Self::is_current_target_valid(targeting_info, level);
@@ -46,7 +46,7 @@ impl CurrentActor {
         }
     }
 
-    pub fn render(&self, screen: &Screen, level: &LevelState) {
+    pub fn render(&mut self, screen: &Screen, level: &LevelState) {
         match self {
             CurrentActor::PlayerTargeting(targeting_info) => {
                 targeting_info.render(screen, level);

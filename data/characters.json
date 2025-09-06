@@ -2,6 +2,7 @@
     {
         "name": "Player",
         "max_health": 10,
+        "max_will": 5,
         "base_sprite_tile": {
             "x": 1,
             "y": 1
@@ -12,7 +13,12 @@
             "kinds": [
                 "Physical"
             ]
-        }
+        },
+        "skills": [
+            "Shoot",
+            "Fireball",
+            "Heal"
+        ]
     },
     {
         "name": "Bat",
@@ -49,6 +55,7 @@
     {
         "name": "Slime",
         "max_health": 8,
+        "max_will": 2,
         "difficulty": 1,
         "base_sprite_tile": {
             "x": 2,
@@ -65,6 +72,7 @@
     {
         "name": "Spider",
         "max_health": 12,
+        "max_will": 2,
         "difficulty": 1,
         "base_sprite_tile": {
             "x": 7,
@@ -74,7 +82,7 @@
             "name": "Bite",
             "damage": 1,
             "kinds": [
-                "Poison"
+                "Physical"
             ]
         }
     }

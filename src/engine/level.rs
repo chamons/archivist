@@ -1,4 +1,4 @@
-use macroquad::{shapes::draw_rectangle, window::screen_width};
+use macroquad::{shapes::draw_rectangle, text::draw_text, window::screen_width};
 
 use crate::prelude::*;
 
@@ -69,16 +69,18 @@ impl LevelState {
     }
 
     fn render_hud(&self) {
-        let health = self.get_player().health.clone();
+        let player = self.get_player();
+
+        let health = player.health.clone();
         let health_percentage = health.current as f32 / health.max as f32;
 
-        const LIFE_PADDING_X: f32 = 4.0;
-        const LIFE_PADDING_Y: f32 = 2.0;
+        const BAR_PADDING_X: f32 = 4.0;
+        const BAR_PADDING_Y: f32 = 2.0;
         draw_rectangle(0.0, 0.0, screen_width(), 18.0, BLACK);
         draw_rectangle(
-            LIFE_PADDING_X,
-            LIFE_PADDING_Y,
-            (screen_width() - LIFE_PADDING_X * 2.0) * health_percentage,
+            BAR_PADDING_X,
+            BAR_PADDING_Y,
+            (screen_width() - BAR_PADDING_X * 2.0) * health_percentage,
             16.0,
             color_for_health(health_percentage),
         );
@@ -89,6 +91,37 @@ impl LevelState {
             15.0,
             None,
         );
+
+        let will = player.will.clone();
+        let will_percentage = will.current as f32 / will.max as f32;
+
+        draw_rectangle(
+            BAR_PADDING_X,
+            BAR_PADDING_Y + 16.0,
+            (screen_width() - BAR_PADDING_X * 2.0) * will_percentage,
+            16.0,
+            color_for_will(will_percentage),
+        );
+
+        Screen::draw_centered_text(&format!("{}/{}", will.current, will.max), 17, 31.0, None);
+
+        for (i, skill) in player.skills.iter().enumerate() {
+            draw_text(
+                &format!("{} - {}", Self::skill_index_to_key(i), skill.name),
+                screen_width() - 200.0,
+                60.0 + 18.0 * i as f32,
+                22.0,
+                WHITE,
+            );
+        }
+    }
+
+    fn skill_index_to_key(index: usize) -> usize {
+        match index {
+            0..=8 => index + 1,
+            9 => 0,
+            _ => panic!("Unable to map index with more than 10 skills?"),
+        }
     }
 
     pub fn update_visibility(&mut self) {

@@ -97,7 +97,7 @@ impl Screen {
                 Self::draw_centered_text_with_color(
                     &floating_text.text,
                     21,
-                    35.0,
+                    53.0,
                     text_color,
                     Some(background),
                 );

@@ -1,6 +1,7 @@
 use crate::prelude::*;
 
 const CHARACTERS_JSON: &str = include_str!("../data/characters.json");
+const SKILLS_JSON: &str = include_str!("../data/skills.json");
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CharacterInfo {
@@ -9,18 +10,22 @@ pub struct CharacterInfo {
     pub difficulty: Option<u32>,
     pub base_sprite_tile: Point,
     pub weapon: Weapon,
+    #[serde(default)]
+    pub max_will: u32,
+    #[serde(default)]
+    pub skills: Vec<String>,
 }
 
 pub struct Data {
     characters: Vec<CharacterInfo>,
+    skills: Vec<Skill>,
 }
 
 impl Data {
     pub fn load() -> Result<Self, serde_json::Error> {
-        let enemies = serde_json::from_str(CHARACTERS_JSON)?;
-        Ok(Self {
-            characters: enemies,
-        })
+        let skills = serde_json::from_str(SKILLS_JSON)?;
+        let characters = serde_json::from_str(CHARACTERS_JSON)?;
+        Ok(Self { skills, characters })
     }
 
     pub fn get_character(&self, name: &str) -> Character {
@@ -35,9 +40,23 @@ impl Data {
             id: CharacterId::next(),
             ticks: 0,
             health: Health::new(character_info.max_health as i32),
+            will: Will::new(character_info.max_will as i32),
             base_sprite_tile: character_info.base_sprite_tile,
             weapon: character_info.weapon.clone(),
+            skills: character_info
+                .skills
+                .iter()
+                .map(|s| self.get_skill(s))
+                .collect(),
         }
+    }
+
+    pub fn get_skill(&self, name: &str) -> Skill {
+        self.skills
+            .iter()
+            .find(|s| s.name == name)
+            .expect(&format!("Unable to find skill: {}", name))
+            .clone()
     }
 
     pub fn get_enemies_at_level(&self, difficulty: u32) -> Vec<String> {

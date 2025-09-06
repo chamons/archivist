@@ -11,6 +11,7 @@ mod map;
 mod path;
 mod player;
 mod screen;
+mod skills;
 mod state;
 mod targeting;
 mod util;
@@ -29,6 +30,7 @@ pub mod prelude {
     pub use crate::path::*;
     pub use crate::player::*;
     pub use crate::screen::*;
+    pub use crate::skills::*;
     pub use crate::state::*;
     pub use crate::targeting::*;
     pub use crate::util::*;

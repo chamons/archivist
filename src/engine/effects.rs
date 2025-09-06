@@ -2,8 +2,9 @@ use crate::prelude::*;
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub enum Effect {
-    ApplyWeaponDamage { weapon: Weapon },
+    ApplyWeaponDamage,
     ApplyDamage { damage: i32 },
+    Heal { amount: i32 },
 }
 
 pub fn move_character(state: &mut State, id: CharacterId, dest: Point) {
@@ -33,15 +34,34 @@ fn apply_damage(level: &mut LevelState, target: CharacterId, damage: i32) {
     }
 }
 
+fn apply_healing(level: &mut LevelState, target: CharacterId, amount: i32) {
+    let target_character = level.find_character_mut(target);
+    target_character.health.increase(amount);
+}
+
 pub fn character_wait(state: &mut State, id: CharacterId) {
     spend_ticks(state, id, TICKS_TO_ACT);
 }
 
-pub fn apply_effect(state: &mut State, source: CharacterId, target: CharacterId, effect: Effect) {
+pub fn apply_effect(
+    state: &mut State,
+    source: CharacterId,
+    target: CharacterId,
+    effect: Effect,
+    cost: i32,
+) {
+    state.level.find_character_mut(source).will.current -= cost;
+
     match effect {
-        Effect::ApplyWeaponDamage { weapon } => weapon_attack(state, source, target, weapon),
+        Effect::ApplyWeaponDamage => {
+            let weapon = state.level.find_character(source).weapon.clone();
+            weapon_attack(state, source, target, weapon)
+        }
         Effect::ApplyDamage { damage } => {
             apply_damage(&mut state.level, target, damage);
+        }
+        Effect::Heal { amount } => {
+            apply_healing(&mut state.level, target, amount);
         }
     }
     spend_ticks(state, source, TICKS_TO_ACT);

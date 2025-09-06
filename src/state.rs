@@ -50,6 +50,7 @@ pub enum RequestedAction {
         source: CharacterId,
         target: CharacterId,
         effect: Effect,
+        cost: i32,
     },
     Wait(CharacterId),
     #[cfg(debug_assertions)]
@@ -90,8 +91,9 @@ impl State {
                 source,
                 target,
                 effect,
+                cost,
             } => {
-                apply_effect(self, source, target, effect);
+                apply_effect(self, source, target, effect, cost);
             }
             #[cfg(debug_assertions)]
             RequestedAction::DebugMenu(command) => {
@@ -166,7 +168,7 @@ pub async fn main() {
         clear_background(BLACK);
 
         loop {
-            if let Some(action) = state.current_actor.act(&state.level, &screen) {
+            if let Some(action) = state.current_actor.act(&state.level, &mut screen) {
                 state.process_action(action, &mut screen);
             }
 

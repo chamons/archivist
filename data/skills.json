@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Shoot",
+        "cost": 1,
+        "effect": "ApplyWeaponDamage",
+        "targeting": {
+            "Ranged": {
+                "SingleFrame": {
+                    "x": 1,
+                    "y": 1
+                }
+            }
+        }
+    },
+    {
+        "name": "Fireball",
+        "cost": 2,
+        "effect": {
+            "ApplyDamage": {
+                "damage": 2
+            }
+        },
+        "targeting": {
+            "Ranged": {
+                "Directional": {
+                    "x": 1,
+                    "y": 12
+                }
+            }
+        }
+    },
+    {
+        "name": "Heal",
+        "cost": 2,
+        "effect": {
+            "Heal": {
+                "amount": 5
+            }
+        },
+        "targeting": "Caster"
+    }
+]
