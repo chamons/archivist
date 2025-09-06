@@ -6,14 +6,16 @@ use crate::prelude::*;
 pub struct LevelState {
     pub map: Map,
     pub characters: Vec<Character>,
+    pub items: Vec<(Point, Item)>,
     visibility: VisibilityMap,
 }
 
 impl LevelState {
-    pub fn new(map: Map, characters: Vec<Character>) -> Self {
+    pub fn new(map: Map, characters: Vec<Character>, items: Vec<(Point, Item)>) -> Self {
         let mut this = Self {
             map,
             characters,
+            items,
             visibility: VisibilityMap::new(),
         };
         this.update_visibility();
@@ -55,6 +57,12 @@ impl LevelState {
 
     pub fn render(&self, screen: &mut Screen) {
         self.map.render(screen, &self.visibility);
+
+        for (item_position, item) in &self.items {
+            if screen.camera.is_in_view(*item_position) && self.visibility.get(*item_position) {
+                item.render(screen, *item_position);
+            }
+        }
 
         for character in &self.characters {
             if screen.camera.is_in_view(character.position)
@@ -105,7 +113,17 @@ impl LevelState {
 
         Screen::draw_centered_text(&format!("{}/{}", will.current, will.max), 17, 31.0, None);
 
+        let offset = self.draw_skills();
+        self.draw_items(offset);
+    }
+
+    fn draw_skills(&self) -> f32 {
+        let player = self.get_player();
+        let mut offset = 60.0;
+
         for (i, skill) in player.skills.iter().enumerate() {
+            offset += 18.0;
+
             let cost = match &skill.cost {
                 SkillCost::Will(cost) => cost.to_string(),
                 SkillCost::Charges { remaining, total } => format!("{remaining}/{total}"),
@@ -118,9 +136,29 @@ impl LevelState {
             draw_text(
                 &format!("{} - {} ({cost})", Self::skill_index_to_key(i), skill.name),
                 screen_width() - 250.0,
-                60.0 + 18.0 * i as f32,
+                offset,
                 22.0,
                 color,
+            );
+        }
+        offset + 35.0
+    }
+
+    fn draw_items(&self, mut offset: f32) {
+        let player = self.get_player();
+
+        if !player.carried_items.is_empty() {
+            draw_text("Inventory:", screen_width() - 250.0, offset, 22.0, WHITE);
+            offset += 22.0;
+        }
+
+        for (i, item) in player.carried_items.iter().enumerate() {
+            draw_text(
+                &item.name,
+                screen_width() - 230.0,
+                offset + 18.0 * i as f32,
+                22.0,
+                WHITE,
             );
         }
     }

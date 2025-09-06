@@ -24,7 +24,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 2
+                "damage": 6
             }
         },
         "targeting": {
@@ -55,8 +55,8 @@
         "name": "Health Potion",
         "cost": {
             "Charges": {
-                "remaining": 2,
-                "total": 2
+                "remaining": 3,
+                "total": 3
             }
         },
         "effect": {

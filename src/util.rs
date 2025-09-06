@@ -210,6 +210,6 @@ pub fn create_test_map() -> (CharacterId, LevelState) {
             },
         );
     }
-    let level = LevelState::new(map, vec![player, bat]);
+    let level = LevelState::new(map, vec![player, bat], vec![]);
     (id, level)
 }

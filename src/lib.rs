@@ -7,6 +7,7 @@ mod damage;
 mod data;
 mod engine;
 mod health;
+mod items;
 mod map;
 mod path;
 mod player;
@@ -26,6 +27,7 @@ pub mod prelude {
     pub use crate::data::*;
     pub use crate::engine::*;
     pub use crate::health::*;
+    pub use crate::items::*;
     pub use crate::map::*;
     pub use crate::path::*;
     pub use crate::player::*;

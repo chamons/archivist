@@ -1,5 +1,6 @@
 use std::cmp::{max, min};
 
+use adam_fov_rs::GridPoint;
 use rand::Rng;
 
 use crate::{prelude::*, util::RandExt};
@@ -27,7 +28,23 @@ impl MapBuilder {
         player.position = builder.rooms[0].center();
         characters.push(player);
 
-        LevelState::new(builder.map, characters)
+        let items = builder.place_items();
+
+        LevelState::new(builder.map, characters, items)
+    }
+
+    fn place_items(&mut self) -> Vec<(Point, Item)> {
+        let start = self.rooms[0].center();
+
+        let farthest = self
+            .rooms
+            .iter()
+            .max_by_key(|r| r.center().king_dist(start));
+
+        vec![(
+            farthest.expect("Find farthest room").center(),
+            self.data.get_item("Runestone"),
+        )]
     }
 
     fn fill(&mut self, tile: TileKind) {

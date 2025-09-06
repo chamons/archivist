@@ -7,15 +7,31 @@ pub enum Effect {
     Heal { amount: i32 },
 }
 
-pub fn move_character(state: &mut State, id: CharacterId, dest: Point) {
+pub fn move_character(state: &mut State, id: CharacterId, dest: Point, screen: &mut Screen) {
     if state.level.find_character_at_position(dest).is_none() && state.level.map.can_enter(dest) {
         let actor = state.level.find_character_mut(id);
         actor.position = dest;
         if actor.is_player() {
             state.level.update_visibility();
+            pickup_any_items(state, id, dest, screen);
         }
 
         spend_ticks(state, id, TICKS_MOVEMENT);
+    }
+}
+
+fn pickup_any_items(state: &mut State, id: CharacterId, dest: Point, screen: &mut Screen) {
+    let items_at_new_position: Vec<Item> = state
+        .level
+        .items
+        .extract_if(.., |(position, _)| *position == dest)
+        .map(|(_, item)| item)
+        .collect();
+
+    let actor = state.level.find_character_mut(id);
+    for item in items_at_new_position {
+        screen.push_floating_text(&format!("Picked up {}", item.name));
+        actor.carried_items.push(item);
     }
 }
 

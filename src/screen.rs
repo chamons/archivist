@@ -126,6 +126,27 @@ impl Screen {
         );
     }
 
+    pub fn draw_tiny_sprite(&self, set: TileSet, position: Point, tile: Point) {
+        let texture = self.get_texture(set);
+        let screen_x: f32 = (position.x - self.camera.left_x) as f32;
+        let screen_y: f32 = (position.y - self.camera.top_y) as f32;
+        draw_texture_ex(
+            texture,
+            4.0 + 24.0 * screen_x,
+            4.0 + 24.0 * screen_y,
+            WHITE,
+            DrawTextureParams {
+                source: Some(MRect::new(
+                    tile.x as f32 * 16.0,
+                    tile.y as f32 * 16.0,
+                    16.0,
+                    16.0,
+                )),
+                ..Default::default()
+            },
+        );
+    }
+
     pub fn draw_fog(&self, position: Point) {
         let screen_x: f32 = (position.x - self.camera.left_x) as f32;
         let screen_y: f32 = (position.y - self.camera.top_y) as f32;

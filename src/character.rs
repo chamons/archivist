@@ -25,6 +25,7 @@ pub struct Character {
     pub base_sprite_tile: Point,
     pub weapon: Weapon,
     pub skills: Vec<Skill>,
+    pub carried_items: Vec<Item>,
 }
 
 impl Character {

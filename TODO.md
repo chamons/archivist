@@ -1,4 +1,4 @@
-- Picking up item (?) off floor
+- Verify room connectivity
 - Exiting level
 - Multiple Levels
 - Add title screen
@@ -14,4 +14,5 @@
     - Diffusion Limited
     - Wave collapse
 - Map Themes
+- Doors and keys?
 - Package for distribution

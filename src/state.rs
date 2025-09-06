@@ -74,7 +74,7 @@ impl State {
     fn process_action(&mut self, action: RequestedAction, screen: &mut Screen) {
         match action {
             RequestedAction::Move(id, dest) => {
-                move_character(self, id, dest);
+                move_character(self, id, dest, screen);
             }
             RequestedAction::WeaponAttack {
                 source,

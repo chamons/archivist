@@ -2,6 +2,7 @@ use crate::prelude::*;
 
 const CHARACTERS_JSON: &str = include_str!("../data/characters.json");
 const SKILLS_JSON: &str = include_str!("../data/skills.json");
+const ITEMS_JSON: &str = include_str!("../data/items.json");
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CharacterInfo {
@@ -19,13 +20,19 @@ pub struct CharacterInfo {
 pub struct Data {
     characters: Vec<CharacterInfo>,
     skills: Vec<Skill>,
+    items: Vec<Item>,
 }
 
 impl Data {
     pub fn load() -> Result<Self, serde_json::Error> {
         let skills = serde_json::from_str(SKILLS_JSON)?;
         let characters = serde_json::from_str(CHARACTERS_JSON)?;
-        Ok(Self { skills, characters })
+        let items = serde_json::from_str(ITEMS_JSON)?;
+        Ok(Self {
+            skills,
+            characters,
+            items,
+        })
     }
 
     pub fn get_character(&self, name: &str) -> Character {
@@ -48,6 +55,7 @@ impl Data {
                 .iter()
                 .map(|s| self.get_skill(s))
                 .collect(),
+            carried_items: vec![],
         }
     }
 
@@ -56,6 +64,14 @@ impl Data {
             .iter()
             .find(|s| s.name == name)
             .expect(&format!("Unable to find skill: {}", name))
+            .clone()
+    }
+
+    pub fn get_item(&self, name: &str) -> Item {
+        self.items
+            .iter()
+            .find(|i| i.name == name)
+            .expect(&format!("Unable to find item: {}", name))
             .clone()
     }
 
