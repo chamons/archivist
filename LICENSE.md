@@ -23,4 +23,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-The art in the resource folder is a paid asset and is covered under the license found at https://www.oryxdesignlab.com/license
+The art in the resource folder is a paid asset and is covered under the license found at https://www.oryxdesignlab.com/license along with other private paid content.
