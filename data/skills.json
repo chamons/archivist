@@ -1,7 +1,9 @@
 [
     {
         "name": "Shoot",
-        "cost": 1,
+        "cost": {
+            "Will": 1
+        },
         "effect": "ApplyWeaponDamage",
         "targeting": {
             "Ranged": {
@@ -17,7 +19,9 @@
     },
     {
         "name": "Fireball",
-        "cost": 2,
+        "cost": {
+            "Will": 2
+        },
         "effect": {
             "ApplyDamage": {
                 "damage": 2
@@ -37,7 +41,24 @@
     },
     {
         "name": "Heal",
-        "cost": 2,
+        "cost": {
+            "Will": 2
+        },
+        "effect": {
+            "Heal": {
+                "amount": 5
+            }
+        },
+        "targeting": "Caster"
+    },
+    {
+        "name": "Health Potion",
+        "cost": {
+            "Charges": {
+                "remaining": 2,
+                "total": 2
+            }
+        },
         "effect": {
             "Heal": {
                 "amount": 5
@@ -47,7 +68,9 @@
     },
     {
         "name": "Spit",
-        "cost": 1,
+        "cost": {
+            "Will": 1
+        },
         "effect": {
             "ApplyDamage": {
                 "damage": 2

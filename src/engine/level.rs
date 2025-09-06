@@ -106,12 +106,21 @@ impl LevelState {
         Screen::draw_centered_text(&format!("{}/{}", will.current, will.max), 17, 31.0, None);
 
         for (i, skill) in player.skills.iter().enumerate() {
+            let cost = match &skill.cost {
+                SkillCost::Will(cost) => cost.to_string(),
+                SkillCost::Charges { remaining, total } => format!("{remaining}/{total}"),
+            };
+            let color = if skill.cost.can_pay(player) {
+                WHITE
+            } else {
+                RED
+            };
             draw_text(
-                &format!("{} - {}", Self::skill_index_to_key(i), skill.name),
-                screen_width() - 200.0,
+                &format!("{} - {} ({cost})", Self::skill_index_to_key(i), skill.name),
+                screen_width() - 250.0,
                 60.0 + 18.0 * i as f32,
                 22.0,
-                WHITE,
+                color,
             );
         }
     }

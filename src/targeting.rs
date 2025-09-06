@@ -41,9 +41,8 @@ impl BlinkInfo {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct TargetEffect {
-    pub effect: Effect,
-    pub cost: i32,
+pub struct TargetSkill {
+    pub skill_name: String,
     pub spite: AnimationSpriteKind,
 }
 
@@ -52,16 +51,16 @@ pub struct TargetingInfo {
     pub source_position: Point,
     pub position: Point,
     pub blink: BlinkInfo,
-    pub effect: TargetEffect,
+    pub target_skill: TargetSkill,
     pub max_range: u32,
 }
 
 impl TargetingInfo {
-    pub fn new(position: Point, effect: TargetEffect, max_range: u32) -> Self {
+    pub fn new(position: Point, target_skill: TargetSkill, max_range: u32) -> Self {
         Self {
             position,
             source_position: position,
-            effect,
+            target_skill,
             blink: BlinkInfo::Solid(TARGET_FRAME_BLINK),
             max_range,
         }
@@ -88,12 +87,11 @@ impl TargetingInfo {
                         player.position,
                         target.position,
                         level,
-                        self.effect.spite.clone(),
-                        RequestedAction::UseEffect {
+                        self.target_skill.spite.clone(),
+                        RequestedAction::UseSkill {
                             source: level.get_player().id,
                             target: target.id,
-                            effect: self.effect.effect.clone(),
-                            cost: self.effect.cost,
+                            skill_name: self.target_skill.skill_name.clone(),
                         },
                     )))
                 } else {

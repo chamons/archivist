@@ -46,11 +46,10 @@ pub enum RequestedAction {
         target: CharacterId,
         weapon: Weapon,
     },
-    UseEffect {
+    UseSkill {
         source: CharacterId,
         target: CharacterId,
-        effect: Effect,
-        cost: i32,
+        skill_name: String,
     },
     Wait(CharacterId),
     #[cfg(debug_assertions)]
@@ -87,13 +86,12 @@ impl State {
             RequestedAction::Wait(id) => {
                 character_wait(self, id, screen);
             }
-            RequestedAction::UseEffect {
+            RequestedAction::UseSkill {
                 source,
                 target,
-                effect,
-                cost,
+                skill_name,
             } => {
-                apply_effect(self, source, target, effect, cost);
+                apply_skill(self, source, target, &skill_name);
             }
             #[cfg(debug_assertions)]
             RequestedAction::DebugMenu(command) => {

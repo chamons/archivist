@@ -15,25 +15,23 @@ pub fn get_player_action(
         HandleInputResponse::Action(Some(RequestedAction::Wait(player.id)))
     } else if let Some(index) = skill_index_from_number_key_pressed() {
         if let Some(skill) = player.skills.get(index) {
-            if player.will.has_enough(skill.cost) {
+            if skill.cost.can_pay(player) {
                 screen.push_floating_text(&format!("Targeting {}", skill.name));
                 match &skill.targeting {
                     SkillTargeting::Caster => {
-                        HandleInputResponse::Action(Some(RequestedAction::UseEffect {
+                        HandleInputResponse::Action(Some(RequestedAction::UseSkill {
                             source: player.id,
                             target: player.id,
-                            effect: skill.effect.clone(),
-                            cost: skill.cost,
+                            skill_name: skill.name.clone(),
                         }))
                     }
                     SkillTargeting::Ranged { max_range, sprite } => {
                         HandleInputResponse::ChangeActor(CurrentActor::PlayerTargeting(
                             TargetingInfo::new(
                                 player.position,
-                                TargetEffect {
-                                    effect: skill.effect.clone(),
+                                TargetSkill {
                                     spite: sprite.clone(),
-                                    cost: skill.cost,
+                                    skill_name: skill.name.clone(),
                                 },
                                 *max_range,
                             ),
@@ -41,7 +39,11 @@ pub fn get_player_action(
                     }
                 }
             } else {
-                screen.push_floating_text(&format!("Not enough will to use {}", skill.name));
+                screen.push_floating_text(&format!(
+                    "Not enough {} to use {}",
+                    skill.cost.term(),
+                    skill.name
+                ));
                 HandleInputResponse::Action(None)
             }
         } else {

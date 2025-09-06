@@ -21,16 +21,15 @@ pub fn check_skill_usage(level: &LevelState, id: CharacterId) -> Option<HandleIn
     }
 
     for skill in &enemy.skills {
-        if enemy.will.has_enough(skill.cost) {
+        if skill.cost.can_pay(enemy) {
             match &skill.targeting {
                 SkillTargeting::Caster => {
                     if wants_caster_effect(&skill.effect, enemy) {
                         return Some(HandleInputResponse::Action(Some(
-                            RequestedAction::UseEffect {
+                            RequestedAction::UseSkill {
                                 source: id,
                                 target: id,
-                                effect: skill.effect.clone(),
-                                cost: skill.cost,
+                                skill_name: skill.name.clone(),
                             },
                         )));
                     }
@@ -45,11 +44,10 @@ pub fn check_skill_usage(level: &LevelState, id: CharacterId) -> Option<HandleIn
                                 target_position,
                                 level,
                                 sprite.clone(),
-                                RequestedAction::UseEffect {
+                                RequestedAction::UseSkill {
                                     source: id,
                                     target: target_id,
-                                    effect: skill.effect.clone(),
-                                    cost: skill.cost,
+                                    skill_name: skill.name.clone(),
                                 },
                             ),
                         )));

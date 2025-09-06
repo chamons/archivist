@@ -77,16 +77,19 @@ fn is_hostile_nearby(state: &State, id: CharacterId) -> bool {
     }
 }
 
-pub fn apply_effect(
-    state: &mut State,
-    source: CharacterId,
-    target: CharacterId,
-    effect: Effect,
-    cost: i32,
-) {
-    state.level.find_character_mut(source).will.current -= cost;
+pub fn apply_skill(state: &mut State, source: CharacterId, target: CharacterId, skill_name: &str) {
+    let actor = state.level.find_character_mut(source);
+    let skill = actor
+        .skills
+        .iter_mut()
+        .find(|s| s.name == skill_name)
+        .expect("Unable to find requested skill");
+    match &mut skill.cost {
+        SkillCost::Will(cost) => actor.will.current -= *cost,
+        SkillCost::Charges { remaining, .. } => *remaining -= 1,
+    }
 
-    match effect {
+    match skill.effect {
         Effect::ApplyWeaponDamage => {
             let weapon = state.level.find_character(source).weapon.clone();
             weapon_attack(state, source, target, weapon)
