@@ -1,8 +1,8 @@
 # Phase 1 - Multi-runs in a game
+- Generate drunken walks cave map
 - Screen between levels
 - Heal up and get stronger between levels
 - More difficult monsters 
-- Generate drunken walks cave map
 - Win three maps to win game
 
 # Phase 2 - QOL

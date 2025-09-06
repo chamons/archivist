@@ -25,7 +25,7 @@ impl State {
         let mut rng = StdRng::seed_from_u64(seed);
         debug!("Generating map with seed {seed}");
 
-        let level = MapBuilder::build(&mut rng);
+        let level = RoomsMapBuilder::build(&mut rng);
 
         Self {
             level,

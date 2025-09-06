@@ -1,22 +1,19 @@
-use std::{
-    cmp::{max, min},
-    collections::HashSet,
-};
+use std::cmp::{max, min};
 
 use adam_fov_rs::GridPoint;
 use rand::Rng;
 
 use crate::{prelude::*, util::RandExt};
 
-pub struct MapBuilder {
+pub struct RoomsMapBuilder {
     map: Map,
     rooms: Vec<Rect>,
     data: Data,
 }
 
-impl MapBuilder {
+impl RoomsMapBuilder {
     pub fn build(rng: &mut StdRng) -> LevelState {
-        let mut builder = MapBuilder {
+        let mut builder = RoomsMapBuilder {
             map: Map::new(),
             rooms: vec![],
             data: Data::load().expect("Able to load data"),
@@ -26,7 +23,7 @@ impl MapBuilder {
             builder.fill(TileKind::Wall);
             builder.build_random_rooms(rng, 20);
             builder.build_corridors(rng);
-            if Self::check_connectivity(&builder.map, builder.rooms[0].center()) {
+            if check_map_connectivity(&builder.map, builder.rooms[0].center()) {
                 break;
             } else {
                 builder.clear();
@@ -55,34 +52,6 @@ impl MapBuilder {
     fn clear(&mut self) {
         self.map = Map::new();
         self.rooms = vec![];
-    }
-
-    fn check_connectivity(map: &Map, start: Point) -> bool {
-        let mut visited = HashSet::new();
-        let mut to_visit = vec![start];
-
-        while let Some(next) = to_visit.pop() {
-            let new = visited.insert(next);
-            if new {
-                for adj in next.adjacent() {
-                    if map.in_bounds(adj) && map.get(adj).can_enter() {
-                        to_visit.push(adj);
-                    }
-                }
-            }
-        }
-
-        for x in 0..SCREEN_WIDTH {
-            for y in 0..SCREEN_HEIGHT {
-                let current = Point::new(x, y);
-                if map.get(current).can_enter() {
-                    if !visited.contains(&current) {
-                        return false;
-                    }
-                }
-            }
-        }
-        true
     }
 
     fn place_items(&mut self) -> Vec<(Point, Item)> {
@@ -183,24 +152,5 @@ impl MapBuilder {
                 );
             }
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::prelude::*;
-
-    #[test]
-    fn check_connectivity() {
-        let mut map = Map::new_filled();
-
-        map.set(Point::new(1, 1), MapTile::floor());
-        map.set(Point::new(1, 2), MapTile::floor());
-        map.set(Point::new(1, 3), MapTile::floor());
-
-        assert!(MapBuilder::check_connectivity(&map, Point::new(1, 1)));
-
-        map.set(Point::new(1, 5), MapTile::floor());
-        assert!(!MapBuilder::check_connectivity(&map, Point::new(1, 1)));
     }
 }
