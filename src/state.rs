@@ -1,7 +1,6 @@
 use std::path::PathBuf;
 
 use directories::ProjectDirs;
-use log::debug;
 use macroquad::{
     input::{get_keys_pressed, is_key_down, is_quit_requested, prevent_quit},
     shapes::draw_rectangle,
@@ -21,13 +20,7 @@ pub struct State {
 
 impl State {
     pub fn new() -> State {
-        let seed = rand::rng().next_u64();
-        let mut rng = StdRng::seed_from_u64(seed);
-        debug!("Generating map with seed {seed}");
-
-        let level = CellsMapBuilder::build(&mut rng);
-
-        level.map.dump_map_to_console();
+        let level = generate_random_map();
 
         Self {
             level,

@@ -60,7 +60,6 @@ impl Map {
         }
     }
 
-    #[cfg(test)]
     pub fn new_filled() -> Self {
         Self {
             tiles: vec![

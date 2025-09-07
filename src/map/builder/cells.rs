@@ -1,4 +1,3 @@
-use adam_fov_rs::GridPoint;
 use rand::Rng;
 
 use crate::prelude::*;
@@ -15,13 +14,22 @@ impl CellsMapBuilder {
             data: Data::load().expect("Able to load data"),
         };
 
-        builder.randomize_map(rng);
-        for _ in 0..10 {
-            builder.iterate();
-        }
-        builder.fix_border();
+        loop {
+            builder.randomize_map(rng);
+            for _ in 0..10 {
+                builder.iterate();
+            }
+            fix_map_border(&mut builder.map);
 
-        let center = builder.find_center();
+            let center = find_map_center(&builder.map);
+            if check_map_connectivity(&builder.map, center) {
+                break;
+            } else {
+                builder.clear();
+            }
+        }
+
+        let center = find_map_center(&builder.map);
 
         let mut characters =
             spawn_monster_randomly(rng, &builder.map, 50, center, 1, &builder.data);
@@ -32,17 +40,8 @@ impl CellsMapBuilder {
         LevelState::new(builder.map, characters, items)
     }
 
-    fn fix_border(&mut self) {
-        for x in 0..SCREEN_WIDTH {
-            self.map.set(Point::new(x, 0), MapTile::wall());
-            self.map
-                .set(Point::new(x, SCREEN_HEIGHT - 1), MapTile::wall());
-        }
-        for y in 0..SCREEN_HEIGHT {
-            self.map.set(Point::new(0, y), MapTile::wall());
-            self.map
-                .set(Point::new(SCREEN_WIDTH - 1, y), MapTile::wall());
-        }
+    fn clear(&mut self) {
+        self.map = Map::new();
     }
 
     fn iterate(&mut self) {
@@ -59,15 +58,6 @@ impl CellsMapBuilder {
             }
         }
         self.map = next_map;
-    }
-
-    fn find_center(&self) -> Point {
-        let center = Point::new(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-        let floors = find_all_floors(&self.map);
-        floors
-            .into_iter()
-            .min_by_key(|p| p.king_dist(center))
-            .expect("One should be closest")
     }
 
     fn neighbors(&self, position: Point) -> usize {

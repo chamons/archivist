@@ -1,4 +1,6 @@
 mod utils;
+use log::debug;
+use rand::Rng;
 pub use utils::*;
 
 mod rooms;
@@ -7,10 +9,28 @@ pub use rooms::*;
 mod cells;
 pub use cells::*;
 
+mod drunk_digger;
+pub use drunk_digger::*;
+
 use crate::prelude::*;
 use adam_fov_rs::GridPoint;
 use rand::prelude::IteratorRandom;
 use rand::rngs::StdRng;
+
+pub fn generate_random_map() -> LevelState {
+    let seed = rand::rng().next_u64();
+    let mut rng = StdRng::seed_from_u64(seed);
+    debug!("Generating map with seed {seed}");
+
+    let level = match rng.random_range(0..3) {
+        0 => RoomsMapBuilder::build(&mut rng),
+        1 => CellsMapBuilder::build(&mut rng),
+        _ => DrunkDigger::build(&mut rng),
+    };
+
+    level.map.dump_map_to_console();
+    level
+}
 
 pub fn setup_entrance(characters: &mut Vec<Character>, map: &mut Map, data: &Data, center: Point) {
     let mut player = data.get_character("Player");
@@ -73,4 +93,24 @@ pub fn spawn_rune_far_away(map: &Map, center: Point, data: &Data) -> Vec<(Point,
         .expect("One should be closest");
 
     vec![(farthest, data.get_item("Runestone"))]
+}
+
+pub fn fix_map_border(map: &mut Map) {
+    for x in 0..SCREEN_WIDTH {
+        map.set(Point::new(x, 0), MapTile::wall());
+        map.set(Point::new(x, SCREEN_HEIGHT - 1), MapTile::wall());
+    }
+    for y in 0..SCREEN_HEIGHT {
+        map.set(Point::new(0, y), MapTile::wall());
+        map.set(Point::new(SCREEN_WIDTH - 1, y), MapTile::wall());
+    }
+}
+
+pub fn find_map_center(map: &Map) -> Point {
+    let center = Point::new(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    let floors = find_all_floors(map);
+    floors
+        .into_iter()
+        .min_by_key(|p| p.king_dist(center))
+        .expect("One should be closest")
 }
