@@ -216,7 +216,7 @@ pub fn create_test_map() -> (CharacterId, LevelState) {
     bat.position = Point::new(1, 5);
     let id = bat.id;
 
-    let mut map = Map::new_filled();
+    let mut map = Map::new_filled(MapTheme::Stone);
     for y in 1..6 {
         map.set(
             Point::new(1, y),

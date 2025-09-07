@@ -3,8 +3,93 @@ use crate::prelude::*;
 mod builder;
 use adam_fov_rs::compute_fov;
 pub use builder::*;
+use rand::{
+    Rng,
+    distr::{Distribution, StandardUniform},
+};
 
 const NUM_TILES: usize = (SCREEN_WIDTH * SCREEN_HEIGHT) as usize;
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum MapTheme {
+    Stone,
+    BrownStone,
+    Sand,
+    GreenMetal,
+    BlueMetal,
+    GreyMetal,
+    Rivets,
+    Hedge,
+    Bones,
+}
+
+impl Distribution<MapTheme> for StandardUniform {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> MapTheme {
+        match rng.random_range(0..=9) {
+            0 => MapTheme::Stone,
+            1 => MapTheme::BrownStone,
+            2 => MapTheme::Sand,
+            3 => MapTheme::GreenMetal,
+            4 => MapTheme::BlueMetal,
+            5 => MapTheme::GreyMetal,
+            6 => MapTheme::Rivets,
+            7 => MapTheme::Hedge,
+            _ => MapTheme::Bones,
+        }
+    }
+}
+
+impl MapTheme {
+    pub fn get_sprite(&self, tile: TileKind) -> Point {
+        match self {
+            MapTheme::Stone => match tile {
+                TileKind::Wall => Point::new(1, 1),
+                TileKind::Floor => Point::new(4, 1),
+                TileKind::Exit => Point::new(8, 1),
+            },
+            MapTheme::BrownStone => match tile {
+                TileKind::Wall => Point::new(1, 3),
+                TileKind::Floor => Point::new(4, 3),
+                TileKind::Exit => Point::new(8, 3),
+            },
+            MapTheme::Sand => match tile {
+                TileKind::Wall => Point::new(1, 9),
+                TileKind::Floor => Point::new(4, 9),
+                TileKind::Exit => Point::new(8, 9),
+            },
+            MapTheme::GreenMetal => match tile {
+                TileKind::Wall => Point::new(1, 6),
+                TileKind::Floor => Point::new(4, 6),
+                TileKind::Exit => Point::new(8, 6),
+            },
+            MapTheme::BlueMetal => match tile {
+                TileKind::Wall => Point::new(1, 7),
+                TileKind::Floor => Point::new(4, 7),
+                TileKind::Exit => Point::new(8, 7),
+            },
+            MapTheme::GreyMetal => match tile {
+                TileKind::Wall => Point::new(1, 8),
+                TileKind::Floor => Point::new(4, 8),
+                TileKind::Exit => Point::new(8, 8),
+            },
+            MapTheme::Rivets => match tile {
+                TileKind::Wall => Point::new(1, 11),
+                TileKind::Floor => Point::new(4, 11),
+                TileKind::Exit => Point::new(8, 11),
+            },
+            MapTheme::Hedge => match tile {
+                TileKind::Wall => Point::new(1, 15),
+                TileKind::Floor => Point::new(4, 15),
+                TileKind::Exit => Point::new(8, 15),
+            },
+            MapTheme::Bones => match tile {
+                TileKind::Wall => Point::new(1, 16),
+                TileKind::Floor => Point::new(4, 16),
+                TileKind::Exit => Point::new(8, 16),
+            },
+        }
+    }
+}
 
 #[derive(Copy, Clone, PartialEq, Debug, Serialize, Deserialize)]
 pub enum TileKind {
@@ -45,10 +130,11 @@ impl MapTile {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Map {
     tiles: Vec<MapTile>,
+    theme: MapTheme,
 }
 
 impl Map {
-    pub fn new() -> Self {
+    pub fn new(theme: MapTheme) -> Self {
         Self {
             tiles: vec![
                 MapTile {
@@ -57,10 +143,11 @@ impl Map {
                 };
                 NUM_TILES
             ],
+            theme,
         }
     }
 
-    pub fn new_filled() -> Self {
+    pub fn new_filled(theme: MapTheme) -> Self {
         Self {
             tiles: vec![
                 MapTile {
@@ -69,6 +156,7 @@ impl Map {
                 };
                 NUM_TILES
             ],
+            theme,
         }
     }
 
@@ -97,12 +185,7 @@ impl Map {
                 if self.in_bounds(position) {
                     let map_tile = self.get(position);
                     if map_tile.known {
-                        let sprite_tile = match map_tile.kind {
-                            // For unknown reasons world tiles are x/y flipped
-                            TileKind::Wall => Point::new(1, 1),
-                            TileKind::Floor => Point::new(4, 1),
-                            TileKind::Exit => Point::new(8, 1),
-                        };
+                        let sprite_tile = self.theme.get_sprite(map_tile.kind);
                         screen.draw_sprite(TileSet::World, position, sprite_tile);
                         if !visibility.get(position) {
                             screen.draw_fog(position);
@@ -180,7 +263,7 @@ mod tests {
 
     #[test]
     fn test_visibility() {
-        let map = Map::new();
+        let map = Map::new(MapTheme::Stone);
         let v = map.compute_visibility(Point::new(5, 5));
         for y in 6..14 {
             assert!(v.get(Point::new(5, y)));

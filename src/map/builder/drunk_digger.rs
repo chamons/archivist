@@ -10,7 +10,7 @@ pub struct DrunkDigger {
 impl DrunkDigger {
     pub fn build(rng: &mut StdRng) -> LevelState {
         let mut builder = DrunkDigger {
-            map: Map::new_filled(),
+            map: Map::new_filled(rng.random()),
             data: Data::load().expect("Able to load data"),
         };
 

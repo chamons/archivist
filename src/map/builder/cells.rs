@@ -10,7 +10,7 @@ pub struct CellsMapBuilder {
 impl CellsMapBuilder {
     pub fn build(rng: &mut StdRng) -> LevelState {
         let mut builder = CellsMapBuilder {
-            map: Map::new(),
+            map: Map::new(rng.random()),
             data: Data::load().expect("Able to load data"),
         };
 
@@ -41,7 +41,7 @@ impl CellsMapBuilder {
     }
 
     fn clear(&mut self) {
-        self.map = Map::new();
+        self.map = Map::new(self.map.theme);
     }
 
     fn iterate(&mut self) {

@@ -1,5 +1,5 @@
 # Phase 1 - Multi-runs in a game
-- Generate drunken walks cave map
+- Map Themes
 - Screen between levels
 - Heal up and get stronger between levels
 - More difficult monsters 
@@ -11,7 +11,6 @@
 
 # Phase 3 Content
 - Some levels should be multi-floor
-- Map Themes
 - Tile variations
 - Lots of abilities, enemies
 
@@ -23,10 +22,7 @@
 - Package for distribution
 
 ## Map Ideas
-    - Cellular Automata
-    - Drunken Walks
     - Prefabs?
-    - Multi level with stairs
     - BSP
     - Diffusion Limited
     - Wave collapse

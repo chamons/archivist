@@ -28,7 +28,7 @@ pub fn generate_random_map() -> LevelState {
         _ => DrunkDigger::build(&mut rng),
     };
 
-    level.map.dump_map_to_console();
+    // level.map.dump_map_to_console();
     level
 }
 

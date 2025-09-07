@@ -14,7 +14,7 @@ pub struct RoomsMapBuilder {
 impl RoomsMapBuilder {
     pub fn build(rng: &mut StdRng) -> LevelState {
         let mut builder = RoomsMapBuilder {
-            map: Map::new(),
+            map: Map::new(rng.random()),
             rooms: vec![],
             data: Data::load().expect("Able to load data"),
         };
@@ -45,7 +45,7 @@ impl RoomsMapBuilder {
     }
 
     fn clear(&mut self) {
-        self.map = Map::new();
+        self.map = Map::new(self.map.theme);
         self.rooms = vec![];
     }
 

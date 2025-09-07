@@ -36,7 +36,7 @@ mod tests {
 
     #[test]
     fn check_connectivity() {
-        let mut map = Map::new_filled();
+        let mut map = Map::new_filled(MapTheme::Stone);
 
         map.set(Point::new(1, 1), MapTile::floor());
         map.set(Point::new(1, 2), MapTile::floor());
