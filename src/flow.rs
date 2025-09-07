@@ -1,14 +1,14 @@
 use macroquad::{input::prevent_quit, window::clear_background};
 
 use crate::{
-    campaign::CampaignState,
+    campaign::CampaignScreenState,
     mission::{MissionState, Screen},
     prelude::*,
     screens::{death::DeathState, title::TitleState, victory::VictoryState},
 };
 
 pub enum GameFlow {
-    Campaign(CampaignState),
+    Campaign(CampaignScreenState),
     Title(TitleState),
     Gameplay(MissionState),
     Dead(DeathState),
@@ -20,7 +20,7 @@ impl GameFlow {
     pub fn process_frame(&mut self, screen: &mut Screen) {
         let maybe_next = match self {
             GameFlow::Title(state) => state.process_frame(),
-            GameFlow::Campaign(state) => state.process_frame(),
+            GameFlow::Campaign(state) => state.process_frame(screen),
             GameFlow::Gameplay(state) => state.process_frame(screen),
             GameFlow::Dead(state) => state.process_frame(screen),
             GameFlow::Victory(state) => state.process_frame(),

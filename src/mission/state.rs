@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use directories::ProjectDirs;
 use macroquad::input::{is_key_down, is_quit_requested};
 
+use crate::campaign::CampaignScreenState;
 use crate::campaign::CampaignState;
 use crate::mission::*;
 use crate::prelude::*;
@@ -20,7 +21,7 @@ pub struct MissionState {
 
 impl MissionState {
     pub fn new(campaign: CampaignState) -> MissionState {
-        let level = generate_random_map();
+        let level = generate_random_map(campaign.character.clone());
 
         Self {
             level,
@@ -50,7 +51,9 @@ impl MissionState {
             if self.is_player_dead() {
                 return Some(GameFlow::Dead(DeathState::new(self.clone())));
             } else if self.mission_complete {
-                return Some(GameFlow::Campaign(self.campaign.clone()));
+                return Some(GameFlow::Campaign(CampaignScreenState::mission_complete(
+                    self.campaign.clone(),
+                )));
             }
 
             screen.camera.update(self.get_player().position, self.frame);

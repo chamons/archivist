@@ -9,7 +9,7 @@ pub struct DrunkDigger {
 }
 
 impl DrunkDigger {
-    pub fn build(rng: &mut StdRng) -> LevelState {
+    pub fn build(rng: &mut StdRng, player: Character) -> LevelState {
         let mut builder = DrunkDigger {
             map: Map::new_filled(rng.random()),
             data: Data::load().expect("Able to load data"),
@@ -22,7 +22,7 @@ impl DrunkDigger {
 
         let mut characters =
             spawn_monster_randomly(rng, &builder.map, 50, center, 1, &builder.data);
-        setup_entrance(&mut characters, &mut builder.map, &builder.data, center);
+        setup_entrance(player, &mut characters, &mut builder.map, center);
 
         let items = spawn_rune_far_away(&builder.map, center, &builder.data);
 

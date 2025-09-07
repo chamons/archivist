@@ -14,7 +14,7 @@ pub struct RoomsMapBuilder {
 }
 
 impl RoomsMapBuilder {
-    pub fn build(rng: &mut StdRng) -> LevelState {
+    pub fn build(rng: &mut StdRng, player: Character) -> LevelState {
         let mut builder = RoomsMapBuilder {
             map: Map::new(rng.random()),
             rooms: vec![],
@@ -35,9 +35,9 @@ impl RoomsMapBuilder {
         let mut characters = builder.spawn_monsters(rng, 1);
 
         setup_entrance(
+            player,
             &mut characters,
             &mut builder.map,
-            &builder.data,
             builder.rooms[0].center(),
         );
 

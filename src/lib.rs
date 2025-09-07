@@ -38,8 +38,8 @@ pub mod prelude {
 
     pub const ANIMATION_TICKS_PER_TILE: usize = 6;
 
-    pub const REST_HEALTH_PERCENTAGE: f32 = 0.75;
-    pub const REST_WILL_PERCENTAGE: f32 = 0.2;
+    pub const REST_HEALTH_PERCENTAGE: f32 = 1.0;
+    pub const REST_WILL_PERCENTAGE: f32 = 1.0;
 
     pub const DRUNK_STAGGER_DISTANCE: u32 = 400;
     pub const DRUNK_DESIRED_FLOOR_AMOUNT: i32 = (SCREEN_WIDTH * SCREEN_HEIGHT) / 3;

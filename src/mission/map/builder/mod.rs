@@ -17,23 +17,27 @@ pub use cells::*;
 mod drunk_digger;
 pub use drunk_digger::*;
 
-pub fn generate_random_map() -> LevelState {
+pub fn generate_random_map(player: Character) -> LevelState {
     let seed = rand::rng().next_u64();
     let mut rng = StdRng::seed_from_u64(seed);
     debug!("Generating map with seed {seed}");
 
     let level = match rng.random_range(0..3) {
-        0 => RoomsMapBuilder::build(&mut rng),
-        1 => CellsMapBuilder::build(&mut rng),
-        _ => DrunkDigger::build(&mut rng),
+        0 => RoomsMapBuilder::build(&mut rng, player),
+        1 => CellsMapBuilder::build(&mut rng, player),
+        _ => DrunkDigger::build(&mut rng, player),
     };
 
     // level.map.dump_map_to_console();
     level
 }
 
-pub fn setup_entrance(characters: &mut Vec<Character>, map: &mut Map, data: &Data, center: Point) {
-    let mut player = data.get_character("Player");
+pub fn setup_entrance(
+    mut player: Character,
+    characters: &mut Vec<Character>,
+    map: &mut Map,
+    center: Point,
+) {
     player.position = center;
     characters.push(player);
 

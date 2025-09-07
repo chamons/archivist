@@ -1,0 +1,73 @@
+[
+    {
+        "name": "Sword",
+        "description": [
+            "A long sword and a set of mail armor is excellent",
+            "starting protection for a new retriever.",
+            "However without any ranged attacks caution is required",
+            "to not be overwhelmed."
+        ],
+        "sprite": {
+            "x": 1,
+            "y": 1
+        },
+        "weapon": {
+            "name": "Sword",
+            "damage": 2,
+            "kinds": [
+                "Physical"
+            ]
+        },
+        "health": 16,
+        "will": 1
+    },
+    {
+        "name": "Staff",
+        "description": [
+            "A carved staff with force projection runes provides a",
+            "way to dispatch enemies from range, but the cloth armor",
+            "is light protection without runic enhancement."
+        ],
+        "sprite": {
+            "x": 8,
+            "y": 3
+        },
+        "weapon": {
+            "name": "Staff",
+            "damage": 1,
+            "kinds": [
+                "Physical"
+            ]
+        },
+        "health": 8,
+        "will": 2,
+        "provides_skills": [
+            "Forcebolt"
+        ]
+    },
+    {
+        "name": "Bow & Dagger",
+        "description": [
+            "A bow and a quiver of arrows can solve a number of problems,",
+            "but arrows will eventually run out.",
+            "Leather armor, quick footwork, and a trusty dagger will",
+            "have to be enough to finish the job."
+        ],
+        "sprite": {
+            "x": 3,
+            "y": 1
+        },
+        "weapon": {
+            "name": "Bow & Dagger",
+            "damage": 1,
+            "kinds": [
+                "Physical"
+            ]
+        },
+        "health": 14,
+        "will": 1,
+        "provides_skills": [
+            "Shoot Bow"
+        ]
+    }
+]

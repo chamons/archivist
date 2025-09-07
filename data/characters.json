@@ -1,27 +1,5 @@
 [
     {
-        "name": "Player",
-        "max_health": 10,
-        "max_will": 10,
-        "base_sprite_tile": {
-            "x": 1,
-            "y": 1
-        },
-        "weapon": {
-            "name": "Dagger",
-            "damage": 2,
-            "kinds": [
-                "Physical"
-            ]
-        },
-        "skills": [
-            "Shoot",
-            "Fireball",
-            "Heal",
-            "Health Potion"
-        ]
-    },
-    {
         "name": "Bat",
         "max_health": 5,
         "difficulty": 1,

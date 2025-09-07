@@ -171,7 +171,7 @@ impl Screen {
         draw_rectangle_lines(24.0 * screen_x, 24.0 * screen_y, 24.0, 24.0, 2.0, color);
     }
 
-    fn get_texture(&self, set: TileSet) -> &Texture2D {
+    pub fn get_texture(&self, set: TileSet) -> &Texture2D {
         match set {
             TileSet::Creatures => &self.creatures,
             TileSet::FX => &self.fx,
