@@ -1,5 +1,4 @@
 # Phase 1 - Multi-runs in a game
-- Map Themes
 - Screen between levels
 - Heal up and get stronger between levels
 - More difficult monsters 
@@ -10,6 +9,9 @@
 - Mouse over enemies tooltip
 
 # Phase 3 Content
+- Status Effects
+- Defense stats
+- Crafting
 - Some levels should be multi-floor
 - Tile variations
 - Lots of abilities, enemies
