@@ -27,6 +27,13 @@ impl MapTile {
         }
     }
 
+    pub fn wall() -> Self {
+        MapTile {
+            kind: TileKind::Wall,
+            known: false,
+        }
+    }
+
     pub fn can_enter(&self) -> bool {
         match self.kind {
             TileKind::Wall => false,
@@ -66,7 +73,7 @@ impl Map {
         }
     }
 
-    fn index(point: Point) -> usize {
+    pub fn index(point: Point) -> usize {
         ((point.y * SCREEN_WIDTH) + point.x) as usize
     }
 

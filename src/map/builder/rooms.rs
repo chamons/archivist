@@ -32,16 +32,11 @@ impl RoomsMapBuilder {
 
         let mut characters = builder.spawn_monsters(rng, 1);
 
-        let mut player = builder.data.get_character("Player");
-        player.position = builder.rooms[0].center();
-        characters.push(player);
-
-        builder.map.set(
+        setup_entrance(
+            &mut characters,
+            &mut builder.map,
+            &builder.data,
             builder.rooms[0].center(),
-            MapTile {
-                kind: TileKind::Exit,
-                known: true,
-            },
         );
 
         let items = builder.place_items();
