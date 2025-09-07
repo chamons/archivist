@@ -5,6 +5,8 @@ use macroquad::input::{is_key_down, is_quit_requested};
 
 use crate::mission::*;
 use crate::prelude::*;
+use crate::screens::death::DeathState;
+use crate::screens::victory::VictoryState;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionState {
@@ -44,9 +46,9 @@ impl MissionState {
             }
 
             if self.is_player_dead() {
-                return Some(GameFlow::Dead(0, self.clone()));
+                return Some(GameFlow::Dead(DeathState::new(self.clone())));
             } else if self.completed {
-                return Some(GameFlow::Victory(0, self.clone()));
+                return Some(GameFlow::Victory(VictoryState::new(self.clone())));
             }
 
             screen.camera.update(self.get_player().position, self.frame);
