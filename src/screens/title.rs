@@ -1,3 +1,4 @@
+use crate::campaign::CampaignState;
 use crate::mission::{MissionState, Screen};
 use crate::prelude::*;
 
@@ -48,20 +49,16 @@ impl TitleState {
         } else if is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::KpEnter) {
             if self.has_save_game {
                 match self.selection {
-                    0 => {
-                        let state =
-                            MissionState::load_from_disk().unwrap_or_else(|| MissionState::new());
-                        return Some(GameFlow::Gameplay(state));
-                    }
+                    0 => return Some(CampaignState::load_save()),
                     1 => {
-                        return Some(GameFlow::Gameplay(MissionState::new()));
+                        return Some(GameFlow::Campaign(CampaignState::new()));
                     }
                     2 | _ => return Some(GameFlow::Quitting),
                 }
             } else {
                 match self.selection {
                     0 => {
-                        return Some(GameFlow::Gameplay(MissionState::new()));
+                        return Some(GameFlow::Campaign(CampaignState::new()));
                     }
                     1 | _ => return Some(GameFlow::Quitting),
                 }

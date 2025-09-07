@@ -1,3 +1,4 @@
+pub mod campaign;
 mod flow;
 pub mod mission;
 pub mod screens;
@@ -44,4 +45,6 @@ pub mod prelude {
     pub const DRUNK_DESIRED_FLOOR_AMOUNT: i32 = (SCREEN_WIDTH * SCREEN_HEIGHT) / 3;
 
     pub const VISION: usize = 8;
+
+    pub const MISSIONS_TO_VICTORY: u32 = 3;
 }

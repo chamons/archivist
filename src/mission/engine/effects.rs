@@ -137,10 +137,8 @@ pub fn ascend_stars(state: &mut MissionState, screen: &mut Screen) {
     let has_runestone = player.carried_items.iter().any(|i| i.name == "Runestone");
     if on_exit {
         if has_runestone {
-            screen.push_floating_text("Congrats, you win!");
             spend_ticks(state, player.id, TICKS_TO_ACT);
-
-            state.completed = true;
+            state.mission_complete = true;
         } else {
             screen.push_floating_text("Retrieve the Runestone first!");
         }
