@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 
+use crate::mission::*;
 use crate::prelude::*;
 
 pub fn check_map_connectivity(map: &Map, start: Point) -> bool {
@@ -32,6 +33,7 @@ pub fn check_map_connectivity(map: &Map, start: Point) -> bool {
 
 #[cfg(test)]
 mod tests {
+    use crate::mission::*;
     use crate::prelude::*;
 
     #[test]

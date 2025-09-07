@@ -1,5 +1,6 @@
 use rand::Rng;
 
+use crate::mission::*;
 use crate::prelude::*;
 
 pub struct CellsMapBuilder {

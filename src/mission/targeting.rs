@@ -3,7 +3,9 @@ use macroquad::input::{
     MouseButton, is_mouse_button_released, mouse_delta_position, mouse_position,
 };
 
+use crate::mission::*;
 use crate::prelude::*;
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum BlinkInfo {
     Solid(usize),

@@ -1,6 +1,7 @@
+use crate::mission::*;
 use crate::prelude::*;
 
-pub fn spend_ticks(state: &mut State, id: CharacterId, amount: i32) {
+pub fn spend_ticks(state: &mut MissionState, id: CharacterId, amount: i32) {
     state.level.find_character_mut(id).ticks -= amount;
 
     if let Some(next) = find_next_actor(&mut state.level) {

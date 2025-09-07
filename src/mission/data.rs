@@ -1,8 +1,9 @@
+use crate::mission::*;
 use crate::prelude::*;
 
-const CHARACTERS_JSON: &str = include_str!("../data/characters.json");
-const SKILLS_JSON: &str = include_str!("../data/skills.json");
-const ITEMS_JSON: &str = include_str!("../data/items.json");
+const CHARACTERS_JSON: &str = include_str!("../../data/characters.json");
+const SKILLS_JSON: &str = include_str!("../../data/skills.json");
+const ITEMS_JSON: &str = include_str!("../../data/items.json");
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CharacterInfo {
@@ -86,7 +87,7 @@ impl Data {
 
 #[cfg(test)]
 mod tests {
-    use crate::prelude::*;
+    use crate::mission::*;
 
     #[test]
     fn can_parse_characters() {

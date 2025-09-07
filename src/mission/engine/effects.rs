@@ -1,3 +1,4 @@
+use crate::mission::*;
 use crate::prelude::*;
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
@@ -7,7 +8,7 @@ pub enum Effect {
     Heal { amount: i32 },
 }
 
-pub fn move_character(state: &mut State, id: CharacterId, dest: Point, screen: &mut Screen) {
+pub fn move_character(state: &mut MissionState, id: CharacterId, dest: Point, screen: &mut Screen) {
     if state.level.find_character_at_position(dest).is_none() && state.level.map.can_enter(dest) {
         let actor = state.level.find_character_mut(id);
         actor.position = dest;
@@ -20,7 +21,7 @@ pub fn move_character(state: &mut State, id: CharacterId, dest: Point, screen: &
     }
 }
 
-fn pickup_any_items(state: &mut State, id: CharacterId, dest: Point, screen: &mut Screen) {
+fn pickup_any_items(state: &mut MissionState, id: CharacterId, dest: Point, screen: &mut Screen) {
     let items_at_new_position: Vec<Item> = state
         .level
         .items
@@ -35,7 +36,12 @@ fn pickup_any_items(state: &mut State, id: CharacterId, dest: Point, screen: &mu
     }
 }
 
-pub fn weapon_attack(state: &mut State, source: CharacterId, target: CharacterId, weapon: Weapon) {
+pub fn weapon_attack(
+    state: &mut MissionState,
+    source: CharacterId,
+    target: CharacterId,
+    weapon: Weapon,
+) {
     apply_damage(&mut state.level, target, weapon.damage);
     spend_ticks(state, source, TICKS_TO_ACT);
 }
@@ -55,14 +61,14 @@ fn apply_healing(level: &mut LevelState, target: CharacterId, amount: i32) {
     target_character.health.increase(amount);
 }
 
-pub fn character_wait(state: &mut State, id: CharacterId, screen: &mut Screen) {
+pub fn character_wait(state: &mut MissionState, id: CharacterId, screen: &mut Screen) {
     if !is_hostile_nearby(state, id) {
         rest(state, id, screen);
     }
     spend_ticks(state, id, TICKS_TO_ACT);
 }
 
-fn rest(state: &mut State, id: CharacterId, screen: &mut Screen) {
+fn rest(state: &mut MissionState, id: CharacterId, screen: &mut Screen) {
     let actor = state.level.find_character_mut(id);
     let mut rested = false;
     if actor.health.percentage() < REST_HEALTH_PERCENTAGE {
@@ -78,7 +84,7 @@ fn rest(state: &mut State, id: CharacterId, screen: &mut Screen) {
     }
 }
 
-fn is_hostile_nearby(state: &State, id: CharacterId) -> bool {
+fn is_hostile_nearby(state: &MissionState, id: CharacterId) -> bool {
     let actor = state.level.find_character(id);
     let visibility = state.level.map.compute_visibility(actor.position);
     if actor.is_player() {
@@ -93,7 +99,12 @@ fn is_hostile_nearby(state: &State, id: CharacterId) -> bool {
     }
 }
 
-pub fn apply_skill(state: &mut State, source: CharacterId, target: CharacterId, skill_name: &str) {
+pub fn apply_skill(
+    state: &mut MissionState,
+    source: CharacterId,
+    target: CharacterId,
+    skill_name: &str,
+) {
     let actor = state.level.find_character_mut(source);
     let skill = actor
         .skills
@@ -120,7 +131,7 @@ pub fn apply_skill(state: &mut State, source: CharacterId, target: CharacterId, 
     spend_ticks(state, source, TICKS_TO_ACT);
 }
 
-pub fn ascend_stars(state: &mut State, screen: &mut Screen) {
+pub fn ascend_stars(state: &mut MissionState, screen: &mut Screen) {
     let player = state.get_player();
     let on_exit = state.level.map.get(player.position).kind == TileKind::Exit;
     let has_runestone = player.carried_items.iter().any(|i| i.name == "Runestone");

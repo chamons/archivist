@@ -1,6 +1,11 @@
-mod utils;
+use crate::mission::*;
+use crate::prelude::*;
+
+use adam_fov_rs::GridPoint;
 use log::debug;
-use rand::Rng;
+use rand::prelude::*;
+
+mod utils;
 pub use utils::*;
 
 mod rooms;
@@ -11,11 +16,6 @@ pub use cells::*;
 
 mod drunk_digger;
 pub use drunk_digger::*;
-
-use crate::prelude::*;
-use adam_fov_rs::GridPoint;
-use rand::prelude::IteratorRandom;
-use rand::rngs::StdRng;
 
 pub fn generate_random_map() -> LevelState {
     let seed = rand::rng().next_u64();

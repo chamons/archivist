@@ -1,5 +1,6 @@
 use macroquad::{shapes::draw_rectangle, text::draw_text, window::screen_width};
 
+use crate::mission::*;
 use crate::prelude::*;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

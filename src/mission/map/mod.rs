@@ -1,3 +1,4 @@
+use crate::mission::*;
 use crate::prelude::*;
 
 mod builder;
@@ -259,6 +260,7 @@ impl VisibilityMap {
 
 #[cfg(test)]
 mod tests {
+    use crate::mission::*;
     use crate::prelude::*;
 
     #[test]

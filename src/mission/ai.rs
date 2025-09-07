@@ -1,3 +1,4 @@
+use crate::mission::*;
 use crate::prelude::*;
 
 use pathfinding::prelude::bfs;
@@ -130,6 +131,7 @@ pub fn wander_action(level: &LevelState, id: CharacterId) -> HandleInputResponse
 
 #[cfg(test)]
 mod tests {
+    use crate::mission::*;
     use crate::prelude::*;
 
     #[test]

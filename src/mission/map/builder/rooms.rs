@@ -3,7 +3,9 @@ use std::cmp::{max, min};
 use adam_fov_rs::GridPoint;
 use rand::Rng;
 
-use crate::{prelude::*, util::RandExt};
+use crate::mission::*;
+use crate::prelude::*;
+use crate::util::RandExt;
 
 pub struct RoomsMapBuilder {
     map: Map,

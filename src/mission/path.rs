@@ -1,3 +1,4 @@
+use crate::mission::*;
 use crate::prelude::*;
 
 use bresenham::Bresenham;
@@ -106,6 +107,7 @@ pub fn adjacent_squares(
 
 #[cfg(test)]
 mod tests {
+    use crate::mission::*;
     use crate::prelude::*;
 
     #[test]

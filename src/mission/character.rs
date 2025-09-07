@@ -2,6 +2,7 @@ use std::sync::atomic::AtomicU32;
 
 use macroquad::shapes::draw_rectangle;
 
+use crate::mission::*;
 use crate::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
