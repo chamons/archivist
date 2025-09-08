@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use crate::{
     mission::{Character, MissionState},
     prelude::*,
@@ -8,6 +10,7 @@ use crate::{
 pub struct CampaignState {
     pub character: Character,
     pub mission_count: u32,
+    pub chosen_upgrades: HashSet<String>,
 }
 
 impl CampaignState {
@@ -15,6 +18,7 @@ impl CampaignState {
         Self {
             character,
             mission_count: 0,
+            chosen_upgrades: HashSet::new(),
         }
     }
 

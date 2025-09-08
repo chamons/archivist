@@ -1,5 +1,5 @@
 use crate::{
-    campaign::select_equipment::SelectEquipmentState,
+    campaign::{select_equipment::SelectEquipmentState, upgrade::UpgradeState},
     mission::{MissionState, Screen},
     prelude::*,
 };
@@ -9,9 +9,12 @@ pub use mission_ready::CampaignState;
 
 mod select_equipment;
 
+mod upgrade;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 enum CampaignStep {
     SelectEquipment(SelectEquipmentState),
+    SelectUpgrade(UpgradeState),
     MissionReady(CampaignState),
 }
 
@@ -29,11 +32,11 @@ impl CampaignScreenState {
         }
     }
 
-    pub fn mission_complete(mut state: CampaignState) -> Self {
-        state.mission_count += 1;
+    pub fn mission_complete(mut campaign: CampaignState) -> Self {
+        campaign.mission_count += 1;
 
         Self {
-            step: CampaignStep::MissionReady(state),
+            step: CampaignStep::SelectUpgrade(UpgradeState::new(campaign)),
             frame: 0,
         }
     }
@@ -51,6 +54,12 @@ impl CampaignScreenState {
         match &mut self.step {
             CampaignStep::SelectEquipment(state) => {
                 if let Some(next_step) = state.process_frame(screen, self.frame) {
+                    self.step = next_step;
+                }
+                None
+            }
+            CampaignStep::SelectUpgrade(state) => {
+                if let Some(next_step) = state.process_frame() {
                     self.step = next_step;
                 }
                 None

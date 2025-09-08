@@ -1,8 +1,5 @@
 # Phase 1 - Multi-runs in a game
-- Screen between levels
-- Heal up and get stronger between levels
 - More difficult monsters 
-- Win three maps to win game
 
 # Phase 2 - QOL
 - Monsters should remember last place saw player and move to there before wandering
@@ -22,6 +19,9 @@
 - Music?
 - Doors and keys?
 - Package for distribution
+
+# More
+- Multi effects on single skill (Damage + heal)
 
 ## Map Ideas
     - Prefabs?

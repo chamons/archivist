@@ -74,7 +74,8 @@ pub fn handle_move_bump(actor: &Character, dest: Point, level: &LevelState) -> R
 pub fn create_test_map() -> (CharacterId, LevelState) {
     let data = Data::load().unwrap();
 
-    let mut player = data.get_character("Player");
+    let mut player = data.get_character("Bat");
+    player.name = "Player".to_string();
     player.position = Point::new(1, 1);
 
     let mut bat = data.get_character("Bat");
