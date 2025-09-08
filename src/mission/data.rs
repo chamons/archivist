@@ -5,7 +5,7 @@ const CHARACTERS_JSON: &str = include_str!("../../data/characters.json");
 const SKILLS_JSON: &str = include_str!("../../data/skills.json");
 const ITEMS_JSON: &str = include_str!("../../data/items.json");
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CharacterInfo {
     pub name: String,
     pub max_health: u32,
@@ -16,6 +16,8 @@ pub struct CharacterInfo {
     pub max_will: u32,
     #[serde(default)]
     pub skills: Vec<Skill>,
+    #[serde(default)]
+    pub tags: Vec<String>,
 }
 
 pub struct Data {
@@ -34,6 +36,14 @@ impl Data {
             characters,
             items,
         })
+    }
+
+    pub fn get_character_info(&self, name: &str) -> CharacterInfo {
+        self.characters
+            .iter()
+            .find(|e| e.name == name)
+            .expect(&format!("Unable to load character data for: {}", name))
+            .clone()
     }
 
     pub fn get_character(&self, name: &str) -> Character {
@@ -70,6 +80,10 @@ impl Data {
             .find(|i| i.name == name)
             .expect(&format!("Unable to find item: {}", name))
             .clone()
+    }
+
+    pub fn get_all_enemies(&self) -> Vec<String> {
+        self.characters.iter().map(|c| c.name.clone()).collect()
     }
 
     pub fn get_enemies_at_level(&self, difficulty: u32) -> Vec<String> {

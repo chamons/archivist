@@ -2,7 +2,6 @@
     {
         "name": "Bat",
         "max_health": 5,
-        "difficulty": 1,
         "base_sprite_tile": {
             "x": 3,
             "y": 13
@@ -10,12 +9,15 @@
         "weapon": {
             "name": "Bite",
             "damage": 1
-        }
+        },
+        "difficulty": 1,
+        "tags": [
+            "nature"
+        ]
     },
     {
         "name": "Rat",
         "max_health": 4,
-        "difficulty": 1,
         "base_sprite_tile": {
             "x": 8,
             "y": 13
@@ -23,13 +25,79 @@
         "weapon": {
             "name": "Bite",
             "damage": 1
-        }
+        },
+        "difficulty": 1,
+        "tags": [
+            "nature"
+        ]
+    },
+    {
+        "name": "Bear",
+        "max_health": 20,
+        "base_sprite_tile": {
+            "x": 9,
+            "y": 20
+        },
+        "weapon": {
+            "name": "Maul",
+            "damage": 3
+        },
+        "difficulty": 3,
+        "tags": [
+            "nature"
+        ]
+    },
+    {
+        "name": "Wolf",
+        "max_health": 12,
+        "base_sprite_tile": {
+            "x": 15,
+            "y": 13
+        },
+        "weapon": {
+            "name": "Bite",
+            "damage": 2
+        },
+        "difficulty": 2,
+        "tags": [
+            "nature"
+        ]
+    },
+    {
+        "name": "Witch",
+        "max_health": 8,
+        "max_will": 2,
+        "base_sprite_tile": {
+            "x": 16,
+            "y": 18
+        },
+        "weapon": {
+            "name": "Slap",
+            "damage": 1
+        },
+        "skills": [
+            {
+                "name": "Witchfire",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "ApplyDamage": {
+                        "damage": 3
+                    }
+                },
+                "targeting": "Caster"
+            }
+        ],
+        "difficulty": 2,
+        "tags": [
+            "occult"
+        ]
     },
     {
         "name": "Slime",
         "max_health": 8,
         "max_will": 2,
-        "difficulty": 1,
         "base_sprite_tile": {
             "x": 2,
             "y": 13
@@ -51,13 +119,47 @@
                 },
                 "targeting": "Caster"
             }
+        ],
+        "difficulty": 2,
+        "tags": [
+            "occult"
+        ]
+    },
+    {
+        "name": "Ooze",
+        "max_health": 22,
+        "max_will": 2,
+        "base_sprite_tile": {
+            "x": 15,
+            "y": 21
+        },
+        "weapon": {
+            "name": "Slam",
+            "damage": 2
+        },
+        "skills": [
+            {
+                "name": "Heal",
+                "cost": {
+                    "Will": 2
+                },
+                "effect": {
+                    "Heal": {
+                        "amount": 5
+                    }
+                },
+                "targeting": "Caster"
+            }
+        ],
+        "difficulty": 3,
+        "tags": [
+            "occult"
         ]
     },
     {
         "name": "Spider",
         "max_health": 12,
         "max_will": 1,
-        "difficulty": 1,
         "base_sprite_tile": {
             "x": 7,
             "y": 13
@@ -89,6 +191,174 @@
                     }
                 }
             }
+        ],
+        "difficulty": 1,
+        "tags": [
+            "nature",
+            "occult"
+        ]
+    },
+    {
+        "name": "Goblin Warrior",
+        "max_health": 12,
+        "max_will": 1,
+        "base_sprite_tile": {
+            "x": 1,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 2
+        },
+        "difficulty": 1,
+        "tags": [
+            "goblin"
+        ]
+    },
+    {
+        "name": "Goblin Archer",
+        "max_health": 8,
+        "max_will": 1,
+        "base_sprite_tile": {
+            "x": 2,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 1
+        },
+        "skills": [
+            {
+                "name": "Shoot",
+                "cost": {
+                    "Charges": {
+                        "remaining": 4,
+                        "total": 4
+                    }
+                },
+                "effect": {
+                    "ApplyDamage": {
+                        "damage": 2
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 1
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "difficulty": 1,
+        "tags": [
+            "goblin"
+        ]
+    },
+    {
+        "name": "Goblin Sage",
+        "max_health": 8,
+        "max_will": 2,
+        "base_sprite_tile": {
+            "x": 5,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Strike",
+            "damage": 1
+        },
+        "skills": [
+            {
+                "name": "Heal",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "Heal": {
+                        "amount": 5
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "SingleFrame": {
+                                "x": 1,
+                                "y": 8
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "difficulty": 1,
+        "tags": [
+            "goblin"
+        ]
+    },
+    {
+        "name": "Skeleton",
+        "max_health": 12,
+        "max_will": 1,
+        "base_sprite_tile": {
+            "x": 3,
+            "y": 17
+        },
+        "weapon": {
+            "name": "Claw",
+            "damage": 2
+        },
+        "difficulty": 1,
+        "tags": [
+            "skeletons"
+        ]
+    },
+    {
+        "name": "Skeleton Archer",
+        "max_health": 8,
+        "max_will": 1,
+        "base_sprite_tile": {
+            "x": 4,
+            "y": 17
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 1
+        },
+        "skills": [
+            {
+                "name": "Shoot",
+                "cost": {
+                    "Charges": {
+                        "remaining": 4,
+                        "total": 4
+                    }
+                },
+                "effect": {
+                    "ApplyDamage": {
+                        "damage": 2
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 1
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "difficulty": 1,
+        "tags": [
+            "skeletons"
         ]
     }
 ]
