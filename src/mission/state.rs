@@ -21,7 +21,7 @@ pub struct MissionState {
 
 impl MissionState {
     pub fn new(campaign: CampaignState) -> MissionState {
-        let level = generate_random_map(campaign.character.clone());
+        let level = generate_random_map(campaign.character.clone(), campaign.mission_count + 1);
 
         Self {
             level,

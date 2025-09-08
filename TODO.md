@@ -1,7 +1,5 @@
-# Phase 1 - Multi-runs in a game
-- More difficult monsters 
-
 # Phase 2 - QOL
+- More balance passes
 - Monsters should remember last place saw player and move to there before wandering
 - Mouse over enemies tooltip
 
