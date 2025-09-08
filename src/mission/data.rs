@@ -15,7 +15,7 @@ pub struct CharacterInfo {
     #[serde(default)]
     pub max_will: u32,
     #[serde(default)]
-    pub skills: Vec<String>,
+    pub skills: Vec<Skill>,
 }
 
 pub struct Data {
@@ -51,11 +51,7 @@ impl Data {
             will: Will::new(character_info.max_will as i32),
             base_sprite_tile: character_info.base_sprite_tile,
             weapon: character_info.weapon.clone(),
-            skills: character_info
-                .skills
-                .iter()
-                .map(|s| self.get_skill(s))
-                .collect(),
+            skills: character_info.skills.clone(),
             carried_items: vec![],
         }
     }

@@ -48,7 +48,18 @@
             ]
         },
         "skills": [
-            "Heal"
+            {
+                "name": "Heal",
+                "cost": {
+                    "Will": 2
+                },
+                "effect": {
+                    "Heal": {
+                        "amount": 5
+                    }
+                },
+                "targeting": "Caster"
+            }
         ]
     },
     {
@@ -68,7 +79,28 @@
             ]
         },
         "skills": [
-            "Spit"
+            {
+                "name": "Spit",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "ApplyDamage": {
+                        "damage": 2
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 17
+                            }
+                        }
+                    }
+                }
+            }
         ]
     }
 ]
