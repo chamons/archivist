@@ -9,10 +9,7 @@
         },
         "weapon": {
             "name": "Bite",
-            "damage": 1,
-            "kinds": [
-                "Physical"
-            ]
+            "damage": 1
         }
     },
     {
@@ -25,10 +22,7 @@
         },
         "weapon": {
             "name": "Bite",
-            "damage": 1,
-            "kinds": [
-                "Physical"
-            ]
+            "damage": 1
         }
     },
     {
@@ -42,10 +36,7 @@
         },
         "weapon": {
             "name": "Slam",
-            "damage": 2,
-            "kinds": [
-                "Physical"
-            ]
+            "damage": 2
         },
         "skills": [
             {
@@ -73,10 +64,7 @@
         },
         "weapon": {
             "name": "Bite",
-            "damage": 1,
-            "kinds": [
-                "Physical"
-            ]
+            "damage": 1
         },
         "skills": [
             {

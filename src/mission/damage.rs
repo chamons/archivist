@@ -13,5 +13,10 @@ pub enum DamageKind {
 pub struct Weapon {
     pub name: String,
     pub damage: i32,
+    #[serde(default = "default_damage_kind")]
     pub kinds: Vec<DamageKind>,
+}
+
+fn default_damage_kind() -> Vec<DamageKind> {
+    vec![DamageKind::Physical]
 }

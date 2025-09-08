@@ -13,10 +13,7 @@
         },
         "weapon": {
             "name": "Sword",
-            "damage": 2,
-            "kinds": [
-                "Physical"
-            ]
+            "damage": 2
         },
         "health": 16,
         "will": 1
@@ -34,10 +31,7 @@
         },
         "weapon": {
             "name": "Staff",
-            "damage": 1,
-            "kinds": [
-                "Physical"
-            ]
+            "damage": 1
         },
         "health": 8,
         "will": 2,
@@ -59,10 +53,7 @@
         },
         "weapon": {
             "name": "Bow & Dagger",
-            "damage": 1,
-            "kinds": [
-                "Physical"
-            ]
+            "damage": 1
         },
         "health": 14,
         "will": 1,
