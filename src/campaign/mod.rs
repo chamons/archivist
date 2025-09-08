@@ -35,9 +35,17 @@ impl CampaignScreenState {
     pub fn mission_complete(mut campaign: CampaignState) -> Self {
         campaign.mission_count += 1;
 
-        Self {
-            step: CampaignStep::SelectUpgrade(UpgradeState::new(campaign)),
-            frame: 0,
+        if campaign.mission_count == MISSIONS_TO_VICTORY {
+            // Quickly move us to MissionReady so we can win
+            Self {
+                step: CampaignStep::MissionReady(campaign),
+                frame: 0,
+            }
+        } else {
+            Self {
+                step: CampaignStep::SelectUpgrade(UpgradeState::new(campaign)),
+                frame: 0,
+            }
         }
     }
 

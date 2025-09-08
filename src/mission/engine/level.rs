@@ -30,6 +30,13 @@ impl LevelState {
             .expect("Player must still exist")
     }
 
+    pub fn get_player_mut(&mut self) -> &mut Character {
+        self.characters
+            .iter_mut()
+            .find(|c| c.is_player())
+            .expect("Player must still exist")
+    }
+
     pub fn find_character(&self, id: CharacterId) -> &Character {
         self.characters
             .iter()

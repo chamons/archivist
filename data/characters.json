@@ -10,6 +10,7 @@
             "name": "Bite",
             "damage": 1
         },
+        "is_intelligent": true,
         "difficulty": 1,
         "tags": [
             "nature"
@@ -26,6 +27,7 @@
             "name": "Bite",
             "damage": 1
         },
+        "is_intelligent": true,
         "difficulty": 1,
         "tags": [
             "nature"
@@ -42,6 +44,7 @@
             "name": "Maul",
             "damage": 2
         },
+        "is_intelligent": true,
         "difficulty": 3,
         "tags": [
             "nature"
@@ -58,6 +61,7 @@
             "name": "Bite",
             "damage": 2
         },
+        "is_intelligent": true,
         "difficulty": 2,
         "tags": [
             "nature"
@@ -89,6 +93,7 @@
                 "targeting": "Caster"
             }
         ],
+        "is_intelligent": true,
         "difficulty": 2,
         "tags": [
             "occult"
@@ -120,6 +125,7 @@
                 "targeting": "Caster"
             }
         ],
+        "is_intelligent": false,
         "difficulty": 2,
         "tags": [
             "occult"
@@ -151,6 +157,7 @@
                 "targeting": "Caster"
             }
         ],
+        "is_intelligent": false,
         "difficulty": 3,
         "tags": [
             "occult"
@@ -192,6 +199,7 @@
                 }
             }
         ],
+        "is_intelligent": true,
         "difficulty": 2,
         "tags": [
             "nature",
@@ -210,6 +218,7 @@
             "name": "Slash",
             "damage": 2
         },
+        "is_intelligent": true,
         "difficulty": 1,
         "tags": [
             "goblin"
@@ -254,6 +263,7 @@
                 }
             }
         ],
+        "is_intelligent": true,
         "difficulty": 2,
         "tags": [
             "goblin"
@@ -295,6 +305,7 @@
                 }
             }
         ],
+        "is_intelligent": true,
         "difficulty": 2,
         "tags": [
             "goblin"
@@ -312,6 +323,7 @@
             "name": "Claw",
             "damage": 2
         },
+        "is_intelligent": false,
         "difficulty": 1,
         "tags": [
             "skeletons"
@@ -356,6 +368,7 @@
                 }
             }
         ],
+        "is_intelligent": false,
         "difficulty": 2,
         "tags": [
             "skeletons"

@@ -27,6 +27,7 @@ pub struct Character {
     pub weapon: Weapon,
     pub skills: Vec<Skill>,
     pub carried_items: Vec<Item>,
+    pub enemy_memory: Option<EnemyMemory>,
 }
 
 impl Character {

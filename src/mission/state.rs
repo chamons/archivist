@@ -44,7 +44,7 @@ impl MissionState {
                 return Some(GameFlow::Quitting);
             }
 
-            if let Some(action) = self.current_actor.act(&self.level, screen) {
+            if let Some(action) = self.current_actor.act(&mut self.level, screen) {
                 self.process_action(action, screen);
             }
 

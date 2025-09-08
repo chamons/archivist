@@ -12,6 +12,7 @@ pub struct CharacterInfo {
     pub difficulty: Option<u32>,
     pub base_sprite_tile: Point,
     pub weapon: Weapon,
+    pub is_intelligent: bool,
     #[serde(default)]
     pub max_will: u32,
     #[serde(default)]
@@ -52,6 +53,13 @@ impl Data {
             .iter()
             .find(|e| e.name == name)
             .expect(&format!("Unable to load character data for: {}", name));
+
+        let enemy_memory = if character_info.is_intelligent {
+            Some(EnemyMemory::new())
+        } else {
+            None
+        };
+
         Character {
             name: character_info.name.clone(),
             position: Point::zero(),
@@ -63,6 +71,7 @@ impl Data {
             weapon: character_info.weapon.clone(),
             skills: character_info.skills.clone(),
             carried_items: vec![],
+            enemy_memory,
         }
     }
 

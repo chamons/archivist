@@ -19,7 +19,7 @@ pub enum HandleInputResponse {
 }
 
 impl CurrentActor {
-    pub fn act(&mut self, level: &LevelState, screen: &mut Screen) -> Option<RequestedAction> {
+    pub fn act(&mut self, level: &mut LevelState, screen: &mut Screen) -> Option<RequestedAction> {
         match self {
             CurrentActor::PlayerStandardAction => {
                 let player = level.get_player();

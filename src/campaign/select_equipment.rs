@@ -89,6 +89,7 @@ impl SelectEquipmentState {
             weapon: selection.weapon.clone(),
             skills,
             carried_items: vec![],
+            enemy_memory: None,
         }
     }
 
