@@ -27,6 +27,17 @@ impl AnimationInfo {
         let mut path = path_between_points(source, target, level, PathCharacterOptions::All)
             .expect("Created animation but no path?");
 
+        // Special case if you use a ranged to target yourself
+        if path.len() == 1 {
+            return Self {
+                path: vec![],
+                kind,
+                action,
+                ticks: ANIMATION_TICKS_PER_TILE,
+                direction_offset: 0,
+            };
+        }
+
         let direction_offset = Self::calculate_animation_direction_offset(path[0], path[1]);
         // Pop off the starting position
         path.remove(0);
