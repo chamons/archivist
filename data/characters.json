@@ -1,7 +1,7 @@
 [
     {
         "name": "Bat",
-        "max_health": 5,
+        "max_health": 7,
         "base_sprite_tile": {
             "x": 3,
             "y": 13
@@ -17,7 +17,7 @@
     },
     {
         "name": "Rat",
-        "max_health": 4,
+        "max_health": 5,
         "base_sprite_tile": {
             "x": 8,
             "y": 13
@@ -33,14 +33,14 @@
     },
     {
         "name": "Bear",
-        "max_health": 20,
+        "max_health": 24,
         "base_sprite_tile": {
             "x": 9,
             "y": 20
         },
         "weapon": {
             "name": "Maul",
-            "damage": 3
+            "damage": 2
         },
         "difficulty": 3,
         "tags": [
@@ -83,7 +83,7 @@
                 },
                 "effect": {
                     "ApplyDamage": {
-                        "damage": 3
+                        "damage": 2
                     }
                 },
                 "targeting": "Caster"
@@ -192,7 +192,7 @@
                 }
             }
         ],
-        "difficulty": 1,
+        "difficulty": 2,
         "tags": [
             "nature",
             "occult"
@@ -200,7 +200,7 @@
     },
     {
         "name": "Goblin Warrior",
-        "max_health": 12,
+        "max_health": 8,
         "max_will": 1,
         "base_sprite_tile": {
             "x": 1,
@@ -245,7 +245,7 @@
                     "Ranged": {
                         "max_range": 4,
                         "sprite": {
-                            "Directional": {
+                            "SingleFrame": {
                                 "x": 1,
                                 "y": 1
                             }
@@ -254,7 +254,7 @@
                 }
             }
         ],
-        "difficulty": 1,
+        "difficulty": 2,
         "tags": [
             "goblin"
         ]
@@ -295,14 +295,14 @@
                 }
             }
         ],
-        "difficulty": 1,
+        "difficulty": 2,
         "tags": [
             "goblin"
         ]
     },
     {
         "name": "Skeleton",
-        "max_health": 12,
+        "max_health": 8,
         "max_will": 1,
         "base_sprite_tile": {
             "x": 3,
@@ -326,8 +326,8 @@
             "y": 17
         },
         "weapon": {
-            "name": "Slash",
-            "damage": 1
+            "name": "Claw",
+            "damage": 2
         },
         "skills": [
             {
@@ -347,7 +347,7 @@
                     "Ranged": {
                         "max_range": 4,
                         "sprite": {
-                            "Directional": {
+                            "SingleFrame": {
                                 "x": 1,
                                 "y": 1
                             }
@@ -356,7 +356,7 @@
                 }
             }
         ],
-        "difficulty": 1,
+        "difficulty": 2,
         "tags": [
             "skeletons"
         ]

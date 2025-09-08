@@ -9,7 +9,7 @@ pub struct CellsMapBuilder {
 }
 
 impl CellsMapBuilder {
-    pub fn build(rng: &mut StdRng, player: Character) -> LevelState {
+    pub fn build(rng: &mut StdRng, difficulty: u32, player: Character) -> LevelState {
         let mut builder = CellsMapBuilder {
             map: Map::new(rng.random()),
             data: Data::load().expect("Able to load data"),
@@ -33,7 +33,7 @@ impl CellsMapBuilder {
         let center = find_map_center(&builder.map);
 
         let mut characters =
-            spawn_monster_randomly(rng, &builder.map, 50, center, 1, &builder.data);
+            spawn_monster_randomly(rng, &builder.map, 50, center, difficulty, &builder.data);
         setup_entrance(player, &mut characters, &mut builder.map, center);
 
         let items = spawn_rune_far_away(&builder.map, center, &builder.data);

@@ -28,3 +28,21 @@
     - BSP
     - Diffusion Limited
     - Wave collapse
+
+
+## Monster Balancing
+
+Difficulty 1:
+5-8 life
+1-2 damage
+No Specials
+
+Difficulty 2:
+8-12 life
+1-2 damage
+Easy Specials
+
+Difficulty 1:
+12-15 life
+2 damage
+

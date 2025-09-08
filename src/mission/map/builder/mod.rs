@@ -1,3 +1,4 @@
+use crate::mission::enemy_set::get_enemy_set_for_difficulty;
 use crate::mission::*;
 use crate::prelude::*;
 
@@ -17,15 +18,17 @@ pub use cells::*;
 mod drunk_digger;
 pub use drunk_digger::*;
 
-pub fn generate_random_map(player: Character) -> LevelState {
+pub mod enemy_set;
+
+pub fn generate_random_map(player: Character, difficulty: u32) -> LevelState {
     let seed = rand::rng().next_u64();
     let mut rng = StdRng::seed_from_u64(seed);
     debug!("Generating map with seed {seed}");
 
     let level = match rng.random_range(0..3) {
-        0 => RoomsMapBuilder::build(&mut rng, player),
-        1 => CellsMapBuilder::build(&mut rng, player),
-        _ => DrunkDigger::build(&mut rng, player),
+        0 => RoomsMapBuilder::build(&mut rng, difficulty, player),
+        1 => CellsMapBuilder::build(&mut rng, difficulty, player),
+        _ => DrunkDigger::build(&mut rng, difficulty, player),
     };
 
     // level.map.dump_map_to_console();
@@ -71,7 +74,7 @@ pub fn spawn_monster_randomly(
     difficulty: u32,
     data: &Data,
 ) -> Vec<Character> {
-    let enemies = data.get_enemies_at_level(difficulty);
+    let enemies = get_enemy_set_for_difficulty(&data, difficulty);
 
     let floors = find_all_floors(map);
     floors

@@ -3,6 +3,7 @@ use std::cmp::{max, min};
 use adam_fov_rs::GridPoint;
 use rand::Rng;
 
+use crate::mission::enemy_set::get_enemy_set_for_difficulty;
 use crate::mission::*;
 use crate::prelude::*;
 use crate::util::RandExt;
@@ -14,7 +15,7 @@ pub struct RoomsMapBuilder {
 }
 
 impl RoomsMapBuilder {
-    pub fn build(rng: &mut StdRng, player: Character) -> LevelState {
+    pub fn build(rng: &mut StdRng, difficulty: u32, player: Character) -> LevelState {
         let mut builder = RoomsMapBuilder {
             map: Map::new(rng.random()),
             rooms: vec![],
@@ -32,7 +33,7 @@ impl RoomsMapBuilder {
             }
         }
 
-        let mut characters = builder.spawn_monsters(rng, 1);
+        let mut characters = builder.spawn_monsters(rng, difficulty);
 
         setup_entrance(
             player,
@@ -75,7 +76,7 @@ impl RoomsMapBuilder {
     }
 
     fn spawn_monsters(&self, rng: &mut StdRng, difficulty: u32) -> Vec<Character> {
-        let enemies = self.data.get_enemies_at_level(difficulty);
+        let enemies = get_enemy_set_for_difficulty(&self.data, difficulty);
         self.rooms
             .iter()
             .skip(1)
