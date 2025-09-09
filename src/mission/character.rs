@@ -29,6 +29,7 @@ pub struct Character {
     pub carried_items: Vec<Item>,
     pub enemy_memory: Option<EnemyMemory>,
     pub status_effects: Vec<StatusEffect>,
+    pub defense: i32,
 }
 
 impl Character {

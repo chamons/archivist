@@ -136,14 +136,19 @@ impl LevelState {
             (mouse_position.0 as i32 / 24) + screen.camera.left_x,
             (mouse_position.1 as i32 / 24) + screen.camera.top_y,
         );
+
+        if !self.visibility.get(position) {
+            return;
+        }
+
         if let Some(moused_over) = self.find_character_at_position(position) {
             let y = if mouse_position.1 < 200.0 {
                 mouse_position.1 + 55.0
             } else {
                 mouse_position.1 - 80.0
             };
-            draw_rectangle(mouse_position.0 - 20.0, y - 30.0, 200.0, 100.0, BLACK);
-            draw_rectangle_lines(mouse_position.0 - 20.0, y - 30.0, 200.0, 100.0, 3.0, WHITE);
+            draw_rectangle(mouse_position.0 - 20.0, y - 30.0, 220.0, 120.0, BLACK);
+            draw_rectangle_lines(mouse_position.0 - 20.0, y - 30.0, 220.0, 120.0, 3.0, WHITE);
             draw_text(
                 &format!("Name: {}", moused_over.name),
                 mouse_position.0,
@@ -169,6 +174,13 @@ impl LevelState {
                 &format!("Damage: {}", moused_over.weapon.damage),
                 mouse_position.0,
                 y + 55.0,
+                20.0,
+                WHITE,
+            );
+            draw_text(
+                &format!("Defense: {}", moused_over.defense),
+                mouse_position.0,
+                y + 75.0,
                 20.0,
                 WHITE,
             );

@@ -1,9 +1,16 @@
-# Phase 2 - QOL
-- More balance passes
-
 # Phase 3 Content
 - Status Effects
-- Defense stats
+    - Might
+    - Protection
+    - Regen
+    - Poison
+    - Burn
+    - Armor Break
+    - Quick
+    - Pierce
+- Advantage/Disadvantage on damage rolls
+- More balance passes
+
 - Crafting
 - Some levels should be multi-floor
 - Tile variations

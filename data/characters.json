@@ -35,7 +35,8 @@
     },
     {
         "name": "Bear",
-        "max_health": 24,
+        "max_health": 18,
+        "defense": 1,
         "base_sprite_tile": {
             "x": 9,
             "y": 19
@@ -313,8 +314,9 @@
     },
     {
         "name": "Skeleton",
-        "max_health": 8,
+        "max_health": 6,
         "max_will": 1,
+        "defense": 1,
         "base_sprite_tile": {
             "x": 3,
             "y": 17
@@ -331,8 +333,9 @@
     },
     {
         "name": "Skeleton Archer",
-        "max_health": 8,
+        "max_health": 6,
         "max_will": 1,
+        "defense": 1,
         "base_sprite_tile": {
             "x": 4,
             "y": 17

@@ -19,6 +19,8 @@ pub struct CharacterInfo {
     pub skills: Vec<Skill>,
     #[serde(default)]
     pub tags: Vec<String>,
+    #[serde(default)]
+    pub defense: u32,
 }
 
 pub struct Data {
@@ -73,6 +75,7 @@ impl Data {
             carried_items: vec![],
             enemy_memory,
             status_effects: vec![],
+            defense: character_info.defense as i32,
         }
     }
 

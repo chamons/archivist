@@ -20,6 +20,7 @@ struct EquipmentOption {
     weapon: Weapon,
     health: u32,
     will: u32,
+    defense: u32,
     #[serde(default)]
     provides_skills: Vec<String>,
 }
@@ -91,6 +92,7 @@ impl SelectEquipmentState {
             carried_items: vec![],
             enemy_memory: None,
             status_effects: vec![],
+            defense: selection.defense as i32,
         }
     }
 

@@ -57,6 +57,11 @@ fn apply_damage(level: &mut LevelState, source: CharacterId, target: CharacterId
     }
 
     let target_character = level.find_character_mut(target);
+    damage -= target_character.defense;
+    if damage == 0 {
+        damage = 1;
+    }
+
     target_character.health.current -= damage;
 
     // We do not remove the player character, death checks will happen after action resolution

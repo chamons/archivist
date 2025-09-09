@@ -144,42 +144,49 @@ async fn main() {
                 WHITE,
             );
             draw_text(
-                &format!("Sprite: {:?}", moused_over.base_sprite_tile),
+                &format!("Defense: {}", moused_over.defense),
                 50.0,
                 480.0,
                 20.0,
                 WHITE,
             );
             draw_text(
-                &format!("Intelligent: {:?}", moused_over.enemy_memory.is_some()),
+                &format!("Sprite: {:?}", moused_over.base_sprite_tile),
                 50.0,
                 500.0,
                 20.0,
                 WHITE,
             );
+            draw_text(
+                &format!("Intelligent: {:?}", moused_over.enemy_memory.is_some()),
+                50.0,
+                520.0,
+                20.0,
+                WHITE,
+            );
             if !moused_over.skills.is_empty() {
-                draw_text("Skills", 50.0, 520.0, 20.0, WHITE);
+                draw_text("Skills", 50.0, 540.0, 20.0, WHITE);
             }
             for (i, skill) in moused_over.skills.iter().enumerate() {
                 let offset = i as f32 * 20.0;
                 draw_text(
                     &format!("{:?}", skill.name),
                     75.0,
-                    540.0 + offset,
+                    560.0 + offset,
                     20.0,
                     WHITE,
                 );
                 draw_text(
                     &format!("{:?}", skill.effect),
                     75.0,
-                    560.0 + offset,
+                    580.0 + offset,
                     20.0,
                     WHITE,
                 );
                 draw_text(
                     &format!("{:?}", skill.targeting),
                     75.0,
-                    580.0 + offset,
+                    600.0 + offset,
                     20.0,
                     WHITE,
                 );
