@@ -145,7 +145,7 @@ impl LevelState {
             let y = if mouse_position.1 < 200.0 {
                 mouse_position.1 + 55.0
             } else {
-                mouse_position.1 - 80.0
+                mouse_position.1 - 100.0
             };
             draw_rectangle(mouse_position.0 - 20.0, y - 30.0, 220.0, 120.0, BLACK);
             draw_rectangle_lines(mouse_position.0 - 20.0, y - 30.0, 220.0, 120.0, 3.0, WHITE);
