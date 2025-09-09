@@ -96,7 +96,7 @@ pub fn spawn_rune_far_away(map: &Map, center: Point, data: &Data) -> Vec<(Point,
 
     let farthest = floors
         .into_iter()
-        .max_by_key(|f| f.king_dist(center))
+        .min_by_key(|f| f.king_dist(center))
         .expect("One should be closest");
 
     vec![(farthest, data.get_item("Runestone"))]

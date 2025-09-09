@@ -1,3 +1,5 @@
+use macroquad::input::mouse_position;
+use macroquad::shapes::draw_rectangle_lines;
 use macroquad::{shapes::draw_rectangle, text::draw_text, window::screen_width};
 
 use crate::mission::*;
@@ -80,11 +82,11 @@ impl LevelState {
             }
         }
 
-        self.render_hud();
+        self.render_hud(screen);
         screen.render_floating_text();
     }
 
-    fn render_hud(&self) {
+    fn render_hud(&self, screen: &Screen) {
         let player = self.get_player();
 
         let health = player.health.clone();
@@ -123,6 +125,94 @@ impl LevelState {
 
         let offset = self.draw_skills();
         self.draw_items(offset);
+
+        let mouse_position = mouse_position();
+        let position = Point::new(
+            (mouse_position.0 as i32 / 24) + screen.camera.left_x,
+            (mouse_position.1 as i32 / 24) + screen.camera.top_y,
+        );
+
+        if let Some(moused_over) = self.find_character_at_position(position) {
+            let y = if mouse_position.1 < 200.0 {
+                mouse_position.1 + 55.0
+            } else {
+                mouse_position.1 - 80.0
+            };
+            draw_rectangle(mouse_position.0 - 20.0, y - 30.0, 200.0, 100.0, BLACK);
+            draw_rectangle_lines(mouse_position.0 - 20.0, y - 30.0, 200.0, 100.0, 3.0, WHITE);
+            draw_text(
+                &format!("Name: {}", moused_over.name),
+                mouse_position.0,
+                y - 5.0,
+                20.0,
+                WHITE,
+            );
+            draw_text(
+                &format!("Health: {}", moused_over.health.max),
+                mouse_position.0,
+                y + 15.0,
+                20.0,
+                WHITE,
+            );
+            draw_text(
+                &format!("Will: {}", moused_over.will.max),
+                mouse_position.0,
+                y + 35.0,
+                20.0,
+                WHITE,
+            );
+            draw_text(
+                &format!("Damage: {}", moused_over.weapon.damage),
+                mouse_position.0,
+                y + 55.0,
+                20.0,
+                WHITE,
+            );
+        }
+        if let Some(item) = self.items.iter().find(|(p, _)| *p == position) {
+            let y = if mouse_position.1 < 100.0 {
+                mouse_position.1 + 55.0
+            } else {
+                mouse_position.1 - 15.0
+            };
+            draw_rectangle(mouse_position.0 - 20.0, y - 30.0, 200.0, 40.0, BLACK);
+            draw_rectangle_lines(mouse_position.0 - 20.0, y - 30.0, 200.0, 40.0, 3.0, WHITE);
+            draw_text(
+                &format!("{}", item.1.name),
+                mouse_position.0,
+                y - 5.0,
+                20.0,
+                WHITE,
+            );
+        }
+        if self.map.in_bounds(position) {
+            match self.map.get(position).kind {
+                TileKind::Exit => {
+                    let y = if mouse_position.1 < 100.0 {
+                        mouse_position.1 + 55.0
+                    } else {
+                        mouse_position.1 - 15.0
+                    };
+                    draw_rectangle(mouse_position.0 - 20.0, y - 30.0, 200.0, 40.0, BLACK);
+                    draw_rectangle_lines(
+                        mouse_position.0 - 20.0,
+                        y - 30.0,
+                        200.0,
+                        40.0,
+                        3.0,
+                        WHITE,
+                    );
+                    draw_text(
+                        &format!("Stairs Up"),
+                        mouse_position.0,
+                        y - 5.0,
+                        20.0,
+                        WHITE,
+                    );
+                }
+                _ => {}
+            }
+        }
     }
 
     fn draw_skills(&self) -> f32 {

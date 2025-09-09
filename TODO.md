@@ -1,6 +1,6 @@
 # Phase 2 - QOL
 - More balance passes
-- Mouse over enemies tooltip
+- New game deletes any save
 
 # Phase 3 Content
 - Status Effects
