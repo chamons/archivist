@@ -51,6 +51,8 @@ impl TitleState {
                 match self.selection {
                     0 => return Some(CampaignScreenState::load_save()),
                     1 => {
+                        // If you start a new game delete the save anyway
+                        MissionState::delete_any_save();
                         return Some(GameFlow::Campaign(CampaignScreenState::new()));
                     }
                     2 | _ => return Some(GameFlow::Quitting),

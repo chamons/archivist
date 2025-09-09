@@ -1,6 +1,5 @@
 # Phase 2 - QOL
 - More balance passes
-- New game deletes any save
 
 # Phase 3 Content
 - Status Effects

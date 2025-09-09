@@ -193,14 +193,19 @@ impl MissionState {
         }
     }
 
+    pub fn delete_any_save() {
+        let filename = Self::savefile_name();
+        if std::fs::remove_file(filename).is_err() {
+            eprintln!("Unable to delete game after load.");
+        }
+    }
+
     pub fn load_from_disk() -> Option<Self> {
         let filename = Self::savefile_name();
         if let Ok(text) = std::fs::read(&filename) {
             match serde_json::from_slice(&text) {
                 Ok(state) => {
-                    if std::fs::remove_file(filename).is_err() {
-                        eprintln!("Unable to delete game after load.");
-                    }
+                    Self::delete_any_save();
                     return Some(state);
                 }
                 Err(e) => {
