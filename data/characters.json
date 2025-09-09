@@ -38,7 +38,7 @@
         "max_health": 24,
         "base_sprite_tile": {
             "x": 9,
-            "y": 20
+            "y": 19
         },
         "weapon": {
             "name": "Maul",
