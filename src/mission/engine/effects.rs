@@ -46,8 +46,13 @@ pub fn weapon_attack(
     spend_ticks(state, source, TICKS_TO_ACT);
 }
 
-fn apply_damage(level: &mut LevelState, source: CharacterId, target: CharacterId, damage: i32) {
-    let mut damage = damage;
+fn calculate_damage(
+    level: &LevelState,
+    source: CharacterId,
+    target: CharacterId,
+    base_damage: i32,
+) -> i32 {
+    let mut damage = base_damage;
     if level
         .find_character(source)
         .has_status_effect(StatusEffectKind::Might)
@@ -55,7 +60,7 @@ fn apply_damage(level: &mut LevelState, source: CharacterId, target: CharacterId
         damage += STATUS_EFFECT_MIGHT_DAMAGE_BOOST;
     }
 
-    let target_character = level.find_character_mut(target);
+    let target_character = level.find_character(target);
     let mut defense = target_character.defense;
     if target_character.has_status_effect(StatusEffectKind::Protection) {
         defense += STATUS_EFFECT_PROTECTION_DEFENSE_BOOST;
@@ -64,8 +69,15 @@ fn apply_damage(level: &mut LevelState, source: CharacterId, target: CharacterId
     if damage == 0 {
         damage = 1;
     }
+    damage
+}
 
-    target_character.health.current -= damage;
+fn apply_damage(level: &mut LevelState, source: CharacterId, target: CharacterId, damage: i32) {
+    let final_damage = calculate_damage(level, source, target, damage);
+
+    let target_character = level.find_character_mut(target);
+
+    target_character.health.current -= final_damage;
 
     // We do not remove the player character, death checks will happen after action resolution
     if target_character.health.is_dead() && !target_character.is_player() {
