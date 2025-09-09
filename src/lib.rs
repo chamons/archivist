@@ -50,4 +50,5 @@ pub mod prelude {
 
     pub const STATUS_EFFECT_MIGHT_DAMAGE_BOOST: i32 = 1;
     pub const STATUS_EFFECT_PROTECTION_DEFENSE_BOOST: i32 = 1;
+    pub const STATUS_EFFECT_WEAKNESS_DAMAGE_REDUCTION: i32 = 1;
 }

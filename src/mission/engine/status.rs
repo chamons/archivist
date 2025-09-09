@@ -10,6 +10,8 @@ pub struct StatusEffectCompleteEffect {
 pub enum StatusEffectKind {
     Might,
     Protection,
+    Weakness,
+    Quick,
     RepeatingPositive,
     RepeatingNegative,
 }
@@ -27,6 +29,8 @@ impl StatusEffect {
         match self.kind {
             StatusEffectKind::Might => true,
             StatusEffectKind::Protection => true,
+            StatusEffectKind::Quick => true,
+            StatusEffectKind::Weakness => false,
             StatusEffectKind::RepeatingPositive => true,
             StatusEffectKind::RepeatingNegative => false,
         }

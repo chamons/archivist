@@ -11,13 +11,21 @@ pub enum Effect {
 pub fn move_character(state: &mut MissionState, id: CharacterId, dest: Point, screen: &mut Screen) {
     if state.level.find_character_at_position(dest).is_none() && state.level.map.can_enter(dest) {
         let actor = state.level.find_character_mut(id);
+        let has_quick = actor.has_status_effect(StatusEffectKind::Quick);
+
         actor.position = dest;
         if actor.is_player() {
             state.level.update_visibility();
             pickup_any_items(state, id, dest, screen);
         }
 
-        spend_ticks(state, id, TICKS_MOVEMENT);
+        let tick_cost = if has_quick {
+            TICKS_MOVEMENT / 2
+        } else {
+            TICKS_MOVEMENT
+        };
+
+        spend_ticks(state, id, tick_cost);
     }
 }
 
@@ -58,6 +66,12 @@ fn calculate_damage(
         .has_status_effect(StatusEffectKind::Might)
     {
         damage += STATUS_EFFECT_MIGHT_DAMAGE_BOOST;
+    }
+    if level
+        .find_character(source)
+        .has_status_effect(StatusEffectKind::Weakness)
+    {
+        damage -= STATUS_EFFECT_WEAKNESS_DAMAGE_REDUCTION;
     }
 
     let target_character = level.find_character(target);
