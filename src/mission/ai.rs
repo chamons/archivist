@@ -100,7 +100,7 @@ pub fn check_skill_usage(level: &LevelState, id: CharacterId) -> Option<HandleIn
 
 fn wants_caster_effect(effect: &Effect, enemy: &Character) -> bool {
     match effect {
-        Effect::ApplyDamage { .. } | Effect::ApplyWeaponDamage => false,
+        Effect::ApplyDamage { .. } => false,
         Effect::Heal { amount } => enemy.health.max - enemy.health.current >= *amount,
         Effect::AddStatus { effect } => effect.is_positive(),
     }
@@ -113,7 +113,7 @@ fn find_ranged_target(
     level: &LevelState,
 ) -> Option<(CharacterId, Point)> {
     match effect {
-        Effect::ApplyDamage { .. } | Effect::ApplyWeaponDamage => {
+        Effect::ApplyDamage { .. } => {
             let player = level.get_player();
             if clear_line_between(level, enemy.position, player.position, max_range) {
                 Some((player.id, player.position))

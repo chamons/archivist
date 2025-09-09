@@ -151,5 +151,21 @@
             }
         },
         "targeting": "Caster"
+    },
+    {
+        "name": "Protection",
+        "cost": {
+            "Will": 1
+        },
+        "effect": {
+            "AddStatus": {
+                "effect": {
+                    "name": "Protection",
+                    "kind": "Protection",
+                    "duration": 500
+                }
+            }
+        },
+        "targeting": "Caster"
     }
 ]

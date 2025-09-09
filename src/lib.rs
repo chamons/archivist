@@ -49,4 +49,5 @@ pub mod prelude {
     pub const MISSIONS_TO_VICTORY: u32 = 3;
 
     pub const STATUS_EFFECT_MIGHT_DAMAGE_BOOST: i32 = 1;
+    pub const STATUS_EFFECT_PROTECTION_DEFENSE_BOOST: i32 = 1;
 }

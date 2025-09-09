@@ -76,5 +76,15 @@
         "provides_skills": [
             "Rage Potion"
         ]
+    },
+    {
+        "name": "Defensive Bracers",
+        "description": [
+            "Cold iron braces with gold runes for Protection",
+            "and Force which can be activated at will"
+        ],
+        "provides_skills": [
+            "Protection"
+        ]
     }
 ]

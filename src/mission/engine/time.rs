@@ -29,12 +29,73 @@ fn find_next_actor(level: &mut LevelState) -> Option<CharacterId> {
 }
 
 fn add_ticks(level: &mut LevelState, amount: i32) {
+    let mut effects_to_apply = vec![];
+
     for character in &mut level.characters {
         character.ticks += amount;
 
         for status in &mut character.status_effects {
-            status.duration -= amount;
+            status.tick(amount);
         }
-        character.status_effects.retain(|s| s.duration > 0);
+
+        let mut completed_status: Vec<_> = character
+            .status_effects
+            .extract_if(.., |s| s.duration <= 0)
+            .collect();
+
+        for completed in completed_status.drain(..) {
+            if let Some(on_complete) = &completed.on_complete {
+                if on_complete.reapply_count > 0 {
+                    let mut reapply = completed.clone();
+                    reapply.on_complete.as_mut().unwrap().reapply_count -= 1;
+                    character.status_effects.push(reapply);
+                }
+                if let Some(complete_effect) = &on_complete.complete_effect {
+                    effects_to_apply.push((character.id, complete_effect.clone()));
+                }
+            }
+        }
+    }
+
+    for (target, effect) in effects_to_apply {
+        apply_effect(level, target, target, &effect);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::mission::engine::time::add_ticks;
+    use crate::mission::*;
+
+    #[test]
+    fn reapply_status() {
+        let (id, mut level) = create_test_map();
+
+        let bat = level.find_character_mut(id);
+        bat.status_effects.push(StatusEffect {
+            name: "Burn".to_string(),
+            kind: StatusEffectKind::RepeatingNegative,
+            duration: 100,
+            on_complete: Some(StatusEffectCompleteEffect {
+                reapply_count: 3,
+                complete_effect: Some(Box::new(Effect::ApplyDamage { damage: 1 })),
+            }),
+        });
+
+        for i in 0..3 {
+            add_ticks(&mut level, 100);
+            let bat = level.find_character(id);
+            assert!(bat.has_status_effect(StatusEffectKind::RepeatingNegative));
+            assert_eq!(bat.health.max - i - 1, bat.health.current);
+        }
+
+        add_ticks(&mut level, 100);
+        let bat = level.find_character(id);
+        assert!(
+            !level
+                .find_character(id)
+                .has_status_effect(StatusEffectKind::RepeatingNegative)
+        );
+        assert_eq!(bat.health.max - 4, bat.health.current);
     }
 }

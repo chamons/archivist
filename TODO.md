@@ -1,13 +1,11 @@
 # Phase 3 Content
 - Status Effects
-    - Might
-    - Protection
-    - Regen
-    - Poison
-    - Burn
+    - Weakness
     - Armor Break
     - Quick
     - Pierce
+- Add each status effect to all enemies that make sense
+- Make items that use each effect
 - Advantage/Disadvantage on damage rolls
 - More balance passes
 

@@ -3,7 +3,6 @@ use crate::prelude::*;
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub enum Effect {
-    ApplyWeaponDamage,
     ApplyDamage { damage: i32 },
     AddStatus { effect: StatusEffect },
     Heal { amount: i32 },
@@ -57,7 +56,11 @@ fn apply_damage(level: &mut LevelState, source: CharacterId, target: CharacterId
     }
 
     let target_character = level.find_character_mut(target);
-    damage -= target_character.defense;
+    let mut defense = target_character.defense;
+    if target_character.has_status_effect(StatusEffectKind::Protection) {
+        defense += STATUS_EFFECT_PROTECTION_DEFENSE_BOOST;
+    }
+    damage -= defense;
     if damage == 0 {
         damage = 1;
     }
@@ -134,23 +137,29 @@ pub fn apply_skill(
         SkillCost::Will(cost) => actor.will.current -= *cost,
         SkillCost::Charges { remaining, .. } => *remaining -= 1,
     }
+    let effect = skill.effect.clone();
+    apply_effect(&mut state.level, source, target, &effect);
 
-    match skill.effect.clone() {
-        Effect::ApplyWeaponDamage => {
-            let weapon = state.level.find_character(source).weapon.clone();
-            weapon_attack(state, source, target, weapon)
-        }
+    spend_ticks(state, source, TICKS_TO_ACT);
+}
+
+pub fn apply_effect(
+    level: &mut LevelState,
+    source: CharacterId,
+    target: CharacterId,
+    effect: &Effect,
+) {
+    match effect {
         Effect::ApplyDamage { damage } => {
-            apply_damage(&mut state.level, source, target, damage);
+            apply_damage(level, source, target, *damage);
         }
         Effect::Heal { amount } => {
-            apply_healing(&mut state.level, target, amount);
+            apply_healing(level, target, *amount);
         }
         Effect::AddStatus { effect } => {
-            add_status(&mut state.level, target, effect);
+            add_status(level, target, effect.clone());
         }
     }
-    spend_ticks(state, source, TICKS_TO_ACT);
 }
 
 pub fn ascend_stars(state: &mut MissionState, screen: &mut Screen) {
