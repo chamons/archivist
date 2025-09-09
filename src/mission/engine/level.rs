@@ -137,7 +137,7 @@ impl LevelState {
             (mouse_position.1 as i32 / 24) + screen.camera.top_y,
         );
 
-        if !self.visibility.get(position) {
+        if !self.map.in_bounds(position) || !self.visibility.get(position) {
             return;
         }
 

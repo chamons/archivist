@@ -8,8 +8,7 @@
 - Make items that use each effect
 - Advantage/Disadvantage on damage rolls
 - More balance passes
-
-- Crafting
+- Make upgrades based on a tag pool based upon a random "rune"
 - Some levels should be multi-floor
 - Tile variations
 - Lots of abilities, enemies
@@ -20,11 +19,12 @@
 - Music?
 - Doors and keys?
 - Package for distribution
+- List of all enemies in game from title screen
 
-# More
+# Cut / Later Ideas
+- Crafting Upgrades based on rune + positions
 - Multi effects on single skill (Damage + heal)
-
-## Map Ideas
+- More maps
     - Prefabs?
     - BSP
     - Diffusion Limited
