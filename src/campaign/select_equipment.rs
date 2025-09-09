@@ -90,6 +90,7 @@ impl SelectEquipmentState {
             skills,
             carried_items: vec![],
             enemy_memory: None,
+            status_effects: vec![],
         }
     }
 

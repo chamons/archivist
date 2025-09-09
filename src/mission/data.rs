@@ -72,6 +72,7 @@ impl Data {
             skills: character_info.skills.clone(),
             carried_items: vec![],
             enemy_memory,
+            status_effects: vec![],
         }
     }
 

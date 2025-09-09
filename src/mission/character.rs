@@ -28,6 +28,7 @@ pub struct Character {
     pub skills: Vec<Skill>,
     pub carried_items: Vec<Item>,
     pub enemy_memory: Option<EnemyMemory>,
+    pub status_effects: Vec<StatusEffect>,
 }
 
 impl Character {
@@ -60,5 +61,9 @@ impl Character {
 
     pub fn is_player(&self) -> bool {
         self.name == "Player"
+    }
+
+    pub fn has_status_effect(&self, kind: StatusEffectKind) -> bool {
+        self.status_effects.iter().any(|s| s.kind == kind)
     }
 }

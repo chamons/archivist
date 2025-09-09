@@ -132,5 +132,24 @@
             }
         },
         "targeting": "Caster"
+    },
+    {
+        "name": "Rage Potion",
+        "cost": {
+            "Charges": {
+                "remaining": 2,
+                "total": 2
+            }
+        },
+        "effect": {
+            "AddStatus": {
+                "effect": {
+                    "name": "Might",
+                    "kind": "Might",
+                    "duration": 500
+                }
+            }
+        },
+        "targeting": "Caster"
     }
 ]

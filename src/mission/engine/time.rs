@@ -31,5 +31,10 @@ fn find_next_actor(level: &mut LevelState) -> Option<CharacterId> {
 fn add_ticks(level: &mut LevelState, amount: i32) {
     for character in &mut level.characters {
         character.ticks += amount;
+
+        for status in &mut character.status_effects {
+            status.duration -= amount;
+        }
+        character.status_effects.retain(|s| s.duration > 0);
     }
 }

@@ -102,6 +102,7 @@ fn wants_caster_effect(effect: &Effect, enemy: &Character) -> bool {
     match effect {
         Effect::ApplyDamage { .. } | Effect::ApplyWeaponDamage => false,
         Effect::Heal { amount } => enemy.health.max - enemy.health.current >= *amount,
+        Effect::AddStatus { effect } => effect.is_positive(),
     }
 }
 
@@ -125,6 +126,17 @@ fn find_ranged_target(
                 if !character.is_player()
                     && clear_line_between(level, enemy.position, character.position, max_range)
                     && character.health.max - character.health.current >= *amount
+                {
+                    return Some((character.id, character.position));
+                }
+            }
+            None
+        }
+        Effect::AddStatus { effect } => {
+            for character in &level.characters {
+                if clear_line_between(level, enemy.position, character.position, max_range)
+                    && ((character.is_player() && !effect.is_positive())
+                        || !character.is_player() && effect.is_positive())
                 {
                     return Some((character.id, character.position));
                 }

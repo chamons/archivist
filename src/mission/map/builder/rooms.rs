@@ -58,7 +58,7 @@ impl RoomsMapBuilder {
         let farthest = self
             .rooms
             .iter()
-            .min_by_key(|r| r.center().king_dist(start));
+            .max_by_key(|r| r.center().king_dist(start));
 
         vec![(
             farthest.expect("Find farthest room").center(),

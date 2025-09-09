@@ -5,6 +5,7 @@ use crate::prelude::*;
 pub enum Effect {
     ApplyWeaponDamage,
     ApplyDamage { damage: i32 },
+    AddStatus { effect: StatusEffect },
     Heal { amount: i32 },
 }
 
@@ -42,11 +43,19 @@ pub fn weapon_attack(
     target: CharacterId,
     weapon: Weapon,
 ) {
-    apply_damage(&mut state.level, target, weapon.damage);
+    apply_damage(&mut state.level, source, target, weapon.damage);
     spend_ticks(state, source, TICKS_TO_ACT);
 }
 
-fn apply_damage(level: &mut LevelState, target: CharacterId, damage: i32) {
+fn apply_damage(level: &mut LevelState, source: CharacterId, target: CharacterId, damage: i32) {
+    let mut damage = damage;
+    if level
+        .find_character(source)
+        .has_status_effect(StatusEffectKind::Might)
+    {
+        damage += STATUS_EFFECT_MIGHT_DAMAGE_BOOST;
+    }
+
     let target_character = level.find_character_mut(target);
     target_character.health.current -= damage;
 
@@ -54,6 +63,11 @@ fn apply_damage(level: &mut LevelState, target: CharacterId, damage: i32) {
     if target_character.health.is_dead() && !target_character.is_player() {
         level.remove_character(target);
     }
+}
+
+fn add_status(level: &mut LevelState, target: CharacterId, status: StatusEffect) {
+    let target_character = level.find_character_mut(target);
+    target_character.status_effects.push(status);
 }
 
 fn apply_healing(level: &mut LevelState, target: CharacterId, amount: i32) {
@@ -116,16 +130,19 @@ pub fn apply_skill(
         SkillCost::Charges { remaining, .. } => *remaining -= 1,
     }
 
-    match skill.effect {
+    match skill.effect.clone() {
         Effect::ApplyWeaponDamage => {
             let weapon = state.level.find_character(source).weapon.clone();
             weapon_attack(state, source, target, weapon)
         }
         Effect::ApplyDamage { damage } => {
-            apply_damage(&mut state.level, target, damage);
+            apply_damage(&mut state.level, source, target, damage);
         }
         Effect::Heal { amount } => {
             apply_healing(&mut state.level, target, amount);
+        }
+        Effect::AddStatus { effect } => {
+            add_status(&mut state.level, target, effect);
         }
     }
     spend_ticks(state, source, TICKS_TO_ACT);

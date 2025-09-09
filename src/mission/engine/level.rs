@@ -123,15 +123,19 @@ impl LevelState {
 
         Screen::draw_centered_text(&format!("{}/{}", will.current, will.max), 17, 31.0, None);
 
-        let offset = self.draw_skills();
-        self.draw_items(offset);
+        let mut offset = self.draw_skills();
+        self.draw_items(&mut offset);
+        self.draw_status_effects(&mut offset);
 
+        self.draw_tooltips(screen);
+    }
+
+    fn draw_tooltips(&self, screen: &Screen) {
         let mouse_position = mouse_position();
         let position = Point::new(
             (mouse_position.0 as i32 / 24) + screen.camera.left_x,
             (mouse_position.1 as i32 / 24) + screen.camera.top_y,
         );
-
         if let Some(moused_over) = self.find_character_at_position(position) {
             let y = if mouse_position.1 < 200.0 {
                 mouse_position.1 + 55.0
@@ -242,23 +246,34 @@ impl LevelState {
         offset + 35.0
     }
 
-    fn draw_items(&self, mut offset: f32) {
+    fn draw_status_effects(&self, offset: &mut f32) {
+        let player = self.get_player();
+
+        if !player.status_effects.is_empty() {
+            draw_text("Status:", screen_width() - 250.0, *offset, 22.0, WHITE);
+            *offset += 22.0;
+        }
+
+        for status in &player.status_effects {
+            draw_text(&status.name, screen_width() - 230.0, *offset, 22.0, WHITE);
+            *offset += 18.0;
+        }
+        *offset += 18.0;
+    }
+
+    fn draw_items(&self, offset: &mut f32) {
         let player = self.get_player();
 
         if !player.carried_items.is_empty() {
-            draw_text("Inventory:", screen_width() - 250.0, offset, 22.0, WHITE);
-            offset += 22.0;
+            draw_text("Inventory:", screen_width() - 250.0, *offset, 22.0, WHITE);
+            *offset += 22.0;
         }
 
-        for (i, item) in player.carried_items.iter().enumerate() {
-            draw_text(
-                &item.name,
-                screen_width() - 230.0,
-                offset + 18.0 * i as f32,
-                22.0,
-                WHITE,
-            );
+        for item in &player.carried_items {
+            draw_text(&item.name, screen_width() - 230.0, *offset, 22.0, WHITE);
+            *offset += 18.0;
         }
+        *offset += 18.0;
     }
 
     fn skill_index_to_key(index: usize) -> usize {
