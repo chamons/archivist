@@ -13,9 +13,9 @@
         },
         "weapon": {
             "name": "Sword",
-            "damage": 2
+            "damage": 6
         },
-        "health": 16,
+        "health": 30,
         "will": 1,
         "defense": 1
     },
@@ -32,13 +32,14 @@
         },
         "weapon": {
             "name": "Staff",
-            "damage": 1
+            "damage": 4
         },
-        "health": 8,
+        "health": 22,
         "will": 2,
         "defense": 0,
         "provides_skills": [
-            "Forcebolt"
+            "Forcebolt",
+            "SelfBurn"
         ]
     },
     {
@@ -55,9 +56,9 @@
         },
         "weapon": {
             "name": "Bow & Dagger",
-            "damage": 1
+            "damage": 5
         },
-        "health": 14,
+        "health": 28,
         "will": 1,
         "defense": 0,
         "provides_skills": [

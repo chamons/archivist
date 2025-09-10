@@ -40,7 +40,10 @@ fn add_ticks(level: &mut LevelState, amount: i32) {
 
         let mut completed_status: Vec<_> = character
             .status_effects
-            .extract_if(.., |s| s.duration <= 0)
+            .extract_if(.., |s| match s.duration {
+                Some(duration) => duration <= 0,
+                None => false,
+            })
             .collect();
 
         for completed in completed_status.drain(..) {
@@ -80,18 +83,21 @@ mod tests {
         bat.status_effects.push(StatusEffect {
             name: "Burn".to_string(),
             kind: StatusEffectKind::RepeatingNegative,
-            duration: 100,
+            duration: Some(100),
             on_complete: Some(StatusEffectCompleteEffect {
                 reapply_count: 3,
-                complete_effect: Some(Box::new(Effect::ApplyDamage { damage: 1 })),
+                complete_effect: Some(Box::new(Effect::ApplyDamage { damage: 2 })),
             }),
         });
 
-        for i in 0..3 {
+        let mut last_health = bat.health.current;
+
+        for _ in 0..3 {
             add_ticks(&mut level, 100);
             let bat = level.find_character(id);
             assert!(bat.has_status_effect(StatusEffectKind::RepeatingNegative));
-            assert_eq!(bat.health.max - i - 1, bat.health.current);
+            assert!(bat.health.current < last_health);
+            last_health = bat.health.current;
         }
 
         add_ticks(&mut level, 100);
@@ -101,6 +107,25 @@ mod tests {
                 .find_character(id)
                 .has_status_effect(StatusEffectKind::RepeatingNegative)
         );
-        assert_eq!(bat.health.max - 4, bat.health.current);
+        assert!(bat.health.current < last_health);
+    }
+
+    #[test]
+    fn immortal_status() {
+        let (id, mut level) = create_test_map();
+
+        let bat = level.find_character_mut(id);
+        bat.status_effects.push(StatusEffect {
+            name: "Lifesteal".to_string(),
+            kind: StatusEffectKind::Lifesteal,
+            duration: None,
+            on_complete: None,
+        });
+
+        for _ in 0..100 {
+            add_ticks(&mut level, 100);
+            let bat = level.find_character(id);
+            assert!(bat.has_status_effect(StatusEffectKind::Lifesteal));
+        }
     }
 }

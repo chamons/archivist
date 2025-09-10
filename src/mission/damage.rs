@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::mission::Effect;
+
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 pub enum DamageKind {
     Physical,
@@ -15,6 +17,8 @@ pub struct Weapon {
     pub damage: i32,
     #[serde(default = "default_damage_kind")]
     pub kinds: Vec<DamageKind>,
+    #[serde(default)]
+    pub on_hit: Option<Effect>,
 }
 
 fn default_damage_kind() -> Vec<DamageKind> {

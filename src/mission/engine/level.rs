@@ -251,8 +251,9 @@ impl LevelState {
             offset += 18.0;
 
             let cost = match &skill.cost {
-                SkillCost::Will(cost) => cost.to_string(),
-                SkillCost::Charges { remaining, total } => format!("{remaining}/{total}"),
+                SkillCost::None => "".to_string(),
+                SkillCost::Will(cost) => format!("({cost})"),
+                SkillCost::Charges { remaining, total } => format!("({remaining}/{total})"),
             };
             let color = if skill.cost.can_pay(player) {
                 WHITE
@@ -260,7 +261,7 @@ impl LevelState {
                 RED
             };
             draw_text(
-                &format!("{} - {} ({cost})", Self::skill_index_to_key(i), skill.name),
+                &format!("{} - {} {cost}", Self::skill_index_to_key(i), skill.name),
                 screen_width() - 250.0,
                 offset,
                 22.0,

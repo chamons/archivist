@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
-use archivist::mission::TileSet;
+use archivist::mission::{Effect, TileSet};
 use archivist::{
     mission::{Data, Screen},
     prelude::Point,
@@ -136,8 +136,24 @@ async fn main() {
                 20.0,
                 WHITE,
             );
+            let on_hit = if let Some(onhit) = &moused_over.weapon.on_hit {
+                match onhit {
+                    Effect::ApplyDamage { damage } => format!("OnHit - Damage: {damage}"),
+                    Effect::AddStatus { effect } => {
+                        let duration = if let Some(duration) = effect.duration {
+                            format!("({duration})")
+                        } else {
+                            "".to_string()
+                        };
+                        format!("OnHit - Status: {} {duration}", effect.name)
+                    }
+                    Effect::Heal { amount } => format!("OnHit - Heal: {amount}"),
+                }
+            } else {
+                "".to_string()
+            };
             draw_text(
-                &format!("Damage: {}", moused_over.weapon.damage),
+                &format!("Damage: {} {on_hit}", moused_over.weapon.damage,),
                 50.0,
                 460.0,
                 20.0,
@@ -164,32 +180,42 @@ async fn main() {
                 20.0,
                 WHITE,
             );
+            let mut offset = 540.0;
             if !moused_over.skills.is_empty() {
-                draw_text("Skills", 50.0, 540.0, 20.0, WHITE);
+                draw_text("Skills", 50.0, offset, 20.0, WHITE);
+                offset += 20.0;
             }
-            for (i, skill) in moused_over.skills.iter().enumerate() {
-                let offset = i as f32 * 20.0;
-                draw_text(
-                    &format!("{:?}", skill.name),
-                    75.0,
-                    560.0 + offset,
-                    20.0,
-                    WHITE,
-                );
+            for skill in &moused_over.skills {
+                draw_text(&format!("{:?}", skill.name), 75.0, offset, 20.0, WHITE);
                 draw_text(
                     &format!("{:?}", skill.effect),
                     75.0,
-                    580.0 + offset,
+                    20.0 + offset,
                     20.0,
                     WHITE,
                 );
                 draw_text(
                     &format!("{:?}", skill.targeting),
                     75.0,
-                    600.0 + offset,
+                    40.0 + offset,
                     20.0,
                     WHITE,
                 );
+                offset += 60.0;
+            }
+            if !moused_over.status_effects.is_empty() {
+                draw_text("Status Effects", 50.0, offset, 20.0, WHITE);
+                offset += 20.0;
+            }
+            for status_effect in &moused_over.status_effects {
+                draw_text(
+                    &format!("{:?}", status_effect.name),
+                    75.0,
+                    offset,
+                    20.0,
+                    WHITE,
+                );
+                offset += 20.0;
             }
         }
 

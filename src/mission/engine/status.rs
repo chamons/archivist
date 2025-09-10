@@ -12,6 +12,7 @@ pub enum StatusEffectKind {
     Protection,
     Weakness,
     Quick,
+    Lifesteal,
     RepeatingPositive,
     RepeatingNegative,
 }
@@ -20,7 +21,9 @@ pub enum StatusEffectKind {
 pub struct StatusEffect {
     pub name: String,
     pub kind: StatusEffectKind,
-    pub duration: i32,
+    #[serde(default)]
+    pub duration: Option<i32>,
+    #[serde(default)]
     pub on_complete: Option<StatusEffectCompleteEffect>,
 }
 
@@ -30,6 +33,7 @@ impl StatusEffect {
             StatusEffectKind::Might => true,
             StatusEffectKind::Protection => true,
             StatusEffectKind::Quick => true,
+            StatusEffectKind::Lifesteal => true,
             StatusEffectKind::Weakness => false,
             StatusEffectKind::RepeatingPositive => true,
             StatusEffectKind::RepeatingNegative => false,
@@ -37,6 +41,8 @@ impl StatusEffect {
     }
 
     pub fn tick(&mut self, amount: i32) {
-        self.duration -= amount;
+        if let Some(duration) = &mut self.duration {
+            *duration -= amount;
+        }
     }
 }

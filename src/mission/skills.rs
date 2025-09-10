@@ -12,6 +12,7 @@ pub enum SkillTargeting {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum SkillCost {
+    None,
     Will(i32),
     Charges { remaining: i32, total: i32 },
 }
@@ -19,6 +20,7 @@ pub enum SkillCost {
 impl SkillCost {
     pub fn can_pay(&self, character: &Character) -> bool {
         match self {
+            SkillCost::None => true,
             SkillCost::Will(cost) => character.will.has_enough(*cost),
             SkillCost::Charges { remaining, .. } => *remaining > 0,
         }
@@ -26,6 +28,7 @@ impl SkillCost {
 
     pub fn term(&self) -> &'static str {
         match self {
+            SkillCost::None => "",
             SkillCost::Will(_) => "will",
             SkillCost::Charges { .. } => "charges",
         }

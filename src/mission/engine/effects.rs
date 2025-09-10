@@ -56,12 +56,20 @@ pub fn weapon_attack(
         target,
         weapon.damage,
     );
+    if let Some(on_hit) = &weapon.on_hit {
+        apply_effect(
+            &mut state.level,
+            EffectSource::Character(source),
+            target,
+            on_hit,
+        );
+    }
     spend_ticks(state, source, TICKS_TO_ACT);
 }
 
 fn calculate_damage(
     level: &LevelState,
-    source: EffectSource,
+    source: &EffectSource,
     target: CharacterId,
     base_damage: i32,
 ) -> (i32, String) {
@@ -115,7 +123,7 @@ fn calculate_damage(
 }
 
 fn apply_damage(level: &mut LevelState, source: EffectSource, target: CharacterId, damage: i32) {
-    let (final_damage, damage_description) = calculate_damage(level, source, target, damage);
+    let (final_damage, damage_description) = calculate_damage(level, &source, target, damage);
     level.push_turn_log(damage_description);
 
     let target_character = level.find_character_mut(target);
@@ -125,6 +133,12 @@ fn apply_damage(level: &mut LevelState, source: EffectSource, target: CharacterI
     // We do not remove the player character, death checks will happen after action resolution
     if target_character.health.is_dead() && !target_character.is_player() {
         level.remove_character(target);
+    }
+
+    if source.has_status_effect(StatusEffectKind::Lifesteal, level) {
+        if let EffectSource::Character(source) = source {
+            apply_healing(level, source, 2);
+        }
     }
 }
 
@@ -212,6 +226,7 @@ pub fn apply_skill(
         .find(|s| s.name == skill_name)
         .expect("Unable to find requested skill");
     match &mut skill.cost {
+        SkillCost::None => {}
         SkillCost::Will(cost) => actor.will.current -= *cost,
         SkillCost::Charges { remaining, .. } => *remaining -= 1,
     }
@@ -281,5 +296,45 @@ pub fn ascend_stars(state: &mut MissionState, screen: &mut Screen) {
         } else {
             screen.push_floating_text("Retrieve the Runestone first!");
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::campaign::CampaignState;
+    use crate::mission::*;
+
+    #[test]
+    fn on_hit() {
+        let (id, mut level) = create_test_map();
+
+        level.find_character_mut(id).weapon.on_hit = Some(Effect::AddStatus {
+            effect: StatusEffect {
+                name: "Weakness".to_string(),
+                kind: StatusEffectKind::Weakness,
+                duration: Some(200),
+                on_complete: None,
+            },
+        });
+
+        let character = level.get_player().clone();
+        let mut mission_state = MissionState {
+            level,
+            frame: 0,
+            current_actor: CurrentActor::PlayerStandardAction,
+            mission_complete: false,
+            campaign: CampaignState::new(character),
+        };
+
+        let player_id = mission_state.level.get_player().id;
+        let weapon = mission_state.level.find_character(id).weapon.clone();
+        weapon_attack(&mut mission_state, id, player_id, weapon);
+
+        assert!(
+            mission_state
+                .level
+                .get_player()
+                .has_status_effect(StatusEffectKind::Weakness)
+        );
     }
 }

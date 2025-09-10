@@ -21,6 +21,8 @@ pub struct CharacterInfo {
     pub tags: Vec<String>,
     #[serde(default)]
     pub defense: u32,
+    #[serde(default)]
+    pub eternal_status_effects: Vec<StatusEffect>,
 }
 
 pub struct Data {
@@ -74,7 +76,7 @@ impl Data {
             skills: character_info.skills.clone(),
             carried_items: vec![],
             enemy_memory,
-            status_effects: vec![],
+            status_effects: character_info.eternal_status_effects.clone(),
             defense: character_info.defense as i32,
         }
     }

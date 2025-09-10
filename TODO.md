@@ -1,8 +1,5 @@
 # Phase 3 Content
-- Figure out if I like advantage rolls or not?
-- Add each status effect to all enemies that make sense
 - Make items that use each effect
-- More balance passes
 - Start each level with a message that you need to find a specific run.
 - Make upgrades based on a tag pool based upon that "rune"
 
@@ -31,16 +28,16 @@
 ## Monster Balancing
 
 Difficulty 1:
-5-8 life
-1-2 damage
+20 life
+5 damage
 No Specials
 
 Difficulty 2:
-8-12 life
-1-2 damage
+24 life
+7 damage
 Easy Specials
 
-Difficulty 1:
-12-15 life
-2 damage
+Difficulty 3:
+35 life
+8 damage
 

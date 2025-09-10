@@ -9,7 +9,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 2
+                "damage": 7
             }
         },
         "targeting": {
@@ -26,12 +26,10 @@
     },
     {
         "name": "Forcebolt",
-        "cost": {
-            "Will": 2
-        },
+        "cost": "None",
         "effect": {
             "ApplyDamage": {
-                "damage": 6
+                "damage": 3
             }
         },
         "targeting": {
@@ -56,7 +54,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 4
+                "damage": 8
             }
         },
         "targeting": {
@@ -78,7 +76,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 2
+                "damage": 4
             }
         },
         "targeting": {
@@ -103,7 +101,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 12
+                "damage": 18
             }
         },
         "targeting": {
@@ -128,7 +126,7 @@
         },
         "effect": {
             "Heal": {
-                "amount": 5
+                "amount": 15
             }
         },
         "targeting": "Caster"
@@ -163,6 +161,30 @@
                     "name": "Protection",
                     "kind": "Protection",
                     "duration": 500
+                }
+            }
+        },
+        "targeting": "Caster"
+    },
+    {
+        "name": "SelfBurn",
+        "cost": {
+            "Will": 1
+        },
+        "effect": {
+            "AddStatus": {
+                "effect": {
+                    "name": "Burn",
+                    "kind": "RepeatingNegative",
+                    "duration": 100,
+                    "on_complete": {
+                        "reapply_count": 4,
+                        "complete_effect": {
+                            "ApplyDamage": {
+                                "damage": 3
+                            }
+                        }
+                    }
                 }
             }
         },

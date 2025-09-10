@@ -12,7 +12,7 @@ use crate::screens::death::DeathState;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionState {
     pub level: LevelState,
-    frame: usize,
+    pub frame: usize,
     pub current_actor: CurrentActor,
 
     pub mission_complete: bool,

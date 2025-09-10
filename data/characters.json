@@ -1,31 +1,46 @@
 [
     {
         "name": "Bat",
-        "max_health": 7,
+        "max_health": 20,
         "base_sprite_tile": {
             "x": 3,
             "y": 13
         },
         "weapon": {
             "name": "Bite",
-            "damage": 1
+            "damage": 4
         },
         "is_intelligent": true,
         "difficulty": 1,
         "tags": [
             "nature"
+        ],
+        "eternal_status_effects": [
+            {
+                "name": "Lifesteal",
+                "kind": "Lifesteal"
+            }
         ]
     },
     {
         "name": "Rat",
-        "max_health": 5,
+        "max_health": 18,
         "base_sprite_tile": {
             "x": 8,
             "y": 13
         },
         "weapon": {
             "name": "Bite",
-            "damage": 1
+            "damage": 4,
+            "on_hit": {
+                "AddStatus": {
+                    "effect": {
+                        "name": "Weakness",
+                        "kind": "Weakness",
+                        "duration": 200
+                    }
+                }
+            }
         },
         "is_intelligent": true,
         "difficulty": 1,
@@ -35,15 +50,15 @@
     },
     {
         "name": "Bear",
-        "max_health": 18,
-        "defense": 1,
+        "max_health": 35,
+        "defense": 3,
         "base_sprite_tile": {
             "x": 9,
             "y": 19
         },
         "weapon": {
             "name": "Maul",
-            "damage": 2
+            "damage": 9
         },
         "is_intelligent": true,
         "difficulty": 3,
@@ -53,14 +68,14 @@
     },
     {
         "name": "Wolf",
-        "max_health": 12,
+        "max_health": 24,
         "base_sprite_tile": {
             "x": 15,
             "y": 13
         },
         "weapon": {
             "name": "Bite",
-            "damage": 2
+            "damage": 8
         },
         "is_intelligent": true,
         "difficulty": 2,
@@ -70,7 +85,7 @@
     },
     {
         "name": "Witch",
-        "max_health": 8,
+        "max_health": 15,
         "max_will": 2,
         "base_sprite_tile": {
             "x": 16,
@@ -78,17 +93,32 @@
         },
         "weapon": {
             "name": "Slap",
-            "damage": 1
+            "damage": 2,
+            "on_hit": {
+                "AddStatus": {
+                    "effect": {
+                        "name": "Poison",
+                        "kind": "RepeatingNegative",
+                        "duration": 100,
+                        "on_complete": {
+                            "reapply_count": 2,
+                            "complete_effect": {
+                                "ApplyDamage": {
+                                    "damage": 2
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
         "skills": [
             {
                 "name": "Witchfire",
-                "cost": {
-                    "Will": 1
-                },
+                "cost": "None",
                 "effect": {
                     "ApplyDamage": {
-                        "damage": 2
+                        "damage": 4
                     }
                 },
                 "targeting": "Caster"
@@ -102,7 +132,7 @@
     },
     {
         "name": "Slime",
-        "max_health": 8,
+        "max_health": 20,
         "max_will": 2,
         "base_sprite_tile": {
             "x": 2,
@@ -110,7 +140,7 @@
         },
         "weapon": {
             "name": "Slam",
-            "damage": 2
+            "damage": 7
         },
         "skills": [
             {
@@ -120,7 +150,7 @@
                 },
                 "effect": {
                     "Heal": {
-                        "amount": 5
+                        "amount": 12
                     }
                 },
                 "targeting": "Caster"
@@ -134,7 +164,7 @@
     },
     {
         "name": "Ooze",
-        "max_health": 22,
+        "max_health": 30,
         "max_will": 2,
         "base_sprite_tile": {
             "x": 15,
@@ -142,7 +172,7 @@
         },
         "weapon": {
             "name": "Slam",
-            "damage": 2
+            "damage": 9
         },
         "skills": [
             {
@@ -152,7 +182,7 @@
                 },
                 "effect": {
                     "Heal": {
-                        "amount": 5
+                        "amount": 20
                     }
                 },
                 "targeting": "Caster"
@@ -166,7 +196,7 @@
     },
     {
         "name": "Spider",
-        "max_health": 12,
+        "max_health": 24,
         "max_will": 1,
         "base_sprite_tile": {
             "x": 7,
@@ -174,7 +204,7 @@
         },
         "weapon": {
             "name": "Bite",
-            "damage": 1
+            "damage": 7
         },
         "skills": [
             {
@@ -183,8 +213,20 @@
                     "Will": 1
                 },
                 "effect": {
-                    "ApplyDamage": {
-                        "damage": 2
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Poison",
+                            "kind": "RepeatingNegative",
+                            "duration": 100,
+                            "on_complete": {
+                                "reapply_count": 3,
+                                "complete_effect": {
+                                    "ApplyDamage": {
+                                        "damage": 2
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 "targeting": {
@@ -209,7 +251,7 @@
     },
     {
         "name": "Goblin Warrior",
-        "max_health": 8,
+        "max_health": 20,
         "max_will": 1,
         "base_sprite_tile": {
             "x": 1,
@@ -217,7 +259,7 @@
         },
         "weapon": {
             "name": "Slash",
-            "damage": 2
+            "damage": 6
         },
         "is_intelligent": true,
         "difficulty": 1,
@@ -227,7 +269,7 @@
     },
     {
         "name": "Goblin Archer",
-        "max_health": 8,
+        "max_health": 20,
         "max_will": 1,
         "base_sprite_tile": {
             "x": 2,
@@ -235,7 +277,7 @@
         },
         "weapon": {
             "name": "Slash",
-            "damage": 1
+            "damage": 6
         },
         "skills": [
             {
@@ -248,7 +290,7 @@
                 },
                 "effect": {
                     "ApplyDamage": {
-                        "damage": 2
+                        "damage": 6
                     }
                 },
                 "targeting": {
@@ -272,7 +314,7 @@
     },
     {
         "name": "Goblin Sage",
-        "max_health": 8,
+        "max_health": 20,
         "max_will": 2,
         "base_sprite_tile": {
             "x": 5,
@@ -280,7 +322,7 @@
         },
         "weapon": {
             "name": "Strike",
-            "damage": 1
+            "damage": 6
         },
         "skills": [
             {
@@ -290,7 +332,7 @@
                 },
                 "effect": {
                     "Heal": {
-                        "amount": 5
+                        "amount": 12
                     }
                 },
                 "targeting": {
@@ -314,16 +356,16 @@
     },
     {
         "name": "Skeleton",
-        "max_health": 6,
+        "max_health": 12,
         "max_will": 1,
-        "defense": 1,
+        "defense": 3,
         "base_sprite_tile": {
             "x": 3,
             "y": 17
         },
         "weapon": {
             "name": "Claw",
-            "damage": 2
+            "damage": 6
         },
         "is_intelligent": false,
         "difficulty": 1,
@@ -333,16 +375,16 @@
     },
     {
         "name": "Skeleton Archer",
-        "max_health": 6,
+        "max_health": 12,
         "max_will": 1,
-        "defense": 1,
+        "defense": 3,
         "base_sprite_tile": {
             "x": 4,
             "y": 17
         },
         "weapon": {
             "name": "Claw",
-            "damage": 2
+            "damage": 6
         },
         "skills": [
             {
@@ -355,7 +397,7 @@
                 },
                 "effect": {
                     "ApplyDamage": {
-                        "damage": 2
+                        "damage": 6
                     }
                 },
                 "targeting": {
