@@ -53,4 +53,5 @@ pub mod prelude {
     pub const STATUS_EFFECT_WEAKNESS_DAMAGE_REDUCTION: i32 = 4;
     pub const STATUS_EFFECT_CHANCE_BLIND_MISS: f64 = 0.25;
     pub const STATUS_EFFECT_CHANCE_DODGE_MISS: f64 = 0.25;
+    pub const STATUS_EFFECT_CHANCE_ROOT_STAY_STILL: f64 = 0.33;
 }

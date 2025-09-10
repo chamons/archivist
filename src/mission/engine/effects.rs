@@ -16,10 +16,18 @@ pub fn move_character(state: &mut MissionState, id: CharacterId, dest: Point, sc
         let has_quick = actor.has_status_effect(StatusEffectKind::Quick);
         let has_slow = actor.has_status_effect(StatusEffectKind::Slow);
 
-        actor.position = dest;
-        if actor.is_player() {
-            state.level.update_visibility();
-            pickup_any_items(state, id, dest, screen);
+        let skip_move = actor.has_status_effect(StatusEffectKind::Rooted)
+            && rand::rng().random_bool(STATUS_EFFECT_CHANCE_ROOT_STAY_STILL);
+
+        if !skip_move {
+            actor.position = dest;
+            if actor.is_player() {
+                state.level.update_visibility();
+                pickup_any_items(state, id, dest, screen);
+            }
+        } else {
+            let log = format!("{} was unable to move", actor.name.clone());
+            state.level.push_turn_log(log);
         }
 
         let mut tick_cost = if has_quick {

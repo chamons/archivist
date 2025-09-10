@@ -19,6 +19,7 @@ pub enum StatusEffectKind {
     Blind,
     Agile,
     Stun,
+    Rooted,
     RepeatingPositive,
     RepeatingNegative,
 }
@@ -46,7 +47,8 @@ impl StatusEffect {
             | StatusEffectKind::Cursed
             | StatusEffectKind::Weakness
             | StatusEffectKind::Blind
-            | StatusEffectKind::Stun => false,
+            | StatusEffectKind::Stun
+            | StatusEffectKind::Rooted => false,
             StatusEffectKind::RepeatingPositive => true,
             StatusEffectKind::RepeatingNegative => false,
         }
