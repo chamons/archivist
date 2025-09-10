@@ -29,7 +29,7 @@
         "cost": "None",
         "effect": {
             "ApplyDamage": {
-                "damage": 3
+                "damage": 4
             }
         },
         "targeting": {
@@ -161,30 +161,6 @@
                     "name": "Protection",
                     "kind": "Protection",
                     "duration": 500
-                }
-            }
-        },
-        "targeting": "Caster"
-    },
-    {
-        "name": "SelfBurn",
-        "cost": {
-            "Will": 1
-        },
-        "effect": {
-            "AddStatus": {
-                "effect": {
-                    "name": "Burn",
-                    "kind": "RepeatingNegative",
-                    "duration": 100,
-                    "on_complete": {
-                        "reapply_count": 4,
-                        "complete_effect": {
-                            "ApplyDamage": {
-                                "damage": 3
-                            }
-                        }
-                    }
                 }
             }
         },

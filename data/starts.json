@@ -38,8 +38,7 @@
         "will": 2,
         "defense": 0,
         "provides_skills": [
-            "Forcebolt",
-            "SelfBurn"
+            "Forcebolt"
         ]
     },
     {
