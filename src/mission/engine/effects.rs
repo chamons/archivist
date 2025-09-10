@@ -286,6 +286,7 @@ pub fn apply_skill(
         SkillCost::None => {}
         SkillCost::Will(cost) => actor.will.current -= *cost,
         SkillCost::Charges { remaining, .. } => *remaining -= 1,
+        SkillCost::Cooldown { ticks, cost } => *ticks = *cost,
     }
     let effect = skill.effect.clone();
     apply_effect(

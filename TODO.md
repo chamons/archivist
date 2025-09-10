@@ -16,6 +16,7 @@
 
 # Cut / Later Ideas
 - Doors and keys?
+- AOE (Point blank and targeted Blast/Cone)
 - Crafting Upgrades based on rune + positions
 - Multi effects on single skill (Damage + heal)
 - More maps

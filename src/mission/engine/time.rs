@@ -40,6 +40,18 @@ fn add_ticks(level: &mut LevelState, amount: i32) {
             status.tick(amount);
         }
 
+        for skill in &mut character.skills {
+            match &mut skill.cost {
+                SkillCost::Cooldown { ticks, .. } => {
+                    if *ticks > 0 {
+                        *ticks -= amount;
+                        *ticks = *ticks.max(&mut 0);
+                    }
+                }
+                _ => {}
+            }
+        }
+
         let mut completed_status: Vec<_> = character
             .status_effects
             .extract_if(.., |s| match s.duration {
@@ -76,6 +88,7 @@ fn add_ticks(level: &mut LevelState, amount: i32) {
 mod tests {
     use crate::mission::engine::time::add_ticks;
     use crate::mission::*;
+    use crate::util::Point;
 
     #[test]
     fn reapply_status() {
@@ -159,5 +172,42 @@ mod tests {
         );
         add_ticks(&mut level, 100);
         assert_eq!(level.find_character(id).ticks, 100);
+    }
+
+    #[test]
+    fn skills_recharge() {
+        let (id, mut level) = create_test_map();
+
+        let bat = level.find_character_mut(id);
+        bat.skills.push(Skill {
+            name: "Bite".to_string(),
+            cost: SkillCost::Cooldown {
+                ticks: 200,
+                cost: 200,
+            },
+            effect: Effect::ApplyDamage { damage: 2 },
+            targeting: SkillTargeting::Ranged {
+                max_range: 1,
+                sprite: AnimationSpriteKind::SingleFrame(Point::zero()),
+            },
+        });
+
+        add_ticks(&mut level, 100);
+        assert_eq!(
+            level.find_character(id).skills[0].cost,
+            SkillCost::Cooldown {
+                ticks: 100,
+                cost: 200
+            }
+        );
+
+        add_ticks(&mut level, 150);
+        assert_eq!(
+            level.find_character(id).skills[0].cost,
+            SkillCost::Cooldown {
+                ticks: 0,
+                cost: 200
+            }
+        );
     }
 }

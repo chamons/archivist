@@ -46,11 +46,15 @@ pub fn get_player_action(
                     }
                 }
             } else {
-                screen.push_floating_text(&format!(
-                    "Not enough {} to use {}",
-                    skill.cost.term(),
-                    skill.name
-                ));
+                let message = match &skill.cost {
+                    SkillCost::None => "".to_string(),
+                    SkillCost::Will(_) => format!("Not enough will to use {}", skill.name),
+                    SkillCost::Charges { .. } => {
+                        format!("Not enough charges to use {}", skill.name)
+                    }
+                    SkillCost::Cooldown { .. } => format!("{} is not ready yet", skill.name),
+                };
+                screen.push_floating_text(&message);
                 HandleInputResponse::Action(None)
             }
         } else {

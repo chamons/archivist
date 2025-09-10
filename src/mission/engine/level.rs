@@ -254,6 +254,13 @@ impl LevelState {
                 SkillCost::None => "".to_string(),
                 SkillCost::Will(cost) => format!("({cost})"),
                 SkillCost::Charges { remaining, total } => format!("({remaining}/{total})"),
+                SkillCost::Cooldown { ticks, .. } => {
+                    if *ticks == 0 {
+                        "".to_string()
+                    } else {
+                        format!("{} Turns", ((ticks / TICKS_TO_ACT) as f32).ceil())
+                    }
+                }
             };
             let color = if skill.cost.can_pay(player) {
                 WHITE

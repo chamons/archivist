@@ -15,6 +15,7 @@ pub enum SkillCost {
     None,
     Will(i32),
     Charges { remaining: i32, total: i32 },
+    Cooldown { ticks: i32, cost: i32 },
 }
 
 impl SkillCost {
@@ -23,14 +24,7 @@ impl SkillCost {
             SkillCost::None => true,
             SkillCost::Will(cost) => character.will.has_enough(*cost),
             SkillCost::Charges { remaining, .. } => *remaining > 0,
-        }
-    }
-
-    pub fn term(&self) -> &'static str {
-        match self {
-            SkillCost::None => "",
-            SkillCost::Will(_) => "will",
-            SkillCost::Charges { .. } => "charges",
+            SkillCost::Cooldown { ticks, .. } => *ticks == 0,
         }
     }
 }
