@@ -2,7 +2,7 @@ use macroquad::{input::prevent_quit, window::clear_background};
 
 use crate::{
     campaign::CampaignScreenState,
-    mission::{MissionState, Screen},
+    mission::MissionState,
     prelude::*,
     screens::{death::DeathState, title::TitleState, victory::VictoryState},
 };

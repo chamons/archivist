@@ -1,6 +1,6 @@
 use crate::{
     campaign::{select_equipment::SelectEquipmentState, upgrade::UpgradeState},
-    mission::{MissionState, Screen},
+    mission::MissionState,
     prelude::*,
 };
 

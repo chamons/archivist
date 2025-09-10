@@ -1,10 +1,8 @@
 use std::collections::{HashMap, HashSet};
 
-use archivist::mission::{Effect, TileSet};
-use archivist::{
-    mission::{Data, Screen},
-    prelude::Point,
-};
+use archivist::mission::Effect;
+use archivist::prelude::{Screen, TileSet};
+use archivist::{mission::Data, prelude::Point};
 use macroquad::color::WHITE;
 use macroquad::input::{KeyCode, is_key_pressed};
 use macroquad::text::draw_text;

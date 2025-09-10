@@ -1,7 +1,6 @@
 use macroquad::input::get_keys_pressed;
 use macroquad::window::{clear_background, screen_height};
 
-use crate::mission::Screen;
 use crate::prelude::*;
 use crate::screens::title::TitleState;
 

@@ -2,7 +2,7 @@ use macroquad::input::get_keys_pressed;
 use macroquad::shapes::draw_rectangle;
 use macroquad::window::{clear_background, screen_height, screen_width};
 
-use crate::mission::{MissionState, Screen};
+use crate::mission::MissionState;
 use crate::prelude::*;
 use crate::screens::title::TitleState;
 

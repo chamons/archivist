@@ -1,5 +1,5 @@
 use crate::campaign::CampaignScreenState;
-use crate::mission::{MissionState, Screen};
+use crate::mission::MissionState;
 use crate::prelude::*;
 
 pub struct TitleState {
