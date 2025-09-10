@@ -134,11 +134,23 @@ fn find_ranged_target(
         }
         Effect::AddStatus { effect } => {
             for character in &level.characters {
-                if clear_line_between(level, enemy.position, character.position, max_range)
-                    && ((character.is_player() && !effect.is_positive())
-                        || !character.is_player() && effect.is_positive())
-                {
-                    return Some((character.id, character.position));
+                if clear_line_between(level, enemy.position, character.position, max_range) {
+                    let is_negative_and_targets_player =
+                        character.is_player() && !effect.is_positive();
+                    let is_positive_and_targets_ally =
+                        !character.is_player() && effect.is_positive();
+                    let target_has_status_already = character.has_status_effect(effect.kind);
+
+                    // Only use a status if they:
+                    // - Already don't have it AND
+                    // - It is bad and we can target the player
+                    // - It is good and we can target the character and can see the player (so not used too early)
+                    if !target_has_status_already
+                        && (is_negative_and_targets_player
+                            || (is_positive_and_targets_ally && can_see_player(level, enemy.id)))
+                    {
+                        return Some((character.id, character.position));
+                    }
                 }
             }
             None

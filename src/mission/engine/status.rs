@@ -6,7 +6,7 @@ pub struct StatusEffectCompleteEffect {
     pub complete_effect: Option<Box<Effect>>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum StatusEffectKind {
     Might,
     Protection,
