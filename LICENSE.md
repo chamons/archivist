@@ -1,4 +1,4 @@
-The following license applies to all source code, but not to the art in the resources folder:
+The following license applies to all source code, but not to the art bundled in the game release.
 
 MIT License
 
@@ -21,6 +21,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-
-The art in the resource folder is a paid asset and is covered under the license found at https://www.oryxdesignlab.com/license along with other private paid content.

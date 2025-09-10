@@ -2,19 +2,21 @@
 - Make items that use each effect
 - Start each level with a message that you need to find a specific run.
 - Make upgrades based on a tag pool based upon that "rune"
-
-- Some levels should be multi-floor
 - Tile variations
 - Lots of abilities, enemies
 
-# Phase 4 - Final Tweaks
+# Phase 4 - Final Features
 - Fancy tab
 - Sound?
 - Music?
+
+# Phase 5 - Get Ready
+- Playtest a bunch! Win with each character
 - Package for distribution
-- List of all enemies in game from title screen
 
 # Cut / Later Ideas
+- List of all enemies in game from title screen
+- Some levels should be multi-floor
 - Doors and keys?
 - AOE (Point blank and targeted Blast/Cone)
 - Crafting Upgrades based on rune + positions

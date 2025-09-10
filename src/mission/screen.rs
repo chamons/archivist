@@ -35,25 +35,26 @@ pub struct Screen {
 
 impl Screen {
     pub async fn new() -> Self {
-        let creatures =
-            macroquad::texture::load_texture("resources/oryx_16bit_fantasy_creatures_trans.png")
-                .await
-                .expect("Unable to load art");
-        let fx = macroquad::texture::load_texture("resources/oryx_16bit_fantasy_fx_trans.png")
+        let creatures = macroquad::texture::load_texture(
+            "resources/art/oryx_16bit_fantasy_creatures_trans.png",
+        )
+        .await
+        .expect("Unable to load art");
+        let fx = macroquad::texture::load_texture("resources/art/oryx_16bit_fantasy_fx_trans.png")
             .await
             .expect("Unable to load art");
         let items =
-            macroquad::texture::load_texture("resources/oryx_16bit_fantasy_items_trans.png")
+            macroquad::texture::load_texture("resources/art/oryx_16bit_fantasy_items_trans.png")
                 .await
                 .expect("Unable to load art");
-        let tiles = macroquad::texture::load_texture("resources/oryx_16bit_fantasy_tiles.png")
+        let tiles = macroquad::texture::load_texture("resources/art/oryx_16bit_fantasy_tiles.png")
             .await
             .expect("Unable to load art");
         let world =
-            macroquad::texture::load_texture("resources/oryx_16bit_fantasy_world_trans.png")
+            macroquad::texture::load_texture("resources/art/oryx_16bit_fantasy_world_trans.png")
                 .await
                 .expect("Unable to load art");
-        let text = macroquad::texture::load_texture("resources/terminal8x8.png")
+        let text = macroquad::texture::load_texture("resources/art/terminal8x8.png")
             .await
             .expect("Unable to load art");
 
