@@ -50,18 +50,23 @@ pub fn weapon_attack(
     target: CharacterId,
     weapon: Weapon,
 ) {
-    apply_damage(&mut state.level, source, target, weapon.damage);
+    apply_damage(
+        &mut state.level,
+        EffectSource::Character(source),
+        target,
+        weapon.damage,
+    );
     spend_ticks(state, source, TICKS_TO_ACT);
 }
 
 fn calculate_damage(
     level: &LevelState,
-    source: CharacterId,
+    source: EffectSource,
     target: CharacterId,
     base_damage: i32,
-) -> i32 {
+) -> (i32, String) {
     let mut damage_description = String::new();
-    let source_name = level.find_character(source).name.clone();
+    let source_name = source.name(level);
     let target_name = level.find_character(target).name.clone();
 
     // Start with the base damage
@@ -69,17 +74,11 @@ fn calculate_damage(
     damage_description.push_str(&format!("{source_name} deals {base_damage}"));
 
     // Add Might and Subtract Weakness
-    if level
-        .find_character(source)
-        .has_status_effect(StatusEffectKind::Might)
-    {
+    if source.has_status_effect(StatusEffectKind::Might, level) {
         damage += STATUS_EFFECT_MIGHT_DAMAGE_BOOST;
         damage_description.push_str(&format!(" + {STATUS_EFFECT_MIGHT_DAMAGE_BOOST}(Might)"));
     }
-    if level
-        .find_character(source)
-        .has_status_effect(StatusEffectKind::Weakness)
-    {
+    if source.has_status_effect(StatusEffectKind::Weakness, level) {
         damage -= STATUS_EFFECT_WEAKNESS_DAMAGE_REDUCTION;
         damage_description.push_str(&format!(
             " - {STATUS_EFFECT_WEAKNESS_DAMAGE_REDUCTION}(Weakness)"
@@ -112,13 +111,12 @@ fn calculate_damage(
     }
     damage_description.push_str(&format!(" = {damage} to {target_name}"));
 
-    println!("{damage_description}");
-
-    damage
+    (damage, damage_description)
 }
 
-fn apply_damage(level: &mut LevelState, source: CharacterId, target: CharacterId, damage: i32) {
-    let final_damage = calculate_damage(level, source, target, damage);
+fn apply_damage(level: &mut LevelState, source: EffectSource, target: CharacterId, damage: i32) {
+    let (final_damage, damage_description) = calculate_damage(level, source, target, damage);
+    level.push_turn_log(damage_description);
 
     let target_character = level.find_character_mut(target);
 
@@ -132,12 +130,19 @@ fn apply_damage(level: &mut LevelState, source: CharacterId, target: CharacterId
 
 fn add_status(level: &mut LevelState, target: CharacterId, status: StatusEffect) {
     let target_character = level.find_character_mut(target);
+    let name = target_character.name.clone();
+    let status_name = status.name.clone();
     target_character.status_effects.push(status);
+
+    level.push_turn_log(format!("{name} gains {}", status_name));
 }
 
 fn apply_healing(level: &mut LevelState, target: CharacterId, amount: i32) {
     let target_character = level.find_character_mut(target);
+    let name = target_character.name.clone();
     target_character.health.increase(amount);
+
+    level.push_turn_log(format!("{name} is healed for {amount}"));
 }
 
 pub fn character_wait(state: &mut MissionState, id: CharacterId, screen: &mut Screen) {
@@ -184,7 +189,23 @@ pub fn apply_skill(
     target: CharacterId,
     skill_name: &str,
 ) {
+    if source == target {
+        state.level.push_turn_log(format!(
+            "{} uses {}",
+            state.level.find_character(source).name,
+            skill_name
+        ));
+    } else {
+        state.level.push_turn_log(format!(
+            "{} uses {} on {}",
+            state.level.find_character(source).name,
+            skill_name,
+            state.level.find_character(target).name,
+        ));
+    }
+
     let actor = state.level.find_character_mut(source);
+
     let skill = actor
         .skills
         .iter_mut()
@@ -195,14 +216,44 @@ pub fn apply_skill(
         SkillCost::Charges { remaining, .. } => *remaining -= 1,
     }
     let effect = skill.effect.clone();
-    apply_effect(&mut state.level, source, target, &effect);
+    apply_effect(
+        &mut state.level,
+        EffectSource::Character(source),
+        target,
+        &effect,
+    );
 
     spend_ticks(state, source, TICKS_TO_ACT);
 }
 
+pub enum EffectSource {
+    Character(CharacterId),
+    StatusEffect(String),
+}
+
+impl EffectSource {
+    pub fn has_status_effect(&self, kind: StatusEffectKind, level: &LevelState) -> bool {
+        match self {
+            EffectSource::Character(character_id) => {
+                level.find_character(*character_id).has_status_effect(kind)
+            }
+            EffectSource::StatusEffect(_) => false,
+        }
+    }
+
+    pub fn name(&self, level: &LevelState) -> String {
+        match self {
+            EffectSource::Character(character_id) => {
+                level.find_character(*character_id).name.clone()
+            }
+            EffectSource::StatusEffect(name) => name.clone(),
+        }
+    }
+}
+
 pub fn apply_effect(
     level: &mut LevelState,
-    source: CharacterId,
+    source: EffectSource,
     target: CharacterId,
     effect: &Effect,
 ) {

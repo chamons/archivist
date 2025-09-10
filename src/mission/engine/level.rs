@@ -11,6 +11,7 @@ pub struct LevelState {
     pub characters: Vec<Character>,
     pub items: Vec<(Point, Item)>,
     visibility: VisibilityMap,
+    pub turn_log: Vec<String>,
 }
 
 impl LevelState {
@@ -20,6 +21,7 @@ impl LevelState {
             characters,
             items,
             visibility: VisibilityMap::new(),
+            turn_log: vec![],
         };
         this.update_visibility();
         this
@@ -65,7 +67,7 @@ impl LevelState {
         self.characters.retain(|c| c.id != id);
     }
 
-    pub fn render(&self, screen: &mut Screen) {
+    pub fn render(&mut self, screen: &mut Screen) {
         self.map.render(screen, &self.visibility);
 
         for (item_position, item) in &self.items {
@@ -86,7 +88,7 @@ impl LevelState {
         screen.render_floating_text();
     }
 
-    fn render_hud(&self, screen: &Screen) {
+    fn render_hud(&mut self, screen: &Screen) {
         let player = self.get_player();
 
         let health = player.health.clone();
@@ -128,6 +130,16 @@ impl LevelState {
         self.draw_status_effects(&mut offset);
 
         self.draw_tooltips(screen);
+        self.draw_log();
+    }
+
+    fn draw_log(&mut self) {
+        let line_count = self.turn_log.len();
+        let offset = 800.0 - line_count as f32 * 20.0;
+
+        for (i, line) in self.turn_log.iter().enumerate() {
+            draw_text(line, 50.0, offset as f32 + 20.0 * i as f32, 16.0, WHITE);
+        }
     }
 
     fn draw_tooltips(&self, screen: &Screen) {
@@ -306,5 +318,9 @@ impl LevelState {
                 }
             }
         }
+    }
+
+    pub fn push_turn_log(&mut self, line: String) {
+        self.turn_log.push(line);
     }
 }

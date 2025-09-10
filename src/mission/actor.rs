@@ -23,7 +23,12 @@ impl CurrentActor {
         match self {
             CurrentActor::PlayerStandardAction => {
                 let player = level.get_player();
-                self.process_input_response(get_player_action(player, level, screen))
+                let action = self.process_input_response(get_player_action(player, level, screen));
+                // When the player makes a real action clear the per-turn log
+                if action.is_some() {
+                    level.turn_log.clear();
+                }
+                action
             }
             CurrentActor::PlayerTargeting(targeting_info) => {
                 let is_current_target_valid = Self::is_current_target_valid(targeting_info, level);

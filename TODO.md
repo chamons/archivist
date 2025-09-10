@@ -1,8 +1,7 @@
 # Phase 3 Content
-- Add log at bottom of screen showing roll
+- Figure out if I like advantage rolls or not?
 - Add each status effect to all enemies that make sense
 - Make items that use each effect
-- Advantage/Disadvantage on damage rolls
 - More balance passes
 - Start each level with a message that you need to find a specific run.
 - Make upgrades based on a tag pool based upon that "rune"

@@ -51,14 +51,19 @@ fn add_ticks(level: &mut LevelState, amount: i32) {
                     character.status_effects.push(reapply);
                 }
                 if let Some(complete_effect) = &on_complete.complete_effect {
-                    effects_to_apply.push((character.id, complete_effect.clone()));
+                    effects_to_apply.push((character.id, complete_effect.clone(), completed.name));
                 }
             }
         }
     }
 
-    for (target, effect) in effects_to_apply {
-        apply_effect(level, target, target, &effect);
+    for (target, effect, effect_name) in effects_to_apply {
+        apply_effect(
+            level,
+            EffectSource::StatusEffect(effect_name),
+            target,
+            &effect,
+        );
     }
 }
 
