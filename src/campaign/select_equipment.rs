@@ -83,7 +83,7 @@ impl SelectEquipmentState {
             name: "Player".to_string(),
             position: Point::zero(),
             id: CharacterId::next(),
-            ticks: 0,
+            ticks: TICKS_TO_ACT, // Start off ready to go, since first move is always player
             health: Health::new(selection.health as i32),
             will: Will::new(selection.will as i32),
             base_sprite_tile: selection.sprite,
