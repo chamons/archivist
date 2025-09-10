@@ -60,29 +60,60 @@ fn calculate_damage(
     target: CharacterId,
     base_damage: i32,
 ) -> i32 {
+    let mut damage_description = String::new();
+    let source_name = level.find_character(source).name.clone();
+    let target_name = level.find_character(target).name.clone();
+
+    // Start with the base damage
     let mut damage = base_damage;
+    damage_description.push_str(&format!("{source_name} deals {base_damage}"));
+
+    // Add Might and Subtract Weakness
     if level
         .find_character(source)
         .has_status_effect(StatusEffectKind::Might)
     {
         damage += STATUS_EFFECT_MIGHT_DAMAGE_BOOST;
+        damage_description.push_str(&format!(" + {STATUS_EFFECT_MIGHT_DAMAGE_BOOST}(Might)"));
     }
     if level
         .find_character(source)
         .has_status_effect(StatusEffectKind::Weakness)
     {
         damage -= STATUS_EFFECT_WEAKNESS_DAMAGE_REDUCTION;
+        damage_description.push_str(&format!(
+            " - {STATUS_EFFECT_WEAKNESS_DAMAGE_REDUCTION}(Weakness)"
+        ));
     }
 
+    // Roll advantage/disadvantage
+    let roll = [-1, 0, 1].choose(&mut rand::rng()).unwrap();
+    damage += roll;
+
+    match roll {
+        i32::MIN..0 => damage_description.push_str(&format!(" - {}(Advantage)", roll.abs())),
+        0 => damage_description.push_str(" + 0(Advantage)"),
+        1_i32..=i32::MAX => damage_description.push_str(&format!(" + {roll}(Advantage)")),
+    }
+
+    // Then finally subtract the defense (plus any protection) from the damage
     let target_character = level.find_character(target);
     let mut defense = target_character.defense;
     if target_character.has_status_effect(StatusEffectKind::Protection) {
         defense += STATUS_EFFECT_PROTECTION_DEFENSE_BOOST;
     }
     damage -= defense;
-    if damage == 0 {
-        damage = 1;
+
+    damage_description.push_str(&format!(" - {defense}(defense)"));
+
+    // Make sure damage is never negative (no healing wacks)
+    if damage < 0 {
+        damage = 0;
     }
+    damage_description.push_str(&format!(" = {damage} to {target_name}"));
+
+    println!("{damage_description}");
+
     damage
 }
 

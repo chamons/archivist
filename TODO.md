@@ -1,9 +1,12 @@
 # Phase 3 Content
+- Add log at bottom of screen showing roll
 - Add each status effect to all enemies that make sense
 - Make items that use each effect
 - Advantage/Disadvantage on damage rolls
 - More balance passes
-- Make upgrades based on a tag pool based upon a random "rune"
+- Start each level with a message that you need to find a specific run.
+- Make upgrades based on a tag pool based upon that "rune"
+
 - Some levels should be multi-floor
 - Tile variations
 - Lots of abilities, enemies
@@ -12,11 +15,11 @@
 - Fancy tab
 - Sound?
 - Music?
-- Doors and keys?
 - Package for distribution
 - List of all enemies in game from title screen
 
 # Cut / Later Ideas
+- Doors and keys?
 - Crafting Upgrades based on rune + positions
 - Multi effects on single skill (Damage + heal)
 - More maps
