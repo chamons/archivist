@@ -32,7 +32,9 @@ fn add_ticks(level: &mut LevelState, amount: i32) {
     let mut effects_to_apply = vec![];
 
     for character in &mut level.characters {
-        character.ticks += amount;
+        if !character.has_status_effect(StatusEffectKind::Stun) {
+            character.ticks += amount;
+        }
 
         for status in &mut character.status_effects {
             status.tick(amount);
@@ -127,5 +129,35 @@ mod tests {
             let bat = level.find_character(id);
             assert!(bat.has_status_effect(StatusEffectKind::Lifesteal));
         }
+    }
+
+    #[test]
+    fn stun_prevents_tick_gain_for_period() {
+        let (id, mut level) = create_test_map();
+
+        let bat = level.find_character_mut(id);
+        bat.status_effects.push(StatusEffect {
+            name: "Stunned".to_string(),
+            kind: StatusEffectKind::Stun,
+            duration: Some(200),
+            on_complete: None,
+        });
+
+        add_ticks(&mut level, 100);
+        assert_eq!(level.find_character(id).ticks, 0);
+        assert!(
+            level
+                .find_character(id)
+                .has_status_effect(StatusEffectKind::Stun)
+        );
+        add_ticks(&mut level, 100);
+        assert_eq!(level.find_character(id).ticks, 0);
+        assert!(
+            !level
+                .find_character(id)
+                .has_status_effect(StatusEffectKind::Stun)
+        );
+        add_ticks(&mut level, 100);
+        assert_eq!(level.find_character(id).ticks, 100);
     }
 }
