@@ -1,9 +1,13 @@
+use std::collections::HashMap;
+
 use macroquad::{
+    audio::{PlaySoundParams, Sound, load_sound, play_sound, play_sound_once, stop_sound},
     shapes::{draw_rectangle, draw_rectangle_lines},
     text::{draw_text, measure_text},
     texture::{DrawTextureParams, Texture2D, build_textures_atlas, draw_texture_ex},
     window::screen_width,
 };
+use rand::Rng;
 
 use crate::mission::*;
 use crate::prelude::*;
@@ -21,6 +25,137 @@ pub struct FloatingText {
     pub timer: u32,
 }
 
+pub struct Music {
+    tracks: Vec<Sound>,
+    sounds: HashMap<String, Sound>,
+    current_track: Option<usize>,
+}
+
+impl Music {
+    pub fn new() -> Self {
+        Self {
+            tracks: vec![],
+            sounds: HashMap::new(),
+            current_track: None,
+        }
+    }
+
+    pub async fn load(&mut self) {
+        self.tracks = vec![
+            load_sound("resources/music/01 Tower Ascent.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/02 Cave of the Dead.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/03 Imminent Danger.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/04 The Underground.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/05 Sorceress' Layer.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/06 Crystal Mine.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/07 Distorted Planet.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/08 Stalagmite.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/09 From The Darkness.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/10 Reprocussions.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/11 Tense Situation.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/12 Dimensions.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/13 Mineshaft.ogg")
+                .await
+                .expect("Unable to load music"),
+            load_sound("resources/music/14 The Only Way.ogg")
+                .await
+                .expect("Unable to load music"),
+        ];
+
+        self.sounds.insert(
+            "attack_b".to_string(),
+            load_sound("resources/sound/attack_b.wav")
+                .await
+                .expect("Unable to load sound"),
+        );
+        self.sounds.insert(
+            "burn".to_string(),
+            load_sound("resources/sound/burn.wav")
+                .await
+                .expect("Unable to load sound"),
+        );
+        self.sounds.insert(
+            "curse".to_string(),
+            load_sound("resources/sound/curse.wav")
+                .await
+                .expect("Unable to load sound"),
+        );
+        self.sounds.insert(
+            "impact_a".to_string(),
+            load_sound("resources/sound/impact_a.wav")
+                .await
+                .expect("Unable to load sound"),
+        );
+        self.sounds.insert(
+            "impact_b".to_string(),
+            load_sound("resources/sound/impact_b.wav")
+                .await
+                .expect("Unable to load sound"),
+        );
+        self.sounds.insert(
+            "lightning_a".to_string(),
+            load_sound("resources/sound/lightning_a.wav")
+                .await
+                .expect("Unable to load sound"),
+        );
+    }
+
+    pub fn play_music_track(&mut self, index: usize) {
+        self.play(index);
+    }
+
+    pub fn play_random_music(&mut self) {
+        let track = rand::rng().random_range(1..self.tracks.len());
+        self.play(track);
+    }
+
+    pub fn play_sound(&self, name: &str) {
+        let sound = self.sounds.get(name).expect("Unable to get sound");
+        play_sound_once(sound);
+    }
+
+    fn play(&mut self, index: usize) {
+        if let Some(current_track) = &self.current_track {
+            stop_sound(&self.tracks[*current_track]);
+        }
+
+        let track = &self.tracks[index];
+
+        play_sound(
+            &track,
+            PlaySoundParams {
+                looped: true,
+                volume: 0.35,
+            },
+        );
+        self.current_track = Some(index);
+    }
+}
+
 pub struct Screen {
     pub creatures: Texture2D,
     pub fx: Texture2D,
@@ -31,10 +166,13 @@ pub struct Screen {
     pub camera: Camera,
 
     pub floating_text: Option<FloatingText>,
+    pub music: Music,
 }
 
 impl Screen {
     pub async fn new() -> Self {
+        let music = Music::new();
+
         let creatures = macroquad::texture::load_texture(
             "resources/art/oryx_16bit_fantasy_creatures_trans.png",
         )
@@ -62,6 +200,7 @@ impl Screen {
 
         let camera = Camera::new();
         Self {
+            music,
             creatures,
             fx,
             items,

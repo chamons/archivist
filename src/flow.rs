@@ -27,6 +27,9 @@ impl GameFlow {
             GameFlow::Quitting => return,
         };
         if let Some(next) = maybe_next {
+            if matches!(next, GameFlow::Title(_)) {
+                screen.music.play_music_track(0);
+            }
             *self = next;
         }
     }
@@ -36,6 +39,13 @@ pub async fn main() {
     prevent_quit();
     let mut screen = Screen::new().await;
 
+    clear_background(BLACK);
+    Screen::draw_centered_text("Loading...", 32, 200.0, None);
+    macroquad::window::next_frame().await;
+
+    screen.music.load().await;
+
+    screen.music.play_music_track(0);
     let mut flow = GameFlow::Title(TitleState::new());
 
     loop {

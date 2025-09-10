@@ -56,7 +56,7 @@ impl CampaignScreenState {
         }
     }
 
-    pub fn process_frame(&mut self, screen: &Screen) -> Option<GameFlow> {
+    pub fn process_frame(&mut self, screen: &mut Screen) -> Option<GameFlow> {
         self.frame += 1;
 
         match &mut self.step {
@@ -72,7 +72,7 @@ impl CampaignScreenState {
                 }
                 None
             }
-            CampaignStep::MissionReady(state) => state.process_ready_for_mission(),
+            CampaignStep::MissionReady(state) => state.process_ready_for_mission(screen),
         }
     }
 }
