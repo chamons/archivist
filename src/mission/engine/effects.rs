@@ -94,7 +94,7 @@ fn calculate_damage(
     }
 
     // Roll advantage/disadvantage
-    let roll = [-1, 0, 1].choose(&mut rand::rng()).unwrap();
+    let roll = get_advantage_roll(level, source);
     damage += roll;
 
     match roll {
@@ -104,11 +104,7 @@ fn calculate_damage(
     }
 
     // Then finally subtract the defense (plus any protection) from the damage
-    let target_character = level.find_character(target);
-    let mut defense = target_character.defense;
-    if target_character.has_status_effect(StatusEffectKind::Protection) {
-        defense += STATUS_EFFECT_PROTECTION_DEFENSE_BOOST;
-    }
+    let defense = get_target_defense(level, target);
     damage -= defense;
 
     damage_description.push_str(&format!(" - {defense}(defense)"));
@@ -120,6 +116,39 @@ fn calculate_damage(
     damage_description.push_str(&format!(" = {damage} to {target_name}"));
 
     (damage, damage_description)
+}
+
+fn get_target_defense(level: &LevelState, target: CharacterId) -> i32 {
+    let target_character = level.find_character(target);
+    let mut defense = target_character.defense;
+    if target_character.has_status_effect(StatusEffectKind::Protection) {
+        defense += STATUS_EFFECT_PROTECTION_DEFENSE_BOOST;
+    }
+    defense += get_cursed_blessed_defensive_rolls(level, target);
+    defense
+}
+
+fn get_advantage_roll(level: &LevelState, source: &EffectSource) -> i32 {
+    let die = if source.has_status_effect(StatusEffectKind::Blessed, level) {
+        vec![0, 1]
+    } else if source.has_status_effect(StatusEffectKind::Cursed, level) {
+        vec![-1, 0]
+    } else {
+        vec![-1, 0, 1]
+    };
+    *die.choose(&mut rand::rng()).unwrap()
+}
+
+fn get_cursed_blessed_defensive_rolls(level: &LevelState, target: CharacterId) -> i32 {
+    let target = level.find_character(target);
+    let die = if target.has_status_effect(StatusEffectKind::Blessed) {
+        vec![0, 1]
+    } else if target.has_status_effect(StatusEffectKind::Cursed) {
+        vec![-1, 0]
+    } else {
+        vec![0]
+    };
+    *die.choose(&mut rand::rng()).unwrap()
 }
 
 fn apply_damage(level: &mut LevelState, source: EffectSource, target: CharacterId, damage: i32) {
