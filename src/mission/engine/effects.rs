@@ -152,12 +152,12 @@ fn get_target_defense(level: &LevelState, target: CharacterId) -> i32 {
     if target_character.has_status_effect(StatusEffectKind::Protection) {
         defense += STATUS_EFFECT_PROTECTION_DEFENSE_BOOST;
     }
-    defense += get_cursed_blessed_defensive_rolls(level, target);
+    defense += get_luck_defensive_rolls(level, target);
     defense
 }
 
 fn get_advantage_roll(level: &LevelState, source: &EffectSource) -> i32 {
-    let die = if source.has_status_effect(StatusEffectKind::Blessed, level) {
+    let die = if source.has_status_effect(StatusEffectKind::Lucky, level) {
         vec![0, 1]
     } else if source.has_status_effect(StatusEffectKind::Cursed, level) {
         vec![-1, 0]
@@ -167,9 +167,9 @@ fn get_advantage_roll(level: &LevelState, source: &EffectSource) -> i32 {
     *die.choose(&mut rand::rng()).unwrap()
 }
 
-fn get_cursed_blessed_defensive_rolls(level: &LevelState, target: CharacterId) -> i32 {
+fn get_luck_defensive_rolls(level: &LevelState, target: CharacterId) -> i32 {
     let target = level.find_character(target);
-    let die = if target.has_status_effect(StatusEffectKind::Blessed) {
+    let die = if target.has_status_effect(StatusEffectKind::Lucky) {
         vec![0, 1]
     } else if target.has_status_effect(StatusEffectKind::Cursed) {
         vec![-1, 0]

@@ -2,35 +2,34 @@
     {
         "name": "Protection Runes",
         "description": [
-            "By inscribing 'Force' and 'Protection' runes inside standard",
+            "By inscribing 'Protection' runes inside standard",
             "armour, forces can be absorbed and redistributed to better",
-            "protect a retriever"
+            "protect a retriever."
         ],
-        "added_health": 8
+        "added_health": 12
     },
     {
         "name": "Headband of Will",
         "description": [
             "A simple cloth headband embroidered with conjugations of",
             "'Mind', empowered the wearer with an iron determination",
-            "to complete their task"
+            "to complete their task."
         ],
         "added_will": 2
     },
     {
-        "name": "Force Enchantment",
+        "name": "Sharpness Enchantment",
         "description": [
-            "Engraving a combination of 'Force', 'Time', and 'Strength'",
-            "into a weapon provides a general increase to damage done",
-            "with no increased weight"
+            "The sharpness enchantment intensifies weapon force into a smaller area,",
+            "which provides a general increase to damage done with no increased weight."
         ],
-        "added_damage": 1
+        "added_damage": 3
     },
     {
         "name": "Firebolt Beads",
         "description": [
             "A jar of hardened clay beads, each stamped with 'Fire'.",
-            "When thrown, ignite and sped towards their target"
+            "When thrown, ignite and sped towards their target."
         ],
         "provides_skills": [
             "Firebolt"
@@ -41,7 +40,7 @@
         "description": [
             "A dark wood rod carved with serpent motifs with a",
             "Vipers fang attached to the end. Fires a bolt of poison",
-            "a short distance"
+            "a short distance."
         ],
         "provides_skills": [
             "Venom Blast"
@@ -51,7 +50,7 @@
         "name": "Black Ice",
         "description": [
             "A single large icicle of black ice with faint etchings",
-            "When thrown pierces a single enemy"
+            "When thrown does devastating damage to a single enemy."
         ],
         "provides_skills": [
             "Black Ice"
