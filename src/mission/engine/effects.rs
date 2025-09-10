@@ -1,3 +1,5 @@
+use rand::Rng;
+
 use crate::mission::*;
 use crate::prelude::*;
 
@@ -78,6 +80,22 @@ fn calculate_damage(
     let mut damage_description = String::new();
     let source_name = source.name(level);
     let target_name = level.find_character(target).name.clone();
+
+    // First check if we dodged due to Blind or Agile
+    if source.has_status_effect(StatusEffectKind::Blind, level)
+        && rand::rng().random_bool(STATUS_EFFECT_CHANCE_BLIND_MISS)
+    {
+        return (
+            0,
+            format!("{source_name} missed their attack on {target_name}"),
+        );
+    } else if level
+        .find_character(target)
+        .has_status_effect(StatusEffectKind::Agile)
+        && rand::rng().random_bool(STATUS_EFFECT_CHANCE_DODGE_MISS)
+    {
+        return (0, format!("{target_name} dodged {source_name}'s attack"));
+    }
 
     // Start with the base damage
     let mut damage = base_damage;

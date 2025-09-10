@@ -16,6 +16,8 @@ pub enum StatusEffectKind {
     Lifesteal,
     Blessed,
     Cursed,
+    Blind,
+    Agile,
     RepeatingPositive,
     RepeatingNegative,
 }
@@ -37,8 +39,12 @@ impl StatusEffect {
             | StatusEffectKind::Protection
             | StatusEffectKind::Quick
             | StatusEffectKind::Lifesteal
-            | StatusEffectKind::Blessed => true,
-            StatusEffectKind::Slow | StatusEffectKind::Cursed | StatusEffectKind::Weakness => false,
+            | StatusEffectKind::Blessed
+            | StatusEffectKind::Agile => true,
+            StatusEffectKind::Slow
+            | StatusEffectKind::Cursed
+            | StatusEffectKind::Weakness
+            | StatusEffectKind::Blind => false,
             StatusEffectKind::RepeatingPositive => true,
             StatusEffectKind::RepeatingNegative => false,
         }
