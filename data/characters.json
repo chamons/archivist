@@ -114,6 +114,32 @@
         },
         "skills": [
             {
+                "name": "Curse",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Cursed",
+                            "kind": "Cursed",
+                            "duration": 500
+                        }
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 18
+                            }
+                        }
+                    }
+                }
+            },
+            {
                 "name": "Witchfire",
                 "cost": "None",
                 "effect": {
@@ -121,7 +147,17 @@
                         "damage": 4
                     }
                 },
-                "targeting": "Caster"
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 18
+                            }
+                        }
+                    }
+                }
             }
         ],
         "is_intelligent": true,
@@ -315,14 +351,14 @@
     {
         "name": "Goblin Sage",
         "max_health": 20,
-        "max_will": 2,
+        "max_will": 4,
         "base_sprite_tile": {
             "x": 5,
             "y": 15
         },
         "weapon": {
             "name": "Strike",
-            "damage": 6
+            "damage": 2
         },
         "skills": [
             {
@@ -342,6 +378,52 @@
                             "SingleFrame": {
                                 "x": 1,
                                 "y": 8
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Bless",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Bless",
+                            "kind": "Lucky",
+                            "duration": 500
+                        }
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "SingleFrame": {
+                                "x": 1,
+                                "y": 8
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Dart",
+                "cost": "None",
+                "effect": {
+                    "ApplyDamage": {
+                        "damage": 2
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "SingleFrame": {
+                                "x": 1,
+                                "y": 1
                             }
                         }
                     }
