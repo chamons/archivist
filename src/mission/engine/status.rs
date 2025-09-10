@@ -12,6 +12,7 @@ pub enum StatusEffectKind {
     Protection,
     Weakness,
     Quick,
+    Slow,
     Lifesteal,
     Blessed,
     Cursed,
@@ -32,13 +33,12 @@ pub struct StatusEffect {
 impl StatusEffect {
     pub fn is_positive(&self) -> bool {
         match self.kind {
-            StatusEffectKind::Might => true,
-            StatusEffectKind::Protection => true,
-            StatusEffectKind::Quick => true,
-            StatusEffectKind::Lifesteal => true,
-            StatusEffectKind::Blessed => true,
-            StatusEffectKind::Cursed => false,
-            StatusEffectKind::Weakness => false,
+            StatusEffectKind::Might
+            | StatusEffectKind::Protection
+            | StatusEffectKind::Quick
+            | StatusEffectKind::Lifesteal
+            | StatusEffectKind::Blessed => true,
+            StatusEffectKind::Slow | StatusEffectKind::Cursed | StatusEffectKind::Weakness => false,
             StatusEffectKind::RepeatingPositive => true,
             StatusEffectKind::RepeatingNegative => false,
         }

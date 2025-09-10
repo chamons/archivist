@@ -12,6 +12,7 @@ pub fn move_character(state: &mut MissionState, id: CharacterId, dest: Point, sc
     if state.level.find_character_at_position(dest).is_none() && state.level.map.can_enter(dest) {
         let actor = state.level.find_character_mut(id);
         let has_quick = actor.has_status_effect(StatusEffectKind::Quick);
+        let has_slow = actor.has_status_effect(StatusEffectKind::Slow);
 
         actor.position = dest;
         if actor.is_player() {
@@ -19,11 +20,12 @@ pub fn move_character(state: &mut MissionState, id: CharacterId, dest: Point, sc
             pickup_any_items(state, id, dest, screen);
         }
 
-        let tick_cost = if has_quick {
+        let mut tick_cost = if has_quick {
             TICKS_MOVEMENT / 2
         } else {
             TICKS_MOVEMENT
         };
+        tick_cost = if has_slow { tick_cost * 2 } else { tick_cost };
 
         spend_ticks(state, id, tick_cost);
     }
