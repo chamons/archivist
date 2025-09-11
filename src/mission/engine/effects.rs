@@ -1,4 +1,5 @@
-use rand::Rng;
+use macroquad::rand::ChooseRandom;
+use macroquad::rand::gen_range;
 
 use crate::mission::*;
 use crate::prelude::*;
@@ -17,7 +18,7 @@ pub fn move_character(state: &mut MissionState, id: CharacterId, dest: Point, sc
         let has_slow = actor.has_status_effect(StatusEffectKind::Slow);
 
         let skip_move = actor.has_status_effect(StatusEffectKind::Rooted)
-            && rand::rng().random_bool(STATUS_EFFECT_CHANCE_ROOT_STAY_STILL);
+            && gen_range(0.0, 1.0) < STATUS_EFFECT_CHANCE_ROOT_STAY_STILL;
 
         if !skip_move {
             actor.position = dest;
@@ -56,11 +57,12 @@ fn pickup_any_items(state: &mut MissionState, id: CharacterId, dest: Point, scre
     }
 }
 
-pub fn weapon_attack(
+pub fn weapon_attack<S: ScreenInterface>(
     state: &mut MissionState,
     source: CharacterId,
     target: CharacterId,
     weapon: Weapon,
+    screen: &mut S,
 ) {
     apply_damage(
         &mut state.level,
@@ -68,6 +70,13 @@ pub fn weapon_attack(
         target,
         weapon.damage,
     );
+
+    match gen_range(0, 3) {
+        0 => screen.play_sound("impact_a"),
+        1 => screen.play_sound("impact_b"),
+        _ => screen.play_sound("attack_b"),
+    }
+
     if let Some(on_hit) = &weapon.on_hit {
         apply_effect(
             &mut state.level,
@@ -91,7 +100,7 @@ fn calculate_damage(
 
     // First check if we dodged due to Blind or Agile
     if source.has_status_effect(StatusEffectKind::Blind, level)
-        && rand::rng().random_bool(STATUS_EFFECT_CHANCE_BLIND_MISS)
+        && gen_range(0.0, 1.0) < STATUS_EFFECT_CHANCE_BLIND_MISS
     {
         return (
             0,
@@ -100,7 +109,7 @@ fn calculate_damage(
     } else if level
         .find_character(target)
         .has_status_effect(StatusEffectKind::Agile)
-        && rand::rng().random_bool(STATUS_EFFECT_CHANCE_DODGE_MISS)
+        && gen_range(0.0, 1.0) < STATUS_EFFECT_CHANCE_DODGE_MISS
     {
         return (0, format!("{target_name} dodged {source_name}'s attack"));
     }
@@ -164,7 +173,7 @@ fn get_advantage_roll(level: &LevelState, source: &EffectSource) -> i32 {
     } else {
         vec![-1, 0, 1]
     };
-    *die.choose(&mut rand::rng()).unwrap()
+    *die.choose().unwrap()
 }
 
 fn get_luck_defensive_rolls(level: &LevelState, target: CharacterId) -> i32 {
@@ -176,7 +185,7 @@ fn get_luck_defensive_rolls(level: &LevelState, target: CharacterId) -> i32 {
     } else {
         vec![0]
     };
-    *die.choose(&mut rand::rng()).unwrap()
+    *die.choose().unwrap()
 }
 
 fn apply_damage(level: &mut LevelState, source: EffectSource, target: CharacterId, damage: i32) {
@@ -259,6 +268,7 @@ pub fn apply_skill(
     source: CharacterId,
     target: CharacterId,
     skill_name: &str,
+    screen: &mut Screen,
 ) {
     if source == target {
         state.level.push_turn_log(format!(
@@ -289,6 +299,13 @@ pub fn apply_skill(
         SkillCost::Cooldown { ticks, cost } => *ticks = *cost,
     }
     let effect = skill.effect.clone();
+
+    match &skill.effect {
+        Effect::ApplyDamage { .. } => screen.play_sound("curse"),
+        Effect::AddStatus { .. } => screen.play_sound("swing"),
+        Effect::Heal { .. } => screen.play_sound("drip"),
+    }
+
     apply_effect(
         &mut state.level,
         EffectSource::Character(source),
@@ -361,6 +378,7 @@ pub fn ascend_stars(state: &mut MissionState, screen: &mut Screen) {
 mod tests {
     use crate::campaign::CampaignState;
     use crate::mission::*;
+    use crate::screen::EmptyScreen;
 
     #[test]
     fn on_hit() {
@@ -386,7 +404,14 @@ mod tests {
 
         let player_id = mission_state.level.get_player().id;
         let weapon = mission_state.level.find_character(id).weapon.clone();
-        weapon_attack(&mut mission_state, id, player_id, weapon);
+
+        weapon_attack(
+            &mut mission_state,
+            id,
+            player_id,
+            weapon,
+            &mut EmptyScreen {},
+        );
 
         assert!(
             mission_state

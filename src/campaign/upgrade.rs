@@ -1,5 +1,6 @@
-use macroquad::{shapes::draw_rectangle_lines, text::draw_text};
-use rand::seq::IteratorRandom;
+use macroquad::{
+    rand::ChooseRandom, shapes::draw_rectangle_lines, text::draw_text, window::screen_width,
+};
 
 use crate::{
     campaign::{CampaignState, CampaignStep},
@@ -40,8 +41,10 @@ impl UpgradeState {
         let options = upgrades
             .into_iter()
             .filter(|u| !campaign.chosen_upgrades.contains(&u.name))
-            .choose_multiple(&mut rand::rng(), 3);
-
+            .collect::<Vec<_>>()
+            .choose_multiple(3)
+            .cloned()
+            .collect();
         Self {
             options,
             campaign,
@@ -100,13 +103,20 @@ impl UpgradeState {
         let option = &self.options[index];
         let is_selected = self.selection == index;
         let top = 200.0 + 144.0 * index as f32;
+        let left = (screen_width() - 600.0) / 2.0;
 
         let border_color = if is_selected { WHITE } else { BROWN };
-        draw_rectangle_lines(200.0, top, 600.0, 120.0, 3.0, border_color);
-        draw_text(&option.name, 250.0, top + 35.0, 22.0, WHITE);
+        draw_rectangle_lines(left, top, 600.0, 120.0, 3.0, border_color);
+        draw_text(&option.name, left + 50.0, top + 35.0, 22.0, WHITE);
 
         for (i, line) in option.description.iter().enumerate() {
-            draw_text(line, 250.0, top + 60.0 + (i as f32 * 15.0), 18.0, WHITE);
+            draw_text(
+                line,
+                left + 50.0,
+                top + 60.0 + (i as f32 * 15.0),
+                18.0,
+                WHITE,
+            );
         }
     }
 }

@@ -1,4 +1,4 @@
-use rand::Rng;
+use macroquad::rand::ChooseRandom;
 
 use crate::mission::*;
 use crate::prelude::*;
@@ -9,9 +9,9 @@ pub struct DrunkDigger {
 }
 
 impl DrunkDigger {
-    pub fn build(rng: &mut StdRng, difficulty: u32, player: Character) -> LevelState {
+    pub fn build(rng: &mut RandGenerator, difficulty: u32, player: Character) -> LevelState {
         let mut builder = DrunkDigger {
-            map: Map::new_filled(rng.random()),
+            map: Map::new_filled(MapTheme::random(rng)),
             data: Data::load().expect("Able to load data"),
         };
 
@@ -29,10 +29,10 @@ impl DrunkDigger {
         LevelState::new(builder.map, characters, items)
     }
 
-    fn dig(&mut self, rng: &mut StdRng) {
+    fn dig(&mut self, rng: &mut RandGenerator) {
         let start = Point::new(
-            rng.random_range(0..SCREEN_WIDTH),
-            rng.random_range(0..SCREEN_HEIGHT),
+            rng.gen_range(0, SCREEN_WIDTH),
+            rng.gen_range(0, SCREEN_HEIGHT),
         );
         self.stagger(start, rng);
 
@@ -42,17 +42,20 @@ impl DrunkDigger {
                 break;
             }
 
-            self.stagger(*floors.choose(rng).expect("At least one floor"), rng);
+            self.stagger(
+                *floors.choose_with_state(rng).expect("At least one floor"),
+                rng,
+            );
         }
     }
 
-    fn stagger(&mut self, start: Point, rng: &mut StdRng) {
+    fn stagger(&mut self, start: Point, rng: &mut RandGenerator) {
         let mut position = start;
         let mut distance = 0;
 
         loop {
             self.map.set(position, MapTile::floor());
-            match rng.random_range(0..4) {
+            match rng.gen_range(0, 4) {
                 0 => position.x -= 1,
                 1 => position.x += 1,
                 2 => position.y -= 1,

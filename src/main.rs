@@ -1,4 +1,3 @@
-use env_logger::Logger;
 use macroquad::window::Conf;
 
 fn window_conf() -> Conf {
@@ -12,7 +11,5 @@ fn window_conf() -> Conf {
 
 #[macroquad::main(window_conf)]
 async fn main() {
-    let _logger = Logger::from_default_env();
-
     archivist::prelude::main().await;
 }

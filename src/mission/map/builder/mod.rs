@@ -3,10 +3,9 @@ use crate::mission::*;
 use crate::prelude::*;
 
 use adam_fov_rs::GridPoint;
-use log::debug;
-use rand::prelude::*;
 
 mod utils;
+use macroquad::rand::ChooseRandom;
 pub use utils::*;
 
 mod rooms;
@@ -21,11 +20,9 @@ pub use drunk_digger::*;
 pub mod enemy_set;
 
 pub fn generate_random_map(player: Character, difficulty: u32) -> LevelState {
-    let seed = rand::rng().next_u64();
-    let mut rng = StdRng::seed_from_u64(seed);
-    debug!("Generating map with seed {seed}");
+    let mut rng = RandGenerator::new();
 
-    let level = match rng.random_range(0..3) {
+    let level = match rng.gen_range(0, 3) {
         0 => RoomsMapBuilder::build(&mut rng, difficulty, player),
         1 => CellsMapBuilder::build(&mut rng, difficulty, player),
         _ => DrunkDigger::build(&mut rng, difficulty, player),
@@ -67,7 +64,7 @@ pub fn find_all_floors(map: &Map) -> Vec<Point> {
 }
 
 pub fn spawn_monster_randomly(
-    rng: &mut StdRng,
+    rng: &mut RandGenerator,
     map: &Map,
     count: usize,
     center: Point,
@@ -80,10 +77,10 @@ pub fn spawn_monster_randomly(
     floors
         .into_iter()
         .filter(|f| f.king_dist(center) > 10)
-        .choose_multiple(rng, count)
-        .iter()
+        .collect::<Vec<_>>()
+        .choose_multiple_with_state(rng, count)
         .map(|position| {
-            let name = enemies.choose(rng).unwrap();
+            let name = enemies.choose_with_state(rng).unwrap();
             let mut enemy = data.get_character(name);
             enemy.position = *position;
             enemy

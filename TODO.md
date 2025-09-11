@@ -7,8 +7,6 @@
 
 # Phase 4 - Final Features
 - Fancy tab
-- Sound?
-- Music?
 - Tutorial/Help docs
 - Options for volume/remove music
 

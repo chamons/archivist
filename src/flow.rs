@@ -28,7 +28,7 @@ impl GameFlow {
         };
         if let Some(next) = maybe_next {
             if matches!(next, GameFlow::Title(_)) {
-                screen.music.play_music_track(0);
+                screen.play_music_track(0);
             }
             *self = next;
         }
@@ -36,6 +36,8 @@ impl GameFlow {
 }
 
 pub async fn main() {
+    rand::srand(macroquad::miniquad::date::now() as _);
+
     prevent_quit();
     let mut screen = Screen::new().await;
 
@@ -43,9 +45,9 @@ pub async fn main() {
     Screen::draw_centered_text("Loading...", 32, 200.0, None);
     macroquad::window::next_frame().await;
 
-    screen.music.load().await;
+    screen.load().await;
 
-    screen.music.play_music_track(0);
+    screen.play_music_track(0);
     let mut flow = GameFlow::Title(TitleState::new());
 
     loop {

@@ -10,14 +10,11 @@ pub mod prelude {
     pub use crate::screen::*;
     pub use crate::util::*;
 
-    pub use rand::RngCore;
-    pub use rand::SeedableRng;
-    pub use rand::rngs::StdRng;
-    pub use rand::seq::IndexedRandom;
-
     pub use macroquad::color::*;
     pub use macroquad::input::{KeyCode, is_key_pressed};
     pub use macroquad::math::Rect as MRect;
+    pub use macroquad::rand;
+    pub use macroquad::rand::RandGenerator;
 
     pub use serde::{Deserialize, Serialize};
 

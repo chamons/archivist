@@ -1,6 +1,5 @@
 use std::path::PathBuf;
 
-use directories::ProjectDirs;
 use macroquad::input::{is_key_down, is_quit_requested};
 
 use crate::campaign::CampaignScreenState;
@@ -36,12 +35,14 @@ impl MissionState {
         self.frame += 1;
 
         loop {
-            if is_quit_requested()
-                || (is_key_pressed(KeyCode::Q)
-                    && (is_key_down(KeyCode::LeftShift) || is_key_down(KeyCode::RightShift)))
-            {
-                self.save_to_disk();
-                return Some(GameFlow::Quitting);
+            if cfg!(feature = "desktop") {
+                if is_quit_requested()
+                    || (is_key_pressed(KeyCode::Q)
+                        && (is_key_down(KeyCode::LeftShift) || is_key_down(KeyCode::RightShift)))
+                {
+                    self.save_to_disk();
+                    return Some(GameFlow::Quitting);
+                }
             }
 
             if let Some(action) = self.current_actor.act(&mut self.level, screen) {
@@ -122,7 +123,7 @@ impl MissionState {
                 target,
                 weapon,
             } => {
-                weapon_attack(self, source, target, weapon);
+                weapon_attack(self, source, target, weapon, screen);
             }
             RequestedAction::Wait(id) => {
                 character_wait(self, id, screen);
@@ -132,7 +133,7 @@ impl MissionState {
                 target,
                 skill_name,
             } => {
-                apply_skill(self, source, target, &skill_name);
+                apply_skill(self, source, target, &skill_name, screen);
             }
             RequestedAction::Stairs => ascend_stars(self, screen),
             #[cfg(debug_assertions)]
@@ -161,12 +162,18 @@ impl MissionState {
         serde_json::to_string(self).expect("Unable to save game")
     }
 
+    #[cfg(feature = "desktop")]
     pub fn savefile_name() -> PathBuf {
-        let dirs =
-            ProjectDirs::from("com", "", "Archivist").expect("Unable to find project directory?");
+        let dirs = directories::ProjectDirs::from("com", "", "Archivist")
+            .expect("Unable to find project directory?");
         let mut path = dirs.data_dir().to_path_buf();
         path.push("game.sav");
         path
+    }
+
+    #[cfg(not(feature = "desktop"))]
+    pub fn savefile_name() -> PathBuf {
+        PathBuf::new()
     }
 
     pub fn savefile_exists() -> bool {

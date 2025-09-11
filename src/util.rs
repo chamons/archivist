@@ -1,16 +1,5 @@
 use macroquad::math::Vec2;
-use rand::{Rng, rngs::StdRng};
 use serde::{Deserialize, Serialize};
-
-pub trait RandExt {
-    fn flip(&mut self) -> bool;
-}
-
-impl RandExt for StdRng {
-    fn flip(&mut self) -> bool {
-        self.random_bool(0.5)
-    }
-}
 
 // Point and Rect in macroquad use f32
 // but that doesn't make any sense for roguelike grids

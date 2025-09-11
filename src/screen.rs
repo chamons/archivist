@@ -2,12 +2,12 @@ use std::collections::HashMap;
 
 use macroquad::{
     audio::{PlaySoundParams, Sound, load_sound, play_sound, play_sound_once, stop_sound},
+    rand::gen_range,
     shapes::{draw_rectangle, draw_rectangle_lines},
     text::{draw_text, measure_text},
     texture::{DrawTextureParams, Texture2D, build_textures_atlas, draw_texture_ex},
     window::screen_width,
 };
-use rand::Rng;
 
 use crate::mission::*;
 use crate::prelude::*;
@@ -29,6 +29,7 @@ pub struct Music {
     tracks: Vec<Sound>,
     sounds: HashMap<String, Sound>,
     current_track: Option<usize>,
+    current_sound: Option<String>,
 }
 
 impl Music {
@@ -37,6 +38,7 @@ impl Music {
             tracks: vec![],
             sounds: HashMap::new(),
             current_track: None,
+            current_sound: None,
         }
     }
 
@@ -122,6 +124,18 @@ impl Music {
                 .await
                 .expect("Unable to load sound"),
         );
+        self.sounds.insert(
+            "drip".to_string(),
+            load_sound("resources/sound/drip.wav")
+                .await
+                .expect("Unable to load sound"),
+        );
+        self.sounds.insert(
+            "swing".to_string(),
+            load_sound("resources/sound/drip.wav")
+                .await
+                .expect("Unable to load sound"),
+        );
     }
 
     pub fn play_music_track(&mut self, index: usize) {
@@ -129,11 +143,15 @@ impl Music {
     }
 
     pub fn play_random_music(&mut self) {
-        let track = rand::rng().random_range(1..self.tracks.len());
+        let track = gen_range(1, self.tracks.len());
         self.play(track);
     }
 
-    pub fn play_sound(&self, name: &str) {
+    pub fn play_sound(&mut self, name: &str) {
+        if let Some(current_sound) = &self.current_sound {
+            stop_sound(&self.sounds.get(current_sound).expect("Unable to get sound"));
+        }
+
         let sound = self.sounds.get(name).expect("Unable to get sound");
         play_sound_once(sound);
     }
@@ -156,6 +174,27 @@ impl Music {
     }
 }
 
+// So we can test things with out sounds
+pub trait ScreenInterface {
+    fn play_music_track(&mut self, index: usize);
+
+    fn play_random_music(&mut self);
+
+    fn play_sound(&mut self, name: &str);
+}
+
+#[cfg(test)]
+pub struct EmptyScreen {}
+
+#[cfg(test)]
+impl ScreenInterface for EmptyScreen {
+    fn play_music_track(&mut self, _index: usize) {}
+
+    fn play_random_music(&mut self) {}
+
+    fn play_sound(&mut self, _name: &str) {}
+}
+
 pub struct Screen {
     pub creatures: Texture2D,
     pub fx: Texture2D,
@@ -166,7 +205,7 @@ pub struct Screen {
     pub camera: Camera,
 
     pub floating_text: Option<FloatingText>,
-    pub music: Music,
+    music: Music,
 }
 
 impl Screen {
@@ -348,5 +387,23 @@ impl Screen {
         }
 
         draw_text(text, text_x, y, size as f32, text_color);
+    }
+
+    pub async fn load(&mut self) {
+        self.music.load().await;
+    }
+}
+
+impl ScreenInterface for Screen {
+    fn play_music_track(&mut self, index: usize) {
+        self.music.play_music_track(index);
+    }
+
+    fn play_random_music(&mut self) {
+        self.music.play_random_music();
+    }
+
+    fn play_sound(&mut self, name: &str) {
+        self.music.play_sound(name);
     }
 }

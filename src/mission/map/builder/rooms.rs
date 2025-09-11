@@ -1,12 +1,11 @@
 use std::cmp::{max, min};
 
 use adam_fov_rs::GridPoint;
-use rand::Rng;
+use macroquad::rand::ChooseRandom;
 
 use crate::mission::enemy_set::get_enemy_set_for_difficulty;
 use crate::mission::*;
 use crate::prelude::*;
-use crate::util::RandExt;
 
 pub struct RoomsMapBuilder {
     map: Map,
@@ -15,9 +14,9 @@ pub struct RoomsMapBuilder {
 }
 
 impl RoomsMapBuilder {
-    pub fn build(rng: &mut StdRng, difficulty: u32, player: Character) -> LevelState {
+    pub fn build(rng: &mut RandGenerator, difficulty: u32, player: Character) -> LevelState {
         let mut builder = RoomsMapBuilder {
-            map: Map::new(rng.random()),
+            map: Map::new(MapTheme::random(rng)),
             rooms: vec![],
             data: Data::load().expect("Able to load data"),
         };
@@ -75,13 +74,13 @@ impl RoomsMapBuilder {
         });
     }
 
-    fn spawn_monsters(&self, rng: &mut StdRng, difficulty: u32) -> Vec<Character> {
+    fn spawn_monsters(&self, rng: &mut RandGenerator, difficulty: u32) -> Vec<Character> {
         let enemies = get_enemy_set_for_difficulty(&self.data, difficulty);
         self.rooms
             .iter()
             .skip(1)
             .map(|r| {
-                let name = enemies.choose(rng).unwrap();
+                let name = enemies.choose_with_state(rng).unwrap();
                 let mut enemy = self.data.get_character(name);
                 enemy.position = r.center();
                 enemy
@@ -89,13 +88,13 @@ impl RoomsMapBuilder {
             .collect()
     }
 
-    fn build_random_rooms(&mut self, rng: &mut StdRng, desired_room_count: usize) {
+    fn build_random_rooms(&mut self, rng: &mut RandGenerator, desired_room_count: usize) {
         while self.rooms.len() < desired_room_count {
             let room = Rect::with_size(
-                rng.random_range(1..SCREEN_WIDTH - 10),
-                rng.random_range(1..SCREEN_HEIGHT - 10),
-                rng.random_range(2..10),
-                rng.random_range(2..10),
+                rng.gen_range(1, SCREEN_WIDTH - 10),
+                rng.gen_range(1, SCREEN_HEIGHT - 10),
+                rng.gen_range(2, 10),
+                rng.gen_range(2, 10),
             );
             if !self.rooms.iter().any(|r| r.intersect(&room)) {
                 room.for_each(|p| {
@@ -118,7 +117,7 @@ impl RoomsMapBuilder {
         }
     }
 
-    fn build_corridors(&mut self, rng: &mut StdRng) {
+    fn build_corridors(&mut self, rng: &mut RandGenerator) {
         let mut rooms = self.rooms.clone();
 
         rooms.sort_by(|a, b| a.center().x.cmp(&b.center().x));
@@ -126,7 +125,7 @@ impl RoomsMapBuilder {
         for (i, room) in rooms.iter().enumerate().skip(1) {
             let previous_room_center = self.rooms[i - 1].center();
             let next_room_center = room.center();
-            if rng.flip() {
+            if rng.gen_range(0, 2) == 1 {
                 self.build_horz_tunnel(
                     previous_room_center.x,
                     next_room_center.x,

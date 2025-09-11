@@ -23,7 +23,7 @@ impl CampaignState {
     }
 
     pub fn process_ready_for_mission(&mut self, screen: &mut Screen) -> Option<GameFlow> {
-        screen.music.play_random_music();
+        screen.play_random_music();
 
         if self.mission_count == MISSIONS_TO_VICTORY {
             Some(GameFlow::Victory(VictoryState::new()))

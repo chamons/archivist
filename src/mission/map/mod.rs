@@ -3,10 +3,6 @@ use crate::prelude::*;
 mod builder;
 use adam_fov_rs::compute_fov;
 pub use builder::*;
-use rand::{
-    Rng,
-    distr::{Distribution, StandardUniform},
-};
 
 const NUM_TILES: usize = (SCREEN_WIDTH * SCREEN_HEIGHT) as usize;
 
@@ -23,9 +19,9 @@ pub enum MapTheme {
     Bones,
 }
 
-impl Distribution<MapTheme> for StandardUniform {
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> MapTheme {
-        match rng.random_range(0..=9) {
+impl MapTheme {
+    pub fn random(rng: &mut RandGenerator) -> Self {
+        match rng.gen_range(0, 9) {
             0 => MapTheme::Stone,
             1 => MapTheme::BrownStone,
             2 => MapTheme::Sand,

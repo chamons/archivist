@@ -1,6 +1,7 @@
 use crate::mission::*;
 use crate::prelude::*;
 
+use macroquad::rand::ChooseRandom;
 use pathfinding::prelude::bfs;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -205,7 +206,7 @@ pub fn wander_action(level: &mut LevelState, id: CharacterId) -> HandleInputResp
         enemy.position,
         PathCharacterOptions::AllowEmptyOrPlayer,
     );
-    let selection = options.choose(&mut ::rand::rng());
+    let selection = options.choose();
     match selection {
         Some(position) => move_to(level, id, *position),
         None => HandleInputResponse::Action(Some(RequestedAction::Wait(id))),

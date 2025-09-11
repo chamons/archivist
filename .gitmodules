@@ -1,3 +1,6 @@
 [submodule "archivist-resources"]
 	path = resources
 	url = git@github.com:chamons/archivist-resources.git
+[submodule "web/archivist-resources"]
+	path = web/resources/
+	url = git@github.com:chamons/archivist-resources.git

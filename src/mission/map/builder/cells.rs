@@ -1,4 +1,4 @@
-use rand::Rng;
+use macroquad::rand::RandGenerator;
 
 use crate::mission::*;
 use crate::prelude::*;
@@ -9,9 +9,9 @@ pub struct CellsMapBuilder {
 }
 
 impl CellsMapBuilder {
-    pub fn build(rng: &mut StdRng, difficulty: u32, player: Character) -> LevelState {
+    pub fn build(rng: &mut RandGenerator, difficulty: u32, player: Character) -> LevelState {
         let mut builder = CellsMapBuilder {
-            map: Map::new(rng.random()),
+            map: Map::new(MapTheme::random(rng)),
             data: Data::load().expect("Able to load data"),
         };
 
@@ -69,9 +69,9 @@ impl CellsMapBuilder {
             .count()
     }
 
-    fn randomize_map(&mut self, rng: &mut StdRng) {
+    fn randomize_map(&mut self, rng: &mut RandGenerator) {
         for tile in self.map.tiles.iter_mut() {
-            if rng.random_range(0..100) > 55 {
+            if rng.gen_range(0, 100) > 55 {
                 tile.kind = TileKind::Floor;
             } else {
                 tile.kind = TileKind::Wall;
