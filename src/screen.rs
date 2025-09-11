@@ -62,28 +62,13 @@ impl Music {
             load_sound("resources/music/06 Crystal Mine.ogg")
                 .await
                 .expect("Unable to load music"),
-            load_sound("resources/music/07 Distorted Planet.ogg")
-                .await
-                .expect("Unable to load music"),
             load_sound("resources/music/08 Stalagmite.ogg")
                 .await
                 .expect("Unable to load music"),
             load_sound("resources/music/09 From The Darkness.ogg")
                 .await
                 .expect("Unable to load music"),
-            load_sound("resources/music/10 Reprocussions.ogg")
-                .await
-                .expect("Unable to load music"),
-            load_sound("resources/music/11 Tense Situation.ogg")
-                .await
-                .expect("Unable to load music"),
-            load_sound("resources/music/12 Dimensions.ogg")
-                .await
-                .expect("Unable to load music"),
             load_sound("resources/music/13 Mineshaft.ogg")
-                .await
-                .expect("Unable to load music"),
-            load_sound("resources/music/14 The Only Way.ogg")
                 .await
                 .expect("Unable to load music"),
         ];
