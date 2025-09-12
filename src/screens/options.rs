@@ -53,17 +53,21 @@ impl OptionsState {
         } else if is_key_pressed(KeyCode::Left) || is_key_pressed(KeyCode::Kp4) {
             if self.selection == 0 {
                 screen.options.music -= 0.05;
+                screen.options.music = screen.options.music.max(0.0);
                 screen.set_music_volume(screen.options.music);
             } else if self.selection == 1 {
                 screen.options.sound -= 0.05;
+                screen.options.sound = screen.options.sound.max(0.0);
                 screen.play_sound("drip");
             }
         } else if is_key_pressed(KeyCode::Right) || is_key_pressed(KeyCode::Kp6) {
             if self.selection == 0 {
                 screen.options.music += 0.05;
+                screen.options.music = screen.options.music.min(1.0);
                 screen.set_music_volume(screen.options.music);
             } else if self.selection == 1 {
                 screen.options.sound += 0.05;
+                screen.options.sound = screen.options.sound.min(1.0);
                 screen.play_sound("drip");
             }
         } else if is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::KpEnter) {
