@@ -1,4 +1,5 @@
 # Phase 3 Content
+- Add enough enemy levels so we can do all six level (1-7)
 - Make items that use each effect
 - Make upgrades based on a tag pool based upon that "rune"
 - Lots of abilities, enemies

@@ -24,8 +24,9 @@
     {
         "name": "Sharpness Enchantment",
         "description": [
-            "The sharpness enchantment intensifies weapon force into a smaller area,",
-            "which provides a general increase to damage done with no increased weight."
+            "The sharpness enchantment intensifies weapon force into a",
+            "smaller area, which provides a general increase to damage",
+            "done with no increased weight."
         ],
         "added_damage": 3,
         "tags": []
