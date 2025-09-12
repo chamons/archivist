@@ -19,11 +19,12 @@ pub enum MapTheme {
     Rivets,
     Hedge,
     Bones,
+    Clay,
 }
 
 impl MapTheme {
     pub fn random(rng: &mut RandGenerator) -> Self {
-        match rng.gen_range(0, 9) {
+        match rng.gen_range(0, 10) {
             0 => MapTheme::Stone,
             1 => MapTheme::BrownStone,
             2 => MapTheme::Sand,
@@ -32,6 +33,7 @@ impl MapTheme {
             5 => MapTheme::GreyMetal,
             6 => MapTheme::Rivets,
             7 => MapTheme::Hedge,
+            8 => MapTheme::Clay,
             _ => MapTheme::Bones,
         }
     }
@@ -84,6 +86,11 @@ impl MapTheme {
                 TileKind::Wall => Point::new(1, 16),
                 TileKind::Floor => Point::new(4, 16),
                 TileKind::Exit => Point::new(8, 16),
+            },
+            MapTheme::Clay => match tile.kind {
+                TileKind::Wall => Point::new(1, 14),
+                TileKind::Floor => Point::new(4, 14),
+                TileKind::Exit => Point::new(8, 14),
             },
         };
         if !matches!(tile.kind, TileKind::Floor) || self.supports_floor_variations() {
