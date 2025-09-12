@@ -4,6 +4,7 @@ use macroquad::input::{is_key_down, is_quit_requested};
 
 use crate::campaign::CampaignScreenState;
 use crate::campaign::CampaignState;
+use crate::campaign::RuneKinds;
 use crate::mission::*;
 use crate::prelude::*;
 use crate::screens::death::DeathState;
@@ -16,11 +17,12 @@ pub struct MissionState {
 
     pub mission_complete: bool,
     pub campaign: CampaignState,
+    pub active_rune: RuneKinds,
 }
 
 impl MissionState {
-    pub fn new(campaign: CampaignState) -> MissionState {
-        let level = generate_random_map(campaign.character.clone(), campaign.mission_count + 1);
+    pub fn new(campaign: CampaignState, active_rune: RuneKinds) -> MissionState {
+        let level = generate_random_map(campaign.character.clone(), campaign.mission_count() + 1);
 
         Self {
             level,
@@ -28,10 +30,18 @@ impl MissionState {
             current_actor: CurrentActor::PlayerStandardAction,
             mission_complete: false,
             campaign,
+            active_rune,
         }
     }
 
     pub fn process_frame(&mut self, screen: &mut Screen) -> Option<GameFlow> {
+        if self.frame == 0 {
+            screen.push_extended_floating_text(&format!(
+                "Retrieve the {} rune and return",
+                self.active_rune
+            ));
+        }
+
         self.frame += 1;
 
         loop {
@@ -54,6 +64,7 @@ impl MissionState {
             } else if self.mission_complete {
                 return Some(GameFlow::Campaign(CampaignScreenState::mission_complete(
                     self.campaign.clone(),
+                    self.active_rune,
                 )));
             }
 

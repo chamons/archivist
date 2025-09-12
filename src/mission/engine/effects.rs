@@ -376,7 +376,7 @@ pub fn ascend_stars(state: &mut MissionState, screen: &mut Screen) {
 
 #[cfg(test)]
 mod tests {
-    use crate::campaign::CampaignState;
+    use crate::campaign::{CampaignState, RuneKinds};
     use crate::mission::*;
     use crate::screen::EmptyScreen;
 
@@ -400,6 +400,7 @@ mod tests {
             current_actor: CurrentActor::PlayerStandardAction,
             mission_complete: false,
             campaign: CampaignState::new(character),
+            active_rune: RuneKinds::Fire,
         };
 
         let player_id = mission_state.level.get_player().id;

@@ -3,23 +3,12 @@ use macroquad::{
 };
 
 use crate::{
-    campaign::{CampaignState, CampaignStep},
+    campaign::{CampaignState, CampaignStep, mission_ready::RuneKinds},
     mission::{Data, Health, Will},
     prelude::*,
 };
 
 const STARTS_JSON: &str = include_str!("../../data/upgrades.json");
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-enum RuneKinds {
-    None,
-    Fire,
-    Life,
-    Ice,
-    Force,
-    Protection,
-    Mind,
-}
 
 // This is a stub for a future crafting system
 #[derive(Debug, Clone, Serialize, Deserialize)]

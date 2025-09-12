@@ -1,6 +1,5 @@
 # Phase 3 Content
 - Make items that use each effect
-- Start each level with a message that you need to find a specific run.
 - Make upgrades based on a tag pool based upon that "rune"
 - Lots of abilities, enemies
 

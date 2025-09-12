@@ -275,6 +275,13 @@ impl Screen {
         });
     }
 
+    pub fn push_extended_floating_text(&mut self, text: &str) {
+        self.floating_text = Some(FloatingText {
+            text: text.to_string(),
+            timer: TICKS_FLOATING_TEXT * 3,
+        });
+    }
+
     pub fn render_floating_text(&mut self) {
         if let Some(floating_text) = &mut self.floating_text {
             floating_text.timer -= 1;

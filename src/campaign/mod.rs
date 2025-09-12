@@ -5,7 +5,7 @@ use crate::{
 };
 
 mod mission_ready;
-pub use mission_ready::CampaignState;
+pub use mission_ready::{CampaignState, RuneKinds};
 
 mod select_equipment;
 
@@ -32,10 +32,10 @@ impl CampaignScreenState {
         }
     }
 
-    pub fn mission_complete(mut campaign: CampaignState) -> Self {
-        campaign.mission_count += 1;
+    pub fn mission_complete(mut campaign: CampaignState, rune_found: RuneKinds) -> Self {
+        campaign.collected_runes.insert(rune_found);
 
-        if campaign.mission_count == MISSIONS_TO_VICTORY {
+        if campaign.game_complete() {
             // Quickly move us to MissionReady so we can win
             Self {
                 step: CampaignStep::MissionReady(campaign),

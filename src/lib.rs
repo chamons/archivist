@@ -112,8 +112,6 @@ pub mod prelude {
 
     pub const VISION: usize = 8;
 
-    pub const MISSIONS_TO_VICTORY: u32 = 3;
-
     pub const STATUS_EFFECT_MIGHT_DAMAGE_BOOST: i32 = 3;
     pub const STATUS_EFFECT_PROTECTION_DEFENSE_BOOST: i32 = 3;
     pub const STATUS_EFFECT_WEAKNESS_DAMAGE_REDUCTION: i32 = 2;

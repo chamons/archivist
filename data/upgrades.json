@@ -7,9 +7,7 @@
             "protect a retriever."
         ],
         "added_health": 12,
-        "tags": [
-            "None"
-        ]
+        "tags": []
     },
     {
         "name": "Headband of Will",
@@ -20,7 +18,7 @@
         ],
         "added_will": 2,
         "tags": [
-            "Mine"
+            "Mind"
         ]
     },
     {
@@ -30,9 +28,7 @@
             "which provides a general increase to damage done with no increased weight."
         ],
         "added_damage": 3,
-        "tags": [
-            "None"
-        ]
+        "tags": []
     },
     {
         "name": "Firebolt Beads",
@@ -83,9 +79,7 @@
         "provides_skills": [
             "Health Potion"
         ],
-        "tags": [
-            "None"
-        ]
+        "tags": []
     },
     {
         "name": "Rage Potion",

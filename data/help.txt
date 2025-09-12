@@ -15,7 +15,7 @@ libraries burned, and such power passed back into myth.
 
 You are sent on missions to areas filled with hostile creatures in search of a runestone.
 Each runestone contains a new noun or verb, which improves your equipment between missions.
-After completing a number of missions you win the game
+After collecting all six runes you will win the game.
 
 Controls:
 
