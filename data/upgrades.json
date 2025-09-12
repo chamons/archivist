@@ -6,7 +6,10 @@
             "armour, forces can be absorbed and redistributed to better",
             "protect a retriever."
         ],
-        "added_health": 12
+        "added_health": 12,
+        "tags": [
+            "None"
+        ]
     },
     {
         "name": "Headband of Will",
@@ -15,7 +18,10 @@
             "'Mind', empowered the wearer with an iron determination",
             "to complete their task."
         ],
-        "added_will": 2
+        "added_will": 2,
+        "tags": [
+            "Mine"
+        ]
     },
     {
         "name": "Sharpness Enchantment",
@@ -23,7 +29,10 @@
             "The sharpness enchantment intensifies weapon force into a smaller area,",
             "which provides a general increase to damage done with no increased weight."
         ],
-        "added_damage": 3
+        "added_damage": 3,
+        "tags": [
+            "None"
+        ]
     },
     {
         "name": "Firebolt Beads",
@@ -33,6 +42,9 @@
         ],
         "provides_skills": [
             "Firebolt"
+        ],
+        "tags": [
+            "Fire"
         ]
     },
     {
@@ -44,6 +56,9 @@
         ],
         "provides_skills": [
             "Venom Blast"
+        ],
+        "tags": [
+            "Life"
         ]
     },
     {
@@ -54,6 +69,9 @@
         ],
         "provides_skills": [
             "Black Ice"
+        ],
+        "tags": [
+            "Ice"
         ]
     },
     {
@@ -64,6 +82,9 @@
         ],
         "provides_skills": [
             "Health Potion"
+        ],
+        "tags": [
+            "None"
         ]
     },
     {
@@ -74,6 +95,9 @@
         ],
         "provides_skills": [
             "Rage Potion"
+        ],
+        "tags": [
+            "Fire"
         ]
     },
     {
@@ -83,6 +107,9 @@
             "and Force which can be activated at will"
         ],
         "provides_skills": [
+            "Protection"
+        ],
+        "tags": [
             "Protection"
         ]
     }

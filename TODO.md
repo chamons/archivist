@@ -4,10 +4,6 @@
 - Make upgrades based on a tag pool based upon that "rune"
 - Lots of abilities, enemies
 
-# Phase 4 - Final Features
-- Fancy tab
-- Tutorial/Help docs
-
 # Phase 5 - Get Ready
 - Playtest a bunch! Win with each character
 - Package for distribution
@@ -15,6 +11,8 @@
 
 
 # Cut / Later Ideas
+- Fancy tab
+
 - List of all enemies in game from title screen
 - Some levels should be multi-floor
 - Doors and keys?

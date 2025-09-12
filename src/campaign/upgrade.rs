@@ -10,6 +10,17 @@ use crate::{
 
 const STARTS_JSON: &str = include_str!("../../data/upgrades.json");
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+enum RuneKinds {
+    None,
+    Fire,
+    Life,
+    Ice,
+    Force,
+    Protection,
+    Mind,
+}
+
 // This is a stub for a future crafting system
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct UpgradeOption {
@@ -23,6 +34,7 @@ struct UpgradeOption {
     added_damage: u32,
     #[serde(default)]
     provides_skills: Vec<String>,
+    tags: Vec<RuneKinds>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
