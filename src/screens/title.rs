@@ -1,6 +1,7 @@
 use crate::campaign::CampaignScreenState;
 use crate::mission::MissionState;
 use crate::prelude::*;
+use crate::screens::help::HelpState;
 use crate::screens::options::OptionsState;
 
 pub struct TitleState {
@@ -42,11 +43,17 @@ impl TitleState {
         }
         {
             let (color, background) = self.title_color_line(next_option);
+            Screen::draw_centered_text_with_color("Help", 48, offset, color, background);
+            offset += 50.0;
+            next_option += 1;
+        }
+        {
+            let (color, background) = self.title_color_line(next_option);
             Screen::draw_centered_text_with_color("Quit", 48, offset, color, background);
         }
 
         if is_key_pressed(KeyCode::Down) {
-            if self.selection < 2 {
+            if self.selection < self.max_options() {
                 self.selection += 1;
             }
         } else if is_key_pressed(KeyCode::Up) {
@@ -63,7 +70,8 @@ impl TitleState {
                         return Some(GameFlow::Campaign(CampaignScreenState::new()));
                     }
                     2 => return Some(GameFlow::Options(OptionsState::new())),
-                    3 | _ => return Some(GameFlow::Quitting),
+                    3 => return Some(GameFlow::Help(HelpState::new())),
+                    4 | _ => return Some(GameFlow::Quitting),
                 }
             } else {
                 match self.selection {
@@ -71,12 +79,17 @@ impl TitleState {
                         return Some(GameFlow::Campaign(CampaignScreenState::new()));
                     }
                     1 => return Some(GameFlow::Options(OptionsState::new())),
-                    2 | _ => return Some(GameFlow::Quitting),
+                    2 => return Some(GameFlow::Help(HelpState::new())),
+                    3 | _ => return Some(GameFlow::Quitting),
                 }
             }
         }
 
         None
+    }
+
+    fn max_options(&self) -> usize {
+        if self.has_save_game { 4 } else { 3 }
     }
 
     fn title_color_line(&self, current: usize) -> (Color, Option<Color>) {

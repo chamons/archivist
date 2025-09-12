@@ -1,10 +1,16 @@
-use macroquad::{input::prevent_quit, window::clear_background};
+use macroquad::{
+    input::{is_quit_requested, prevent_quit},
+    window::clear_background,
+};
 
 use crate::{
     campaign::CampaignScreenState,
     mission::MissionState,
     prelude::*,
-    screens::{death::DeathState, options::OptionsState, title::TitleState, victory::VictoryState},
+    screens::{
+        death::DeathState, help::HelpState, options::OptionsState, title::TitleState,
+        victory::VictoryState,
+    },
 };
 
 pub enum GameFlow {
@@ -13,12 +19,17 @@ pub enum GameFlow {
     Gameplay(MissionState),
     Dead(DeathState),
     Options(OptionsState),
+    Help(HelpState),
     Quitting,
     Victory(VictoryState),
 }
 
 impl GameFlow {
     pub fn process_frame(&mut self, screen: &mut Screen) {
+        if !matches!(self, GameFlow::Gameplay(_)) && is_quit_requested() {
+            *self = GameFlow::Quitting;
+        }
+
         let maybe_next = match self {
             GameFlow::Title(state) => state.process_frame(),
             GameFlow::Campaign(state) => state.process_frame(screen),
@@ -26,6 +37,7 @@ impl GameFlow {
             GameFlow::Dead(state) => state.process_frame(screen),
             GameFlow::Victory(state) => state.process_frame(),
             GameFlow::Options(state) => state.process_frame(screen),
+            GameFlow::Help(state) => state.process_frame(),
             GameFlow::Quitting => return,
         };
         if let Some(next) = maybe_next {

@@ -1,0 +1,46 @@
+Welcome to The Archivist.
+
+In this coffee break roguelike, you are a member of a secret society exploring long forgotten 
+and dead corners of the world for new words, new rules of grammar of "true language".
+
+Known by many names:
+- The uncreated word
+- The primal tongue
+- The echoes of creation
+- True language 
+
+The right word, in the right tone, in the right context, with the right emotional state, 
+and powered by sufficient will can bend reality. Often this knowledge was horded until death,
+libraries burned, and such power passed back into myth.
+
+You are sent on missions to areas filled with hostile creatures in search of a runestone.
+Each runestone contains a new noun or verb, which improves your equipment between missions.
+After completing a number of missions you win the game
+
+Controls:
+
+- Up: k or Up or Keypad 8
+- Down: j or Down or Keypad 2
+- Left: h or Left or Keypad 4
+- Right: l or Right or Keypad 6
+- Up and Left: y or Keypad 7
+- Up and Right: u or Keypad 9
+- Down and Left: b or Keypad 1
+- Down and Right: n or Keypad 3
+- Rest: . or Keypad 5
+- Numbers (1, 2, etc): Use the associated skill
+- Less Than (<): Exit level
+- Shift + Q: Save and quit (Desktop only)
+
+Skills:
+- Skill can be powered one of three ways:
+   - Some skills consume will (cost show after the skill name), which recharges when you rest
+   - Some skills have a limited number of changes per mission (but always recharge between missions)
+   - Some skills have a time based cooldown
+
+Hints:
+- There is no reward for killing enemies, so get the runestone and get out
+- Resting with no enemies visible will restore Health and Will
+- Intelligent enemies will track you to your last visible location, 
+use that to separate larger groups of enemies.
+- Mouse over enemies to get more information about them
