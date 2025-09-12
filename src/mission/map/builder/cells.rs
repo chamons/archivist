@@ -18,9 +18,9 @@ impl CellsMapBuilder {
         loop {
             builder.randomize_map(rng);
             for _ in 0..10 {
-                builder.iterate();
+                builder.iterate(rng);
             }
-            fix_map_border(&mut builder.map);
+            fix_map_border(&mut builder.map, rng);
 
             let center = find_map_center(&builder.map);
             if check_map_connectivity(&builder.map, center) {
@@ -45,16 +45,16 @@ impl CellsMapBuilder {
         self.map = Map::new(self.map.theme);
     }
 
-    fn iterate(&mut self) {
+    fn iterate(&mut self, rng: &mut RandGenerator) {
         let mut next_map = self.map.clone();
         for x in 1..SCREEN_WIDTH - 1 {
             for y in 1..SCREEN_HEIGHT - 1 {
                 let position = Point::new(x, y);
                 let neighbors = Self::neighbors(&self, position);
                 if neighbors > 4 || neighbors == 0 {
-                    next_map.set(position, MapTile::wall());
+                    next_map.set(position, MapTile::wall(rng));
                 } else {
-                    next_map.set(position, MapTile::floor());
+                    next_map.set(position, MapTile::floor(rng));
                 }
             }
         }

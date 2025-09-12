@@ -89,6 +89,7 @@ pub fn create_test_map() -> (CharacterId, LevelState) {
             MapTile {
                 kind: TileKind::Floor,
                 known: true,
+                variation: 0,
             },
         );
     }

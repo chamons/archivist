@@ -40,13 +40,14 @@ mod tests {
     fn check_connectivity() {
         let mut map = Map::new_filled(MapTheme::Stone);
 
-        map.set(Point::new(1, 1), MapTile::floor());
-        map.set(Point::new(1, 2), MapTile::floor());
-        map.set(Point::new(1, 3), MapTile::floor());
+        let mut rng = RandGenerator::new();
+        map.set(Point::new(1, 1), MapTile::floor(&mut rng));
+        map.set(Point::new(1, 2), MapTile::floor(&mut rng));
+        map.set(Point::new(1, 3), MapTile::floor(&mut rng));
 
         assert!(check_map_connectivity(&map, Point::new(1, 1)));
 
-        map.set(Point::new(1, 5), MapTile::floor());
+        map.set(Point::new(1, 5), MapTile::floor(&mut rng));
         assert!(!check_map_connectivity(&map, Point::new(1, 1)));
     }
 }

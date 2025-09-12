@@ -70,6 +70,7 @@ impl RoomsMapBuilder {
             *t = MapTile {
                 kind: tile,
                 known: false,
+                variation: 0,
             }
         });
     }
@@ -98,22 +99,22 @@ impl RoomsMapBuilder {
             );
             if !self.rooms.iter().any(|r| r.intersect(&room)) {
                 room.for_each(|p| {
-                    self.map.set(p, MapTile::floor());
+                    self.map.set(p, MapTile::floor(rng));
                 });
                 self.rooms.push(room);
             }
         }
     }
 
-    fn build_vert_tunnel(&mut self, y1: i32, y2: i32, x: i32) {
+    fn build_vert_tunnel(&mut self, y1: i32, y2: i32, x: i32, rng: &mut RandGenerator) {
         for y in min(y1, y2)..=max(y1, y2) {
-            self.map.set(Point::new(x, y), MapTile::floor());
+            self.map.set(Point::new(x, y), MapTile::floor(rng));
         }
     }
 
-    fn build_horz_tunnel(&mut self, x1: i32, x2: i32, y: i32) {
+    fn build_horz_tunnel(&mut self, x1: i32, x2: i32, y: i32, rng: &mut RandGenerator) {
         for x in min(x1, x2)..=max(x1, x2) {
-            self.map.set(Point::new(x, y), MapTile::floor());
+            self.map.set(Point::new(x, y), MapTile::floor(rng));
         }
     }
 
@@ -130,22 +131,26 @@ impl RoomsMapBuilder {
                     previous_room_center.x,
                     next_room_center.x,
                     previous_room_center.y,
+                    rng,
                 );
                 self.build_vert_tunnel(
                     previous_room_center.y,
                     next_room_center.y,
                     next_room_center.x,
+                    rng,
                 );
             } else {
                 self.build_vert_tunnel(
                     previous_room_center.y,
                     next_room_center.y,
                     next_room_center.x,
+                    rng,
                 );
                 self.build_horz_tunnel(
                     previous_room_center.x,
                     next_room_center.x,
                     previous_room_center.y,
+                    rng,
                 );
             }
         }

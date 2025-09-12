@@ -21,6 +21,13 @@ pub mod enemy_set;
 
 pub fn generate_random_map(player: Character, difficulty: u32) -> LevelState {
     let mut rng = RandGenerator::new();
+    let seed = macroquad::miniquad::date::now() as u64;
+
+    if cfg!(debug_assertions) {
+        println!("Generating map with seed {seed}");
+    }
+
+    rng.srand(seed);
 
     let level = match rng.gen_range(0, 3) {
         0 => RoomsMapBuilder::build(&mut rng, difficulty, player),
@@ -46,6 +53,7 @@ pub fn setup_entrance(
         MapTile {
             kind: TileKind::Exit,
             known: true,
+            variation: 0,
         },
     );
 }
@@ -99,14 +107,14 @@ pub fn spawn_rune_far_away(map: &Map, center: Point, data: &Data) -> Vec<(Point,
     vec![(farthest, data.get_item("Runestone"))]
 }
 
-pub fn fix_map_border(map: &mut Map) {
+pub fn fix_map_border(map: &mut Map, rng: &mut RandGenerator) {
     for x in 0..SCREEN_WIDTH {
-        map.set(Point::new(x, 0), MapTile::wall());
-        map.set(Point::new(x, SCREEN_HEIGHT - 1), MapTile::wall());
+        map.set(Point::new(x, 0), MapTile::wall(rng));
+        map.set(Point::new(x, SCREEN_HEIGHT - 1), MapTile::wall(rng));
     }
     for y in 0..SCREEN_HEIGHT {
-        map.set(Point::new(0, y), MapTile::wall());
-        map.set(Point::new(SCREEN_WIDTH - 1, y), MapTile::wall());
+        map.set(Point::new(0, y), MapTile::wall(rng));
+        map.set(Point::new(SCREEN_WIDTH - 1, y), MapTile::wall(rng));
     }
 }
 

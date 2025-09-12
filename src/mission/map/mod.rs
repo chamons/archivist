@@ -1,3 +1,5 @@
+use std::i32;
+
 use crate::prelude::*;
 
 mod builder;
@@ -36,53 +38,64 @@ impl MapTheme {
 }
 
 impl MapTheme {
-    pub fn get_sprite(&self, tile: TileKind) -> Point {
-        match self {
-            MapTheme::Stone => match tile {
+    pub fn get_sprite(&self, tile: MapTile) -> Point {
+        let mut sprite = match self {
+            MapTheme::Stone => match tile.kind {
                 TileKind::Wall => Point::new(1, 1),
                 TileKind::Floor => Point::new(4, 1),
                 TileKind::Exit => Point::new(8, 1),
             },
-            MapTheme::BrownStone => match tile {
+            MapTheme::BrownStone => match tile.kind {
                 TileKind::Wall => Point::new(1, 3),
                 TileKind::Floor => Point::new(4, 3),
                 TileKind::Exit => Point::new(8, 3),
             },
-            MapTheme::Sand => match tile {
+            MapTheme::Sand => match tile.kind {
                 TileKind::Wall => Point::new(1, 9),
                 TileKind::Floor => Point::new(4, 9),
                 TileKind::Exit => Point::new(8, 9),
             },
-            MapTheme::GreenMetal => match tile {
+            MapTheme::GreenMetal => match tile.kind {
                 TileKind::Wall => Point::new(1, 6),
                 TileKind::Floor => Point::new(4, 6),
                 TileKind::Exit => Point::new(8, 6),
             },
-            MapTheme::BlueMetal => match tile {
+            MapTheme::BlueMetal => match tile.kind {
                 TileKind::Wall => Point::new(1, 7),
                 TileKind::Floor => Point::new(4, 7),
                 TileKind::Exit => Point::new(8, 7),
             },
-            MapTheme::GreyMetal => match tile {
+            MapTheme::GreyMetal => match tile.kind {
                 TileKind::Wall => Point::new(1, 8),
                 TileKind::Floor => Point::new(4, 8),
                 TileKind::Exit => Point::new(8, 8),
             },
-            MapTheme::Rivets => match tile {
+            MapTheme::Rivets => match tile.kind {
                 TileKind::Wall => Point::new(1, 11),
                 TileKind::Floor => Point::new(4, 11),
                 TileKind::Exit => Point::new(8, 11),
             },
-            MapTheme::Hedge => match tile {
+            MapTheme::Hedge => match tile.kind {
                 TileKind::Wall => Point::new(1, 15),
                 TileKind::Floor => Point::new(4, 15),
                 TileKind::Exit => Point::new(8, 15),
             },
-            MapTheme::Bones => match tile {
+            MapTheme::Bones => match tile.kind {
                 TileKind::Wall => Point::new(1, 16),
                 TileKind::Floor => Point::new(4, 16),
                 TileKind::Exit => Point::new(8, 16),
             },
+        };
+        if !matches!(tile.kind, TileKind::Floor) || self.supports_floor_variations() {
+            sprite.x += tile.variation;
+        }
+        sprite
+    }
+
+    fn supports_floor_variations(&self) -> bool {
+        match self {
+            MapTheme::GreenMetal => false,
+            _ => true,
         }
     }
 }
@@ -98,20 +111,33 @@ pub enum TileKind {
 pub struct MapTile {
     pub kind: TileKind,
     pub known: bool,
+    pub variation: i32,
 }
 
 impl MapTile {
-    pub fn floor() -> Self {
+    pub fn floor(rng: &mut RandGenerator) -> Self {
+        let variation = match rng.gen_range(0, 100) {
+            i32::MIN..99 => 0,
+            99..=i32::MAX => 2,
+        };
+
         MapTile {
             kind: TileKind::Floor,
             known: false,
+            variation,
         }
     }
 
-    pub fn wall() -> Self {
+    pub fn wall(rng: &mut RandGenerator) -> Self {
+        let variation = match rng.gen_range(0, 100) {
+            i32::MIN..96 => 0,
+            96 | 97 => 1,
+            98 | 99..=i32::MAX => 2,
+        };
         MapTile {
             kind: TileKind::Wall,
             known: false,
+            variation,
         }
     }
 
@@ -135,7 +161,8 @@ impl Map {
             tiles: vec![
                 MapTile {
                     kind: TileKind::Floor,
-                    known: false
+                    known: false,
+                    variation: 0
                 };
                 NUM_TILES
             ],
@@ -149,6 +176,7 @@ impl Map {
                 MapTile {
                     kind: TileKind::Wall,
                     known: false,
+                    variation: 0
                 };
                 NUM_TILES
             ],
@@ -181,7 +209,7 @@ impl Map {
                 if self.in_bounds(position) {
                     let map_tile = self.get(position);
                     if map_tile.known {
-                        let sprite_tile = self.theme.get_sprite(map_tile.kind);
+                        let sprite_tile = self.theme.get_sprite(map_tile);
                         screen.draw_sprite(TileSet::World, position, sprite_tile);
                         if !visibility.get(position) {
                             screen.draw_fog(position);

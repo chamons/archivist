@@ -16,7 +16,7 @@ impl DrunkDigger {
         };
 
         builder.dig(rng);
-        fix_map_border(&mut builder.map);
+        fix_map_border(&mut builder.map, rng);
 
         let center = find_map_center(&builder.map);
 
@@ -54,7 +54,7 @@ impl DrunkDigger {
         let mut distance = 0;
 
         loop {
-            self.map.set(position, MapTile::floor());
+            self.map.set(position, MapTile::floor(rng));
             match rng.gen_range(0, 4) {
                 0 => position.x -= 1,
                 1 => position.x += 1,
