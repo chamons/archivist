@@ -172,10 +172,16 @@ impl Music {
             set_sound_volume(current_track, volume);
         }
     }
+
+    fn current_music_track(&mut self) -> Option<usize> {
+        self.current_track
+    }
 }
 
 // So we can test things with out sounds
 pub trait ScreenInterface {
+    fn current_music_track(&mut self) -> Option<usize>;
+
     fn play_music_track(&mut self, index: usize);
 
     fn play_random_music(&mut self);
@@ -197,6 +203,10 @@ impl ScreenInterface for EmptyScreen {
     fn set_music_volume(&mut self, _volume: f32) {}
 
     fn play_sound(&mut self, _name: &str) {}
+
+    fn current_music_track(&mut self) -> Option<usize> {
+        None
+    }
 }
 
 pub struct Screen {
@@ -402,6 +412,10 @@ impl Screen {
 }
 
 impl ScreenInterface for Screen {
+    fn current_music_track(&mut self) -> Option<usize> {
+        self.music.current_music_track()
+    }
+
     fn play_music_track(&mut self, index: usize) {
         self.music.play_music_track(index, &self.options);
     }

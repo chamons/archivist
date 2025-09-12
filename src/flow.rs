@@ -30,7 +30,9 @@ impl GameFlow {
         };
         if let Some(next) = maybe_next {
             if matches!(next, GameFlow::Title(_)) {
-                screen.play_music_track(0);
+                if screen.current_music_track() != Some(0) {
+                    screen.play_music_track(0);
+                }
             }
             *self = next;
         }
