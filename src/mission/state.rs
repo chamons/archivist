@@ -195,7 +195,7 @@ impl MissionState {
                 }
             }
             Err(e) => {
-                eprintln!("Unable to create game game location: {e:?}");
+                eprintln!("Unable to create game location: {e:?}");
             }
         }
     }

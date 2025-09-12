@@ -1,6 +1,7 @@
 use crate::campaign::CampaignScreenState;
 use crate::mission::MissionState;
 use crate::prelude::*;
+use crate::screens::options::OptionsState;
 
 pub struct TitleState {
     has_save_game: bool,
@@ -35,6 +36,12 @@ impl TitleState {
         }
         {
             let (color, background) = self.title_color_line(next_option);
+            Screen::draw_centered_text_with_color("Options", 48, offset, color, background);
+            offset += 50.0;
+            next_option += 1;
+        }
+        {
+            let (color, background) = self.title_color_line(next_option);
             Screen::draw_centered_text_with_color("Quit", 48, offset, color, background);
         }
 
@@ -55,14 +62,16 @@ impl TitleState {
                         MissionState::delete_any_save();
                         return Some(GameFlow::Campaign(CampaignScreenState::new()));
                     }
-                    2 | _ => return Some(GameFlow::Quitting),
+                    2 => return Some(GameFlow::Options(OptionsState::new())),
+                    3 | _ => return Some(GameFlow::Quitting),
                 }
             } else {
                 match self.selection {
                     0 => {
                         return Some(GameFlow::Campaign(CampaignScreenState::new()));
                     }
-                    1 | _ => return Some(GameFlow::Quitting),
+                    1 => return Some(GameFlow::Options(OptionsState::new())),
+                    2 | _ => return Some(GameFlow::Quitting),
                 }
             }
         }

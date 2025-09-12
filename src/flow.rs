@@ -4,7 +4,7 @@ use crate::{
     campaign::CampaignScreenState,
     mission::MissionState,
     prelude::*,
-    screens::{death::DeathState, title::TitleState, victory::VictoryState},
+    screens::{death::DeathState, options::OptionsState, title::TitleState, victory::VictoryState},
 };
 
 pub enum GameFlow {
@@ -12,6 +12,7 @@ pub enum GameFlow {
     Title(TitleState),
     Gameplay(MissionState),
     Dead(DeathState),
+    Options(OptionsState),
     Quitting,
     Victory(VictoryState),
 }
@@ -24,6 +25,7 @@ impl GameFlow {
             GameFlow::Gameplay(state) => state.process_frame(screen),
             GameFlow::Dead(state) => state.process_frame(screen),
             GameFlow::Victory(state) => state.process_frame(),
+            GameFlow::Options(state) => state.process_frame(screen),
             GameFlow::Quitting => return,
         };
         if let Some(next) = maybe_next {

@@ -7,7 +7,6 @@
 # Phase 4 - Final Features
 - Fancy tab
 - Tutorial/Help docs
-- Options for volume/remove music
 
 # Phase 5 - Get Ready
 - Playtest a bunch! Win with each character

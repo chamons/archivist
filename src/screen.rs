@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use macroquad::{
-    audio::{PlaySoundParams, Sound, load_sound, play_sound, play_sound_once, stop_sound},
+    audio::{PlaySoundParams, Sound, load_sound, play_sound, set_sound_volume, stop_sound},
     rand::gen_range,
     shapes::{draw_rectangle, draw_rectangle_lines},
     text::{draw_text, measure_text},
@@ -9,8 +9,8 @@ use macroquad::{
     window::screen_width,
 };
 
-use crate::mission::*;
 use crate::prelude::*;
+use crate::{Options, mission::*};
 
 pub enum TileSet {
     Creatures,
@@ -123,25 +123,32 @@ impl Music {
         );
     }
 
-    pub fn play_music_track(&mut self, index: usize) {
-        self.play(index);
+    pub fn play_music_track(&mut self, index: usize, options: &Options) {
+        self.play(index, options);
     }
 
-    pub fn play_random_music(&mut self) {
+    pub fn play_random_music(&mut self, options: &Options) {
         let track = gen_range(1, self.tracks.len());
-        self.play(track);
+        self.play(track, options);
     }
 
-    pub fn play_sound(&mut self, name: &str) {
+    pub fn play_sound(&mut self, name: &str, options: &Options) {
         if let Some(current_sound) = &self.current_sound {
             stop_sound(&self.sounds.get(current_sound).expect("Unable to get sound"));
         }
 
         let sound = self.sounds.get(name).expect("Unable to get sound");
-        play_sound_once(sound);
+
+        play_sound(
+            sound,
+            PlaySoundParams {
+                looped: false,
+                volume: options.sound,
+            },
+        );
     }
 
-    fn play(&mut self, index: usize) {
+    fn play(&mut self, index: usize, options: &Options) {
         if let Some(current_track) = &self.current_track {
             stop_sound(&self.tracks[*current_track]);
         }
@@ -152,10 +159,18 @@ impl Music {
             &track,
             PlaySoundParams {
                 looped: true,
-                volume: 0.35,
+                volume: options.music,
             },
         );
         self.current_track = Some(index);
+    }
+
+    fn set_music_volume(&mut self, volume: f32) {
+        if let Some(current_track) = &self.current_track {
+            let current_track = &self.tracks[*current_track];
+
+            set_sound_volume(current_track, volume);
+        }
     }
 }
 
@@ -164,6 +179,8 @@ pub trait ScreenInterface {
     fn play_music_track(&mut self, index: usize);
 
     fn play_random_music(&mut self);
+
+    fn set_music_volume(&mut self, volume: f32);
 
     fn play_sound(&mut self, name: &str);
 }
@@ -176,6 +193,8 @@ impl ScreenInterface for EmptyScreen {
     fn play_music_track(&mut self, _index: usize) {}
 
     fn play_random_music(&mut self) {}
+
+    fn set_music_volume(&mut self, _volume: f32) {}
 
     fn play_sound(&mut self, _name: &str) {}
 }
@@ -191,6 +210,7 @@ pub struct Screen {
 
     pub floating_text: Option<FloatingText>,
     music: Music,
+    pub options: Options,
 }
 
 impl Screen {
@@ -223,6 +243,7 @@ impl Screen {
         build_textures_atlas();
 
         let camera = Camera::new();
+        let options = Options::load();
         Self {
             music,
             creatures,
@@ -233,6 +254,7 @@ impl Screen {
             text,
             camera,
             floating_text: None,
+            options,
         }
     }
 
@@ -381,14 +403,18 @@ impl Screen {
 
 impl ScreenInterface for Screen {
     fn play_music_track(&mut self, index: usize) {
-        self.music.play_music_track(index);
+        self.music.play_music_track(index, &self.options);
     }
 
     fn play_random_music(&mut self) {
-        self.music.play_random_music();
+        self.music.play_random_music(&self.options);
     }
 
     fn play_sound(&mut self, name: &str) {
-        self.music.play_sound(name);
+        self.music.play_sound(name, &self.options);
+    }
+
+    fn set_music_volume(&mut self, volume: f32) {
+        self.music.set_music_volume(volume);
     }
 }
