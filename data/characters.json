@@ -1,14 +1,14 @@
 [
     {
         "name": "Bat",
-        "max_health": 20,
+        "max_health": 18,
         "base_sprite_tile": {
             "x": 3,
             "y": 13
         },
         "weapon": {
             "name": "Bite",
-            "damage": 4
+            "damage": 5
         },
         "is_intelligent": true,
         "difficulty": 0,
@@ -17,8 +17,8 @@
         ],
         "eternal_status_effects": [
             {
-                "name": "Lifesteal",
-                "kind": "Lifesteal"
+                "name": "Quick",
+                "kind": "Quick"
             }
         ]
     },
@@ -49,243 +49,6 @@
         ]
     },
     {
-        "name": "Bear",
-        "max_health": 35,
-        "defense": 3,
-        "base_sprite_tile": {
-            "x": 9,
-            "y": 19
-        },
-        "weapon": {
-            "name": "Maul",
-            "damage": 9
-        },
-        "is_intelligent": true,
-        "difficulty": 3,
-        "tags": [
-            "nature"
-        ]
-    },
-    {
-        "name": "Wolf",
-        "max_health": 24,
-        "base_sprite_tile": {
-            "x": 15,
-            "y": 13
-        },
-        "weapon": {
-            "name": "Bite",
-            "damage": 8
-        },
-        "is_intelligent": true,
-        "difficulty": 2,
-        "tags": [
-            "nature"
-        ]
-    },
-    {
-        "name": "Witch",
-        "max_health": 15,
-        "max_will": 2,
-        "base_sprite_tile": {
-            "x": 16,
-            "y": 17
-        },
-        "weapon": {
-            "name": "Slap",
-            "damage": 2,
-            "on_hit": {
-                "AddStatus": {
-                    "effect": {
-                        "name": "Poison",
-                        "kind": "RepeatingNegative",
-                        "duration": 100,
-                        "on_complete": {
-                            "reapply_count": 2,
-                            "complete_effect": {
-                                "ApplyDamage": {
-                                    "damage": 2
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "skills": [
-            {
-                "name": "Curse",
-                "cost": {
-                    "Will": 1
-                },
-                "effect": {
-                    "AddStatus": {
-                        "effect": {
-                            "name": "Cursed",
-                            "kind": "Cursed",
-                            "duration": 500
-                        }
-                    }
-                },
-                "targeting": {
-                    "Ranged": {
-                        "max_range": 4,
-                        "sprite": {
-                            "Directional": {
-                                "x": 1,
-                                "y": 18
-                            }
-                        }
-                    }
-                }
-            },
-            {
-                "name": "Witchfire",
-                "cost": "None",
-                "effect": {
-                    "ApplyDamage": {
-                        "damage": 4
-                    }
-                },
-                "targeting": {
-                    "Ranged": {
-                        "max_range": 4,
-                        "sprite": {
-                            "Directional": {
-                                "x": 1,
-                                "y": 18
-                            }
-                        }
-                    }
-                }
-            }
-        ],
-        "is_intelligent": true,
-        "difficulty": 2,
-        "tags": [
-            "occult"
-        ]
-    },
-    {
-        "name": "Slime",
-        "max_health": 20,
-        "max_will": 2,
-        "base_sprite_tile": {
-            "x": 2,
-            "y": 13
-        },
-        "weapon": {
-            "name": "Slam",
-            "damage": 7
-        },
-        "skills": [
-            {
-                "name": "Heal",
-                "cost": {
-                    "Will": 2
-                },
-                "effect": {
-                    "Heal": {
-                        "amount": 12
-                    }
-                },
-                "targeting": "Caster"
-            }
-        ],
-        "is_intelligent": false,
-        "difficulty": 2,
-        "tags": [
-            "occult"
-        ]
-    },
-    {
-        "name": "Ooze",
-        "max_health": 30,
-        "max_will": 2,
-        "base_sprite_tile": {
-            "x": 15,
-            "y": 21
-        },
-        "weapon": {
-            "name": "Slam",
-            "damage": 9
-        },
-        "skills": [
-            {
-                "name": "Heal",
-                "cost": {
-                    "Will": 2
-                },
-                "effect": {
-                    "Heal": {
-                        "amount": 20
-                    }
-                },
-                "targeting": "Caster"
-            }
-        ],
-        "is_intelligent": false,
-        "difficulty": 3,
-        "tags": [
-            "occult"
-        ]
-    },
-    {
-        "name": "Spider",
-        "max_health": 24,
-        "max_will": 1,
-        "base_sprite_tile": {
-            "x": 7,
-            "y": 13
-        },
-        "weapon": {
-            "name": "Bite",
-            "damage": 7
-        },
-        "skills": [
-            {
-                "name": "Spit",
-                "cost": {
-                    "Will": 1
-                },
-                "effect": {
-                    "AddStatus": {
-                        "effect": {
-                            "name": "Poison",
-                            "kind": "RepeatingNegative",
-                            "duration": 100,
-                            "on_complete": {
-                                "reapply_count": 3,
-                                "complete_effect": {
-                                    "ApplyDamage": {
-                                        "damage": 2
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "targeting": {
-                    "Ranged": {
-                        "max_range": 4,
-                        "sprite": {
-                            "Directional": {
-                                "x": 1,
-                                "y": 17
-                            }
-                        }
-                    }
-                }
-            }
-        ],
-        "is_intelligent": true,
-        "difficulty": 2,
-        "tags": [
-            "nature",
-            "occult"
-        ]
-    },
-    {
         "name": "Goblin Warrior",
         "max_health": 20,
         "max_will": 1,
@@ -298,9 +61,29 @@
             "damage": 6
         },
         "is_intelligent": true,
-        "difficulty": 1,
+        "difficulty": 0,
         "tags": [
             "goblin"
+        ]
+    },
+    {
+        "name": "Skeleton",
+        "max_health": 12,
+        "max_will": 1,
+        "defense": 3,
+        "base_sprite_tile": {
+            "x": 3,
+            "y": 17
+        },
+        "weapon": {
+            "name": "Claw",
+            "damage": 6
+        },
+        "is_intelligent": false,
+        "difficulty": 0,
+        "tags": [
+            "skeletons",
+            "undead"
         ]
     },
     {
@@ -343,7 +126,7 @@
             }
         ],
         "is_intelligent": true,
-        "difficulty": 2,
+        "difficulty": 1,
         "tags": [
             "goblin"
         ]
@@ -414,7 +197,7 @@
                 "cost": "None",
                 "effect": {
                     "ApplyDamage": {
-                        "damage": 2
+                        "damage": 3
                     }
                 },
                 "targeting": {
@@ -431,28 +214,9 @@
             }
         ],
         "is_intelligent": true,
-        "difficulty": 2,
-        "tags": [
-            "goblin"
-        ]
-    },
-    {
-        "name": "Skeleton",
-        "max_health": 12,
-        "max_will": 1,
-        "defense": 3,
-        "base_sprite_tile": {
-            "x": 3,
-            "y": 17
-        },
-        "weapon": {
-            "name": "Claw",
-            "damage": 6
-        },
-        "is_intelligent": false,
         "difficulty": 1,
         "tags": [
-            "skeletons"
+            "goblin"
         ]
     },
     {
@@ -496,9 +260,787 @@
             }
         ],
         "is_intelligent": false,
+        "difficulty": 1,
+        "tags": [
+            "skeletons",
+            "undead"
+        ]
+    },
+    {
+        "name": "Witch",
+        "max_health": 15,
+        "max_will": 4,
+        "base_sprite_tile": {
+            "x": 16,
+            "y": 17
+        },
+        "weapon": {
+            "name": "Slap",
+            "damage": 3,
+            "on_hit": {
+                "AddStatus": {
+                    "effect": {
+                        "name": "Poison",
+                        "kind": "RepeatingNegative",
+                        "duration": 100,
+                        "on_complete": {
+                            "reapply_count": 2,
+                            "complete_effect": {
+                                "ApplyDamage": {
+                                    "damage": 2
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "skills": [
+            {
+                "name": "Curse",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Cursed",
+                            "kind": "Cursed",
+                            "duration": 800
+                        }
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 18
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Witchfire",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "ApplyDamage": {
+                        "damage": 4
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 18
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "is_intelligent": true,
+        "difficulty": 1,
+        "tags": [
+            "occult"
+        ]
+    },
+    {
+        "name": "Wolf",
+        "max_health": 24,
+        "base_sprite_tile": {
+            "x": 15,
+            "y": 13
+        },
+        "weapon": {
+            "name": "Bite",
+            "damage": 8
+        },
+        "is_intelligent": true,
+        "difficulty": 1,
+        "tags": [
+            "nature"
+        ]
+    },
+    {
+        "name": "Zombie",
+        "max_health": 32,
+        "max_will": 1,
+        "defense": 1,
+        "base_sprite_tile": {
+            "x": 1,
+            "y": 17
+        },
+        "weapon": {
+            "name": "Claw",
+            "damage": 6
+        },
+        "is_intelligent": false,
+        "difficulty": 1,
+        "eternal_status_effects": [
+            {
+                "name": "Slow",
+                "kind": "Slow"
+            }
+        ],
+        "tags": [
+            "undead"
+        ]
+    },
+    {
+        "name": "Blood Bat",
+        "max_health": 22,
+        "base_sprite_tile": {
+            "x": 4,
+            "y": 13
+        },
+        "weapon": {
+            "name": "Bite",
+            "damage": 5
+        },
+        "is_intelligent": true,
+        "difficulty": 1,
+        "tags": [
+            "nature",
+            "occult"
+        ],
+        "eternal_status_effects": [
+            {
+                "name": "Lifesteal",
+                "kind": "Lifesteal"
+            },
+            {
+                "name": "Quick",
+                "kind": "Quick"
+            }
+        ]
+    },
+    {
+        "name": "Crow",
+        "max_health": 22,
+        "base_sprite_tile": {
+            "x": 18,
+            "y": 13
+        },
+        "weapon": {
+            "name": "Claw",
+            "damage": 7
+        },
+        "is_intelligent": true,
+        "difficulty": 1,
+        "tags": [
+            "nature"
+        ],
+        "eternal_status_effects": [
+            {
+                "name": "Quick",
+                "kind": "Quick"
+            },
+            {
+                "name": "Agile",
+                "kind": "Agile"
+            }
+        ]
+    },
+    {
+        "name": "Giant Bird",
+        "max_health": 28,
+        "base_sprite_tile": {
+            "x": 16,
+            "y": 13
+        },
+        "weapon": {
+            "name": "Claw",
+            "damage": 9
+        },
+        "is_intelligent": true,
         "difficulty": 2,
         "tags": [
-            "skeletons"
+            "nature"
+        ],
+        "eternal_status_effects": [
+            {
+                "name": "Quick",
+                "kind": "Quick"
+            },
+            {
+                "name": "Agile",
+                "kind": "Agile"
+            }
+        ]
+    },
+    {
+        "name": "Slime",
+        "max_health": 22,
+        "max_will": 2,
+        "base_sprite_tile": {
+            "x": 2,
+            "y": 13
+        },
+        "weapon": {
+            "name": "Slam",
+            "damage": 9
+        },
+        "skills": [
+            {
+                "name": "Heal",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "Heal": {
+                        "amount": 12
+                    }
+                },
+                "targeting": "Caster"
+            }
+        ],
+        "is_intelligent": false,
+        "difficulty": 2,
+        "tags": [
+            "occult"
+        ]
+    },
+    {
+        "name": "Giant Spider",
+        "max_health": 26,
+        "max_will": 2,
+        "base_sprite_tile": {
+            "x": 7,
+            "y": 13
+        },
+        "weapon": {
+            "name": "Bite",
+            "damage": 7
+        },
+        "skills": [
+            {
+                "name": "Spit",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Poison",
+                            "kind": "RepeatingNegative",
+                            "duration": 100,
+                            "on_complete": {
+                                "reapply_count": 3,
+                                "complete_effect": {
+                                    "ApplyDamage": {
+                                        "damage": 2
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 17
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "is_intelligent": true,
+        "difficulty": 2,
+        "tags": [
+            "nature",
+            "occult"
+        ],
+        "eternal_status_effects": [
+            {
+                "name": "Agile",
+                "kind": "Agile"
+            }
+        ]
+    },
+    {
+        "name": "Dark Goblin Warrior",
+        "max_health": 32,
+        "max_will": 1,
+        "base_sprite_tile": {
+            "x": 6,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 7,
+            "AddStatus": {
+                "effect": {
+                    "name": "Poison",
+                    "kind": "RepeatingNegative",
+                    "duration": 100,
+                    "on_complete": {
+                        "reapply_count": 2,
+                        "complete_effect": {
+                            "ApplyDamage": {
+                                "damage": 2
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "is_intelligent": true,
+        "difficulty": 2,
+        "tags": [
+            "goblin"
+        ]
+    },
+    {
+        "name": "Goblin Sage",
+        "max_health": 28,
+        "max_will": 5,
+        "base_sprite_tile": {
+            "x": 8,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Strike",
+            "damage": 4
+        },
+        "skills": [
+            {
+                "name": "Heal",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "Heal": {
+                        "amount": 14
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "SingleFrame": {
+                                "x": 1,
+                                "y": 8
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Bless",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Bless",
+                            "kind": "Lucky",
+                            "duration": 500
+                        }
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "SingleFrame": {
+                                "x": 1,
+                                "y": 8
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Dart",
+                "cost": "None",
+                "effect": {
+                    "ApplyDamage": {
+                        "damage": 5
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "SingleFrame": {
+                                "x": 1,
+                                "y": 1
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "is_intelligent": true,
+        "difficulty": 2,
+        "tags": [
+            "goblin"
+        ]
+    },
+    {
+        "name": "Goblin Captain",
+        "max_health": 28,
+        "max_will": 1,
+        "defense": 2,
+        "base_sprite_tile": {
+            "x": 6,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 8
+        },
+        "is_intelligent": true,
+        "difficulty": 2,
+        "tags": [
+            "goblin"
+        ]
+    },
+    {
+        "name": "Ice Witch",
+        "max_health": 26,
+        "max_will": 4,
+        "base_sprite_tile": {
+            "x": 16,
+            "y": 17
+        },
+        "weapon": {
+            "name": "Freezing Slap",
+            "damage": 3,
+            "on_hit": {
+                "AddStatus": {
+                    "effect": {
+                        "name": "Frostbite",
+                        "kind": "RepeatingNegative",
+                        "duration": 100,
+                        "on_complete": {
+                            "reapply_count": 2,
+                            "complete_effect": {
+                                "ApplyDamage": {
+                                    "damage": 2
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "skills": [
+            {
+                "name": "Curse",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Cursed",
+                            "kind": "Cursed",
+                            "duration": 800
+                        }
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 18
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Frostfire",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "ApplyDamage": {
+                        "damage": 6,
+                        "on_hit": {
+                            "AddStatus": {
+                                "effect": {
+                                    "name": "Slow",
+                                    "kind": "Slow",
+                                    "duration": 200
+                                }
+                            }
+                        }
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 4,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 18
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "is_intelligent": true,
+        "difficulty": 1,
+        "tags": [
+            "occult"
+        ]
+    },
+    {
+        "name": "Skeleton Warrior",
+        "max_health": 22,
+        "max_will": 1,
+        "defense": 5,
+        "base_sprite_tile": {
+            "x": 5,
+            "y": 17
+        },
+        "weapon": {
+            "name": "Claw",
+            "damage": 6
+        },
+        "is_intelligent": false,
+        "difficulty": 2,
+        "tags": [
+            "skeletons",
+            "undead"
+        ]
+    },
+    {
+        "name": "Bear",
+        "max_health": 42,
+        "defense": 3,
+        "base_sprite_tile": {
+            "x": 9,
+            "y": 19
+        },
+        "weapon": {
+            "name": "Maul",
+            "damage": 9
+        },
+        "is_intelligent": true,
+        "difficulty": 3,
+        "tags": [
+            "nature"
+        ]
+    },
+    {
+        "name": "Ooze",
+        "max_health": 32,
+        "max_will": 2,
+        "base_sprite_tile": {
+            "x": 15,
+            "y": 21
+        },
+        "weapon": {
+            "name": "Slam",
+            "damage": 9
+        },
+        "skills": [
+            {
+                "name": "Heal",
+                "cost": {
+                    "Will": 2
+                },
+                "effect": {
+                    "Heal": {
+                        "amount": 20
+                    }
+                },
+                "targeting": "Caster"
+            }
+        ],
+        "is_intelligent": false,
+        "difficulty": 3,
+        "tags": [
+            "occult"
+        ]
+    },
+    {
+        "name": "Goblin King",
+        "max_health": 36,
+        "max_will": 1,
+        "defense": 3,
+        "base_sprite_tile": {
+            "x": 4,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 9
+        },
+        "is_intelligent": true,
+        "difficulty": 3,
+        "eternal_status_effects": [
+            {
+                "name": "Lucky",
+                "kind": "Lucky"
+            }
+        ],
+        "tags": [
+            "goblin"
+        ]
+    },
+    {
+        "name": "Dark Goblin Captain",
+        "max_health": 40,
+        "max_will": 1,
+        "defense": 3,
+        "base_sprite_tile": {
+            "x": 7,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 9,
+            "AddStatus": {
+                "effect": {
+                    "name": "Poison",
+                    "kind": "RepeatingNegative",
+                    "duration": 100,
+                    "on_complete": {
+                        "reapply_count": 2,
+                        "complete_effect": {
+                            "ApplyDamage": {
+                                "damage": 2
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "is_intelligent": true,
+        "difficulty": 3,
+        "tags": [
+            "goblin"
+        ]
+    },
+    {
+        "name": "Ogre",
+        "max_health": 48,
+        "max_will": 1,
+        "defense": 3,
+        "base_sprite_tile": {
+            "x": 9,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slam",
+            "damage": 14
+        },
+        "eternal_status_effects": [
+            {
+                "name": "Slow",
+                "kind": "Slow"
+            },
+            {
+                "name": "Blind",
+                "kind": "Blind"
+            }
+        ],
+        "is_intelligent": true,
+        "difficulty": 3,
+        "tags": [
+            "goblin"
+        ]
+    },
+    {
+        "name": "Clay Golem",
+        "max_health": 42,
+        "max_will": 1,
+        "defense": 4,
+        "base_sprite_tile": {
+            "x": 13,
+            "y": 11
+        },
+        "weapon": {
+            "name": "Slam",
+            "damage": 12
+        },
+        "eternal_status_effects": [
+            {
+                "name": "Slow",
+                "kind": "Slow"
+            }
+        ],
+        "is_intelligent": false,
+        "difficulty": 3,
+        "tags": [
+            "arcane",
+            "golem"
+        ]
+    },
+    {
+        "name": "Bone Golem",
+        "max_health": 42,
+        "max_will": 1,
+        "defense": 4,
+        "base_sprite_tile": {
+            "x": 15,
+            "y": 11
+        },
+        "weapon": {
+            "name": "Slam",
+            "damage": 10
+        },
+        "is_intelligent": false,
+        "difficulty": 3,
+        "tags": [
+            "arcane",
+            "golem"
+        ]
+    },
+    {
+        "name": "Scorpion",
+        "max_health": 42,
+        "max_will": 1,
+        "defense": 4,
+        "base_sprite_tile": {
+            "x": 12,
+            "y": 19
+        },
+        "weapon": {
+            "name": "Sting",
+            "damage": 4,
+            "on_hit": {
+                "AddStatus": {
+                    "effect": {
+                        "name": "Poison",
+                        "kind": "RepeatingNegative",
+                        "duration": 100,
+                        "on_complete": {
+                            "reapply_count": 2,
+                            "complete_effect": {
+                                "ApplyDamage": {
+                                    "damage": 4
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "is_intelligent": false,
+        "difficulty": 3,
+        "tags": [
+            "arcane",
+            "golem"
         ]
     }
 ]

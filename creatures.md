@@ -9,57 +9,62 @@ Skeleton
 
 Goblin Archer, 
 Goblin Sage,
- Skeleton Archer, 
+Skeleton Archer, 
 Witch,
- Blood Bat, 
-Brown Rat,
-Bird 16,13
-* Zombie
-* Crow 18,13
+Wolf,
+Zombie
+Blood Bat, 
+Crow 18,13
 
 2
 
-Wolf,
- Slime, 
+Giant Bird 16,13
+Slime, 
 Spider, 
 Dark Goblin Warrior 1,13
-* Dark Goblin Sage 5,13
+Dark Goblin Sage 5,13
 Goblin Captain 3,13
-* Crow 18,13
-* Ice Witch
-* Skeleton Warrior
+Ice Witch
+Skeleton Warrior
 
 3
 
 Bear, 
 Ooze,
-* Goblin King 4,13
-* Dark Goblin Captain 3,13
-* Ogre
-* Cyclops
-* Clay Golem
-* Bone Golem
-* Scorpion
-* Royal Slime 1,13
-* Blue Bird 17,13
+Goblin King 4,13
+
+Dark Goblin Captain 3,13
+Ogre
+Clay Golem
+Bone Golem
+Scorpion
 
 4
-* Fire Knight
-* Iron Knight
-* Gold Knight
-* Stone Golem
-* Black Bear
-* Mummy
-* Blue Ooze
-* Desert Scorpion
-* Black Scorpion
-* Fire Ogre
-* Brown Cyclops
+Fire Knight
+Iron Knight
+Gold Knight
+Stone Golem
+Mummy
+Blue Ooze
+Black Scorpion
+Brown Cyclops
 
 5
 
-- Lich
-* Rock Golem
-* Lava Golem
-* Ancient Mummy
-* Vampire
+Lich
+Rock Golem
+Lava Golem
+Ancient Mummy
+
+
+
+
+Unused
+
+Vampire
+Cyclops
+Royal Slime 1,13
+Blue Bird 17,13
+Desert Scorpion
+Black Bear
+Fire Ogre
