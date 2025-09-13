@@ -75,49 +75,49 @@ impl Music {
 
         self.sounds.insert(
             "attack_b".to_string(),
-            load_sound("resources/sound/attack_b.wav")
+            load_sound("resources/sound/attack_b.ogg")
                 .await
                 .expect("Unable to load sound"),
         );
         self.sounds.insert(
             "burn".to_string(),
-            load_sound("resources/sound/burn.wav")
+            load_sound("resources/sound/burn.ogg")
                 .await
                 .expect("Unable to load sound"),
         );
         self.sounds.insert(
             "curse".to_string(),
-            load_sound("resources/sound/curse.wav")
+            load_sound("resources/sound/curse.ogg")
                 .await
                 .expect("Unable to load sound"),
         );
         self.sounds.insert(
             "impact_a".to_string(),
-            load_sound("resources/sound/impact_a.wav")
+            load_sound("resources/sound/impact_a.ogg")
                 .await
                 .expect("Unable to load sound"),
         );
         self.sounds.insert(
             "impact_b".to_string(),
-            load_sound("resources/sound/impact_b.wav")
+            load_sound("resources/sound/impact_b.ogg")
                 .await
                 .expect("Unable to load sound"),
         );
         self.sounds.insert(
             "lightning_a".to_string(),
-            load_sound("resources/sound/lightning_a.wav")
+            load_sound("resources/sound/lightning_a.ogg")
                 .await
                 .expect("Unable to load sound"),
         );
         self.sounds.insert(
             "drip".to_string(),
-            load_sound("resources/sound/drip.wav")
+            load_sound("resources/sound/drip.ogg")
                 .await
                 .expect("Unable to load sound"),
         );
         self.sounds.insert(
             "swing".to_string(),
-            load_sound("resources/sound/drip.wav")
+            load_sound("resources/sound/drip.ogg")
                 .await
                 .expect("Unable to load sound"),
         );
