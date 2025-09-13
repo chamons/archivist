@@ -22,6 +22,8 @@ struct UpgradeOption {
     #[serde(default)]
     added_damage: u32,
     #[serde(default)]
+    added_defense: u32,
+    #[serde(default)]
     provides_skills: Vec<String>,
     tags: Vec<RuneKinds>,
     #[serde(default)]
@@ -89,6 +91,10 @@ impl UpgradeState {
         if selection.added_will > 0 {
             self.campaign.character.will =
                 Will::new(self.campaign.character.will.max + selection.added_will as i32);
+        }
+        if selection.added_defense > 0 {
+            self.campaign.character.defense =
+                self.campaign.character.defense + selection.added_defense as i32;
         }
         if !selection.provides_skills.is_empty() {
             let data = Data::load().expect("Load data for upgrade");

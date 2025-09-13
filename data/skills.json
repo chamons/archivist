@@ -242,7 +242,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 8,
+                "damage": 9,
                 "on_hit_self": {
                     "Heal": {
                         "amount": 2
@@ -297,5 +297,132 @@
             }
         },
         "targeting": "Caster"
+    },
+    {
+        "name": "Crush Rod",
+        "cost": {
+            "Cooldown": {
+                "ticks": 0,
+                "cost": 600
+            }
+        },
+        "effect": {
+            "ApplyDamage": {
+                "damage": 6,
+                "on_hit": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Stun",
+                            "kind": "Stun",
+                            "duration": 300
+                        }
+                    }
+                }
+            }
+        },
+        "targeting": {
+            "Ranged": {
+                "max_range": 2,
+                "sprite": {
+                    "SingleFrame": {
+                        "x": 1,
+                        "y": 20
+                    }
+                }
+            }
+        }
+    },
+    {
+        "name": "Groundshaker Mace",
+        "cost": {
+            "Cooldown": {
+                "ticks": 0,
+                "cost": 400
+            }
+        },
+        "effect": {
+            "ApplyDamage": {
+                "damage": 14,
+                "on_hit_self": {
+                    "ApplyDamage": {
+                        "damage": 4
+                    }
+                }
+            }
+        },
+        "targeting": {
+            "Ranged": {
+                "max_range": 1,
+                "sprite": {
+                    "SingleFrame": {
+                        "x": 1,
+                        "y": 20
+                    }
+                }
+            }
+        }
+    },
+    {
+        "name": "Shadowform",
+        "cost": {
+            "Will": 1
+        },
+        "effect": {
+            "AddStatus": {
+                "effect": {
+                    "name": "Shadowform",
+                    "kind": "Agile",
+                    "duration": 500
+                }
+            }
+        },
+        "targeting": "Caster"
+    },
+    {
+        "name": "Foresight Lenses",
+        "cost": {
+            "Will": 1
+        },
+        "effect": {
+            "AddStatus": {
+                "effect": {
+                    "name": "Foresight",
+                    "kind": "Lucky",
+                    "duration": 500
+                }
+            }
+        },
+        "targeting": "Caster"
+    },
+    {
+        "name": "Mind Spike",
+        "cost": {
+            "Will": 1
+        },
+        "effect": {
+            "ApplyDamage": {
+                "damage": 2,
+                "on_hit": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Stun",
+                            "kind": "Stun",
+                            "duration": 500
+                        }
+                    }
+                }
+            }
+        },
+        "targeting": {
+            "Ranged": {
+                "max_range": 99,
+                "sprite": {
+                    "SingleFrame": {
+                        "x": 7,
+                        "y": 20
+                    }
+                }
+            }
+        }
     }
 ]

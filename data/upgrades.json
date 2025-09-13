@@ -1,11 +1,13 @@
 [
     {
-        "name": "Improved Armour",
+        "name": "Improved Equipment",
         "description": [
             "Incremental improvements to the padding, materials, and enchantments",
-            "of armour provides a substantial survivability improvements."
+            "of armour and weapons provides incremental improvements to health and damage.",
+            "+8 health and +1 damage"
         ],
-        "added_health": 12,
+        "added_health": 8,
+        "added_damage": 1,
         "tags": []
     },
     {
@@ -24,9 +26,9 @@
         "description": [
             "The sharpness enchantment intensifies weapon force into a",
             "smaller area, which provides a general increase to damage",
-            "done with no increased weight."
+            "done with no increased weight. +2 damage"
         ],
-        "added_damage": 3,
+        "added_damage": 2,
         "tags": []
     },
     {
@@ -160,6 +162,108 @@
         ],
         "tags": [
             "Force"
+        ]
+    },
+    {
+        "name": "Crush Rod",
+        "description": [
+            "A smooth rod that is very heavy for its size. When activated",
+            "it crushes the target with such force that it stuns them as well"
+        ],
+        "provides_skills": [
+            "Crush Rod"
+        ],
+        "tags": [
+            "Force"
+        ]
+    },
+    {
+        "name": "Groundshaker Mace",
+        "description": [
+            "A mace with the power of an earthquake. It strikes hard, but",
+            "the vibrations on each hit hurt you as well"
+        ],
+        "provides_skills": [
+            "Groundshaker Mace"
+        ],
+        "tags": [
+            "Force"
+        ]
+    },
+    {
+        "name": "Protection Runes",
+        "description": [
+            "Runes of protection significantly increase the amount of punishment a delver",
+            "can take before being incapacitated.",
+            "+14 health"
+        ],
+        "added_health": 14,
+        "tags": [
+            "Protection"
+        ]
+    },
+    {
+        "name": "Defensive Bracers ",
+        "description": [
+            "Defensive Bracers absorb a small amount of damage from every single hit.",
+            "+1 defense"
+        ],
+        "added_defense": 1,
+        "tags": [
+            "Protection"
+        ]
+    },
+    {
+        "name": "Shadowform",
+        "description": [
+            "A dark derivative of the standard 'Protection' rune blurs the user into",
+            "partial shadow on activation, giving each attack a chance to miss"
+        ],
+        "provides_skills": [
+            "Shadowform"
+        ],
+        "tags": [
+            "Protection"
+        ]
+    },
+    {
+        "name": "Headband of Will",
+        "description": [
+            "A simple cloth headband embroidered with conjugations of",
+            "'Mind', empowered the wearer with an iron determination",
+            "to complete their task."
+        ],
+        "added_will": 2,
+        "tags": [
+            "Mind"
+        ]
+    },
+    {
+        "name": "Foresight Lenses",
+        "description": [
+            "Small glasses lenses enclosed in a frame of iron which",
+            "focus the mind on tiny details and allows one to nearly predict",
+            "upcoming actions when activated."
+        ],
+        "provides_skills": [
+            "Foresight Lenses"
+        ],
+        "tags": [
+            "Mind"
+        ]
+    },
+    {
+        "name": "Mind Spike",
+        "description": [
+            "A large smooth sharp purple crystal which gives the user",
+            "the ability to make psychic attacks on any creature in sight",
+            "stunning them and doing a small amount of damage"
+        ],
+        "provides_skills": [
+            "Mind Spike"
+        ],
+        "tags": [
+            "Mind"
         ]
     }
 ]
