@@ -6,9 +6,19 @@ use crate::prelude::*;
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub enum Effect {
-    ApplyDamage { damage: i32 },
-    AddStatus { effect: StatusEffect },
-    Heal { amount: i32 },
+    ApplyDamage {
+        damage: i32,
+        #[serde(default)]
+        on_hit: Option<Box<Effect>>,
+        #[serde(default)]
+        on_hit_self: Option<Box<Effect>>,
+    },
+    AddStatus {
+        effect: StatusEffect,
+    },
+    Heal {
+        amount: i32,
+    },
 }
 
 pub fn move_character(state: &mut MissionState, id: CharacterId, dest: Point, screen: &mut Screen) {
@@ -66,7 +76,7 @@ pub fn weapon_attack<S: ScreenInterface>(
 ) {
     apply_damage(
         &mut state.level,
-        EffectSource::Character(source),
+        &EffectSource::Character(source),
         target,
         weapon.damage,
     );
@@ -80,7 +90,7 @@ pub fn weapon_attack<S: ScreenInterface>(
     if let Some(on_hit) = &weapon.on_hit {
         apply_effect(
             &mut state.level,
-            EffectSource::Character(source),
+            &EffectSource::Character(source),
             target,
             on_hit,
         );
@@ -188,7 +198,7 @@ fn get_luck_defensive_rolls(level: &LevelState, target: CharacterId) -> i32 {
     *die.choose().unwrap()
 }
 
-fn apply_damage(level: &mut LevelState, source: EffectSource, target: CharacterId, damage: i32) {
+fn apply_damage(level: &mut LevelState, source: &EffectSource, target: CharacterId, damage: i32) {
     let (final_damage, damage_description) = calculate_damage(level, &source, target, damage);
     level.push_turn_log(damage_description);
 
@@ -217,8 +227,8 @@ fn add_status(level: &mut LevelState, target: CharacterId, status: StatusEffect)
     level.push_turn_log(format!("{name} gains {}", status_name));
 }
 
-fn apply_healing(level: &mut LevelState, target: CharacterId, amount: i32) {
-    let target_character = level.find_character_mut(target);
+fn apply_healing(level: &mut LevelState, target: &CharacterId, amount: i32) {
+    let target_character = level.find_character_mut(*target);
     let name = target_character.name.clone();
     target_character.health.increase(amount);
 
@@ -308,7 +318,7 @@ pub fn apply_skill(
 
     apply_effect(
         &mut state.level,
-        EffectSource::Character(source),
+        &EffectSource::Character(source),
         target,
         &effect,
     );
@@ -316,6 +326,7 @@ pub fn apply_skill(
     spend_ticks(state, source, TICKS_TO_ACT);
 }
 
+#[derive(Debug)]
 pub enum EffectSource {
     Character(CharacterId),
     StatusEffect(String),
@@ -343,16 +354,28 @@ impl EffectSource {
 
 pub fn apply_effect(
     level: &mut LevelState,
-    source: EffectSource,
+    source: &EffectSource,
     target: CharacterId,
     effect: &Effect,
 ) {
     match effect {
-        Effect::ApplyDamage { damage } => {
-            apply_damage(level, source, target, *damage);
+        Effect::ApplyDamage {
+            damage,
+            on_hit,
+            on_hit_self,
+        } => {
+            apply_damage(level, &source, target, *damage);
+            if let Some(on_hit) = &on_hit {
+                apply_effect(level, source, target, on_hit);
+            }
+            if let Some(on_hit_self) = &on_hit_self {
+                if let EffectSource::Character(id) = source {
+                    apply_effect(level, source, *id, on_hit_self);
+                }
+            }
         }
         Effect::Heal { amount } => {
-            apply_healing(level, target, *amount);
+            apply_healing(level, &target, *amount);
         }
         Effect::AddStatus { effect } => {
             add_status(level, target, effect.clone());

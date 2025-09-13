@@ -77,7 +77,7 @@ fn add_ticks(level: &mut LevelState, amount: i32) {
     for (target, effect, effect_name) in effects_to_apply {
         apply_effect(
             level,
-            EffectSource::StatusEffect(effect_name),
+            &EffectSource::StatusEffect(effect_name),
             target,
             &effect,
         );
@@ -101,7 +101,11 @@ mod tests {
             duration: Some(100),
             on_complete: Some(StatusEffectCompleteEffect {
                 reapply_count: 3,
-                complete_effect: Some(Box::new(Effect::ApplyDamage { damage: 2 })),
+                complete_effect: Some(Box::new(Effect::ApplyDamage {
+                    damage: 2,
+                    on_hit: None,
+                    on_hit_self: None,
+                })),
             }),
         });
 
@@ -185,7 +189,11 @@ mod tests {
                 ticks: 200,
                 cost: 200,
             },
-            effect: Effect::ApplyDamage { damage: 2 },
+            effect: Effect::ApplyDamage {
+                damage: 2,
+                on_hit: None,
+                on_hit_self: None,
+            },
             targeting: SkillTargeting::Ranged {
                 max_range: 1,
                 sprite: AnimationSpriteKind::SingleFrame(Point::zero()),

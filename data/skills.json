@@ -182,5 +182,120 @@
             }
         },
         "targeting": "Caster"
+    },
+    {
+        "name": "Dagger of Sapping",
+        "cost": {
+            "Cooldown": {
+                "ticks": 0,
+                "cost": 400
+            }
+        },
+        "effect": {
+            "ApplyDamage": {
+                "damage": 4,
+                "on_hit": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Weakness",
+                            "kind": "Weakness",
+                            "duration": 300
+                        }
+                    }
+                }
+            }
+        },
+        "targeting": "Caster"
+    },
+    {
+        "name": "Black Ice",
+        "cost": {
+            "Charges": {
+                "remaining": 1,
+                "total": 1
+            }
+        },
+        "effect": {
+            "ApplyDamage": {
+                "damage": 18
+            }
+        },
+        "targeting": {
+            "Ranged": {
+                "max_range": 5,
+                "sprite": {
+                    "Directional": {
+                        "x": 1,
+                        "y": 18
+                    }
+                }
+            }
+        }
+    },
+    {
+        "name": "Cursed Blade",
+        "cost": {
+            "Cooldown": {
+                "ticks": 0,
+                "cost": 400
+            }
+        },
+        "effect": {
+            "ApplyDamage": {
+                "damage": 8,
+                "on_hit_self": {
+                    "Heal": {
+                        "amount": 2
+                    }
+                }
+            }
+        },
+        "targeting": "Caster",
+        "eternal_status_effects": [
+            {
+                "name": "Cursed",
+                "kind": "Cursed"
+            }
+        ]
+    },
+    {
+        "name": "Dark Waters",
+        "cost": {
+            "Charges": {
+                "remaining": 3,
+                "total": 3
+            }
+        },
+        "effect": {
+            "ApplyDamage": {
+                "damage": 4,
+                "on_hit_self": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Protection",
+                            "kind": "Protection",
+                            "duration": 800
+                        }
+                    }
+                }
+            }
+        },
+        "targeting": "Caster"
+    },
+    {
+        "name": "Sprint Boots",
+        "cost": {
+            "Will": 1
+        },
+        "effect": {
+            "AddStatus": {
+                "effect": {
+                    "name": "Quick",
+                    "kind": "Quick",
+                    "duration": 500
+                }
+            }
+        },
+        "targeting": "Caster"
     }
 ]

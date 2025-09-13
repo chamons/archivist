@@ -94,5 +94,72 @@
         "tags": [
             "Life"
         ]
+    },
+    {
+        "name": "Dagger of Sapping",
+        "description": [
+            "A wicked sharp dagger made from a huge vine thorn,",
+            "engraved with deep runes. Drips with a thick poison."
+        ],
+        "provides_skills": [
+            "Dagger of Sapping"
+        ],
+        "tags": [
+            "Life"
+        ]
+    },
+    {
+        "name": "Black Ice",
+        "description": [
+            "A single large icicle of black ice with faint etchings",
+            "When thrown does devastating damage to a single enemy."
+        ],
+        "provides_skills": [
+            "Black Ice"
+        ],
+        "tags": [
+            "Ice"
+        ]
+    },
+    {
+        "name": "Cursed Blade",
+        "description": [
+            "A bastard sword carved from a single piece of unmelting ice.",
+            "Engraved are forbidden and cursed words which both steal strength",
+            "from those cut by it but doom the wielder to misfortune"
+        ],
+        "provides_skills": [
+            "Cursed Blade"
+        ],
+        "tags": [
+            "Ice"
+        ]
+    },
+    {
+        "name": "Dark Waters",
+        "description": [
+            "Those willing to consume this tainted brew will be cut by ice",
+            "but then protected from the worst of others attacks for awhile."
+        ],
+        "provides_skills": [
+            "Dark Waters"
+        ],
+        "tags": [
+            "Ice"
+        ]
+    },
+    {
+        "name": "Sprint Boots",
+        "description": [
+            "Comfortable boots made from potion treated leather, rubber soles",
+            "and tiny indents each one containing a rune enscribed ruby. When",
+            "activated one moves so far that time itself seems to slow. "
+        ],
+        "provides_skills": [
+            "Sprint Boots"
+        ],
+        "tags": [
+            "Force"
+        ]
     }
 ]

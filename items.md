@@ -8,12 +8,9 @@
 - Ignite Rod - Ranged burning status
 - Rage Potion - Potion Might
 
-
 # Life
 - Wand of Venom - Ranged dmg + short term blind
 - Soothing Breeze - Activate Regen 
-
-
 - Dagger of Sapping - Damage + on_hit weakness
 
 # Ice - Big damage but side effects
@@ -23,6 +20,8 @@
 
 # Force
 - Sprint Boots - Activate Quick
+
+
 - Crush Rod - Very short range damage + Stun
 - Groundshaker Mace - Mace that does extra damage but hurts you as well
 
@@ -49,19 +48,7 @@
         ]
     },
 
-    {
-        "name": "Black Ice",
-        "description": [
-            "A single large icicle of black ice with faint etchings",
-            "When thrown does devastating damage to a single enemy."
-        ],
-        "provides_skills": [
-            "Black Ice"
-        ],
-        "tags": [
-            "Ice"
-        ]
-    },
+
 
 
     {
@@ -82,29 +69,4 @@
 
 
 
-        {
-        "name": "Black Ice",
-        "cost": {
-            "Charges": {
-                "remaining": 1,
-                "total": 1
-            }
-        },
-        "effect": {
-            "ApplyDamage": {
-                "damage": 18
-            }
-        },
-        "targeting": {
-            "Ranged": {
-                "max_range": 5,
-                "sprite": {
-                    "Directional": {
-                        "x": 1,
-                        "y": 18
-                    }
-                }
-            }
-        }
-    },
 

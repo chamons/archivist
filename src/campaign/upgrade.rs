@@ -4,7 +4,7 @@ use macroquad::{
 
 use crate::{
     campaign::{CampaignState, CampaignStep, mission_ready::RuneKinds},
-    mission::{Data, Health, Will},
+    mission::{Data, Health, StatusEffect, Will},
     prelude::*,
 };
 
@@ -24,6 +24,8 @@ struct UpgradeOption {
     #[serde(default)]
     provides_skills: Vec<String>,
     tags: Vec<RuneKinds>,
+    #[serde(default)]
+    pub eternal_status_effects: Vec<StatusEffect>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -96,6 +98,14 @@ impl UpgradeState {
                 .map(|s| data.get_skill(s))
                 .collect();
             self.campaign.character.skills.append(&mut new_skills);
+        }
+        for effect in &selection.eternal_status_effects {
+            self.campaign.character.status_effects.push(StatusEffect {
+                name: effect.name.clone(),
+                kind: effect.kind,
+                duration: None,
+                on_complete: None,
+            });
         }
         self.campaign.chosen_upgrades.insert(selection.name.clone());
     }

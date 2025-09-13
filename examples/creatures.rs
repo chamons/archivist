@@ -136,7 +136,7 @@ async fn main() {
             );
             let on_hit = if let Some(onhit) = &moused_over.weapon.on_hit {
                 match onhit {
-                    Effect::ApplyDamage { damage } => format!("OnHit - Damage: {damage}"),
+                    Effect::ApplyDamage { damage, .. } => format!("OnHit - Damage: {damage}"),
                     Effect::AddStatus { effect } => {
                         let duration = if let Some(duration) = effect.duration {
                             format!("({duration})")
