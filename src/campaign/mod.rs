@@ -43,7 +43,7 @@ impl CampaignScreenState {
             }
         } else {
             Self {
-                step: CampaignStep::SelectUpgrade(UpgradeState::new(campaign)),
+                step: CampaignStep::SelectUpgrade(UpgradeState::new(campaign, rune_found)),
                 frame: 0,
             }
         }

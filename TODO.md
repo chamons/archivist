@@ -1,8 +1,6 @@
 # Phase 3 Content
 - Passive upgrade each level?
 - Add enough enemy levels so we can do all six level (1-7)
-- Make items that use each effect
-- Make upgrades based on a tag pool based upon that "rune"
 
 # Phase 5 - Get Ready
 - Playtest a bunch! Win with each character

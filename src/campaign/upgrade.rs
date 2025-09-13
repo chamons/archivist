@@ -39,22 +39,53 @@ pub struct UpgradeState {
 }
 
 impl UpgradeState {
-    pub fn new(campaign: CampaignState) -> Self {
-        let upgrades: Vec<UpgradeOption> =
-            serde_json::from_str(STARTS_JSON).expect("Unable to load upgrade choice data");
-
-        let options = upgrades
-            .into_iter()
-            .filter(|u| !campaign.chosen_upgrades.contains(&u.name))
-            .collect::<Vec<_>>()
-            .choose_multiple(3)
-            .cloned()
-            .collect();
+    pub fn new(campaign: CampaignState, rune_found: RuneKinds) -> Self {
+        let options = Self::generate_upgrade_pool(&campaign, rune_found);
         Self {
             options,
             campaign,
             selection: 0,
         }
+    }
+
+    fn generate_upgrade_pool(
+        campaign: &CampaignState,
+        rune_found: RuneKinds,
+    ) -> Vec<UpgradeOption> {
+        let upgrades: Vec<UpgradeOption> =
+            serde_json::from_str(STARTS_JSON).expect("Unable to load upgrade choice data");
+
+        let all_uncollected_upgrades = upgrades
+            .into_iter()
+            .filter(|u| !campaign.chosen_upgrades.contains(&u.name))
+            .collect::<Vec<_>>();
+
+        // We first choose 2 upgrades based on the rune we just found
+        let mut current_rune_upgrades: Vec<_> = all_uncollected_upgrades
+            .iter()
+            .filter(|u| u.tags.contains(&rune_found))
+            .cloned()
+            .collect::<Vec<_>>()
+            .choose_multiple(2)
+            .cloned()
+            .collect();
+
+        // And then one from any rune found or the generic upgrades
+        let generic_upgrade = all_uncollected_upgrades
+            .iter()
+            .filter(|u| {
+                u.tags
+                    .iter()
+                    .all(|t| campaign.collected_runes.contains(t) && *t != rune_found)
+            })
+            .cloned()
+            .collect::<Vec<_>>()
+            .choose()
+            .cloned()
+            .expect("At least one generic upgrade available");
+
+        current_rune_upgrades.push(generic_upgrade);
+        current_rune_upgrades
     }
 
     pub fn process_frame(&mut self) -> Option<CampaignStep> {

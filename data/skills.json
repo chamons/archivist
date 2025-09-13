@@ -205,7 +205,17 @@
                 }
             }
         },
-        "targeting": "Caster"
+        "targeting": {
+            "Ranged": {
+                "max_range": 2,
+                "sprite": {
+                    "SingleFrame": {
+                        "x": 1,
+                        "y": 1
+                    }
+                }
+            }
+        }
     },
     {
         "name": "Black Ice",
@@ -250,7 +260,17 @@
                 }
             }
         },
-        "targeting": "Caster",
+        "targeting": {
+            "Ranged": {
+                "max_range": 2,
+                "sprite": {
+                    "SingleFrame": {
+                        "x": 1,
+                        "y": 1
+                    }
+                }
+            }
+        },
         "eternal_status_effects": [
             {
                 "name": "Cursed",
@@ -322,7 +342,7 @@
         },
         "targeting": {
             "Ranged": {
-                "max_range": 2,
+                "max_range": 3,
                 "sprite": {
                     "SingleFrame": {
                         "x": 1,
@@ -352,7 +372,7 @@
         },
         "targeting": {
             "Ranged": {
-                "max_range": 1,
+                "max_range": 2,
                 "sprite": {
                     "SingleFrame": {
                         "x": 1,

@@ -3,8 +3,8 @@
         "name": "Improved Equipment",
         "description": [
             "Incremental improvements to the padding, materials, and enchantments",
-            "of armour and weapons provides incremental improvements to health and damage.",
-            "+8 health and +1 damage"
+            "of armour and weapons provides incremental improvements to health",
+            "and damage. +8 health and +1 damage"
         ],
         "added_health": 8,
         "added_damage": 1,
@@ -193,8 +193,8 @@
     {
         "name": "Protection Runes",
         "description": [
-            "Runes of protection significantly increase the amount of punishment a delver",
-            "can take before being incapacitated.",
+            "Runes of protection significantly increase the amount of punishment",
+            "a delver can take before being incapacitated.",
             "+14 health"
         ],
         "added_health": 14,
@@ -205,8 +205,8 @@
     {
         "name": "Defensive Bracers ",
         "description": [
-            "Defensive Bracers absorb a small amount of damage from every single hit.",
-            "+1 defense"
+            "Defensive Bracers absorb a small amount of damage from every",
+            "single hit. +1 defense"
         ],
         "added_defense": 1,
         "tags": [
@@ -216,8 +216,9 @@
     {
         "name": "Shadowform",
         "description": [
-            "A dark derivative of the standard 'Protection' rune blurs the user into",
-            "partial shadow on activation, giving each attack a chance to miss"
+            "A dark derivative of the standard 'Protection' rune blurs the user",
+            "into partial shadow on activation, giving each attack a chance",
+            "to miss"
         ],
         "provides_skills": [
             "Shadowform"
