@@ -273,6 +273,17 @@ fn is_hostile_nearby(state: &MissionState, id: CharacterId) -> bool {
     }
 }
 
+pub fn is_hostile_near_player(level: &LevelState) -> bool {
+    let player = level.get_player();
+    let visibility = level.map.compute_visibility(player.position);
+
+    level
+        .characters
+        .iter()
+        .filter(|c| !c.is_player())
+        .any(|c| visibility.get(c.position))
+}
+
 pub fn apply_skill(
     state: &mut MissionState,
     source: CharacterId,

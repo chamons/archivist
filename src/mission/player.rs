@@ -8,6 +8,17 @@ pub fn get_player_action(
     level: &LevelState,
     screen: &mut Screen,
 ) -> HandleInputResponse {
+    if screen.is_player_resting {
+        if is_hostile_near_player(level)
+            || (player.health.current == player.health.max
+                && player.will.current == player.will.max)
+        {
+            screen.is_player_resting = false;
+        } else {
+            return HandleInputResponse::Action(Some(RequestedAction::Wait(player.id)));
+        }
+    }
+
     if let Some(movement_delta) = handle_movement_key() {
         HandleInputResponse::Action(Some(handle_move_bump(
             player,
@@ -15,6 +26,10 @@ pub fn get_player_action(
             level,
         )))
     } else if is_key_pressed(KeyCode::Period) || is_key_pressed(KeyCode::Kp5) {
+        HandleInputResponse::Action(Some(RequestedAction::Wait(player.id)))
+    } else if is_key_pressed(KeyCode::R) {
+        screen.is_player_resting = true;
+        screen.push_floating_text("Resting");
         HandleInputResponse::Action(Some(RequestedAction::Wait(player.id)))
     } else if is_key_pressed(KeyCode::Comma)
         && (is_key_down(KeyCode::LeftShift) || is_key_down(KeyCode::RightShift))

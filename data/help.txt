@@ -27,7 +27,8 @@ Controls:
 - Up and Right: u or Keypad 9
 - Down and Left: b or Keypad 1
 - Down and Right: n or Keypad 3
-- Rest: . or Keypad 5
+- Rest Single Turn: . or Keypad 5
+- Rest until Healed/Danger: r
 - Numbers (1, 2, etc): Use the associated skill
 - Less Than (<): Exit level
 - Shift + Q: Save and quit (Desktop only)

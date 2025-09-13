@@ -221,6 +221,9 @@ pub struct Screen {
     pub floating_text: Option<FloatingText>,
     music: Music,
     pub options: Options,
+
+    // A bit of a hack
+    pub is_player_resting: bool,
 }
 
 impl Screen {
@@ -265,6 +268,7 @@ impl Screen {
             camera,
             floating_text: None,
             options,
+            is_player_resting: false,
         }
     }
 
