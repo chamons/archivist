@@ -70,6 +70,74 @@
         }
     },
     {
+        "name": "Ignite",
+        "cost": {
+            "Will": 1
+        },
+        "effect": {
+            "AddStatus": {
+                "effect": {
+                    "name": "Burning",
+                    "kind": "RepeatingNegative",
+                    "duration": 100,
+                    "on_complete": {
+                        "reapply_count": 3,
+                        "complete_effect": {
+                            "ApplyDamage": {
+                                "damage": 2
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "targeting": {
+            "Ranged": {
+                "max_range": 5,
+                "sprite": {
+                    "Directional": {
+                        "x": 1,
+                        "y": 12
+                    }
+                }
+            }
+        }
+    },
+    {
+        "name": "Rage Potion",
+        "cost": {
+            "Charges": {
+                "remaining": 2,
+                "total": 2
+            }
+        },
+        "effect": {
+            "AddStatus": {
+                "effect": {
+                    "name": "Might",
+                    "kind": "Might",
+                    "duration": 500
+                }
+            }
+        },
+        "targeting": "Caster"
+    },
+    {
+        "name": "Health Potion",
+        "cost": {
+            "Charges": {
+                "remaining": 3,
+                "total": 3
+            }
+        },
+        "effect": {
+            "Heal": {
+                "amount": 15
+            }
+        },
+        "targeting": "Caster"
+    },
+    {
         "name": "Venom Blast",
         "cost": {
             "Will": 1
@@ -92,75 +160,24 @@
         }
     },
     {
-        "name": "Black Ice",
-        "cost": {
-            "Charges": {
-                "remaining": 1,
-                "total": 1
-            }
-        },
-        "effect": {
-            "ApplyDamage": {
-                "damage": 18
-            }
-        },
-        "targeting": {
-            "Ranged": {
-                "max_range": 5,
-                "sprite": {
-                    "Directional": {
-                        "x": 1,
-                        "y": 18
-                    }
-                }
-            }
-        }
-    },
-    {
-        "name": "Health Potion",
-        "cost": {
-            "Charges": {
-                "remaining": 3,
-                "total": 3
-            }
-        },
-        "effect": {
-            "Heal": {
-                "amount": 15
-            }
-        },
-        "targeting": "Caster"
-    },
-    {
-        "name": "Rage Potion",
-        "cost": {
-            "Charges": {
-                "remaining": 2,
-                "total": 2
-            }
-        },
-        "effect": {
-            "AddStatus": {
-                "effect": {
-                    "name": "Might",
-                    "kind": "Might",
-                    "duration": 500
-                }
-            }
-        },
-        "targeting": "Caster"
-    },
-    {
-        "name": "Protection",
+        "name": "Soothing Breeze",
         "cost": {
             "Will": 1
         },
         "effect": {
             "AddStatus": {
                 "effect": {
-                    "name": "Protection",
-                    "kind": "Protection",
-                    "duration": 500
+                    "name": "Regeneration",
+                    "kind": "RepeatingPositive",
+                    "duration": 100,
+                    "on_complete": {
+                        "reapply_count": 3,
+                        "complete_effect": {
+                            "Heal": {
+                                "amount": 2
+                            }
+                        }
+                    }
                 }
             }
         },

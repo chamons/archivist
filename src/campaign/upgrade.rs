@@ -121,3 +121,22 @@ impl UpgradeState {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::{
+        campaign::upgrade::{STARTS_JSON, UpgradeOption},
+        mission::Data,
+    };
+
+    #[test]
+    fn can_parse_characters() {
+        let upgrades: Vec<UpgradeOption> = serde_json::from_str(STARTS_JSON).unwrap();
+
+        let data = Data::load().unwrap();
+        let _skills: Vec<_> = upgrades
+            .iter()
+            .flat_map(|u| u.provides_skills.iter().map(|s| data.get_skill(s)))
+            .collect();
+    }
+}

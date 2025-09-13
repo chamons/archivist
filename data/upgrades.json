@@ -1,25 +1,23 @@
 [
     {
-        "name": "Protection Runes",
+        "name": "Improved Armour",
         "description": [
-            "By inscribing 'Protection' runes inside standard",
-            "armour, forces can be absorbed and redistributed to better",
-            "protect a retriever."
+            "Incremental improvements to the padding, materials, and enchantments",
+            "of armour provides a substantial survivability improvements."
         ],
         "added_health": 12,
         "tags": []
     },
     {
-        "name": "Headband of Will",
+        "name": "Extra Health Potion",
         "description": [
-            "A simple cloth headband embroidered with conjugations of",
-            "'Mind', empowered the wearer with an iron determination",
-            "to complete their task."
+            "A backup health potion is a simple precaution for any",
+            "long duration expedition."
         ],
-        "added_will": 2,
-        "tags": [
-            "Mind"
-        ]
+        "provides_skills": [
+            "Health Potion"
+        ],
+        "tags": []
     },
     {
         "name": "Sharpness Enchantment",
@@ -45,42 +43,17 @@
         ]
     },
     {
-        "name": "Wand of Venom",
+        "name": "Ignite Rod",
         "description": [
-            "A dark wood rod carved with serpent motifs with a",
-            "Vipers fang attached to the end. Fires a bolt of poison",
-            "a short distance."
+            "A simple mahogany rod that somehow always feels slightly too",
+            "warm to the touch. Ignites the target in flames."
         ],
         "provides_skills": [
-            "Venom Blast"
+            "Ignite"
         ],
         "tags": [
-            "Life"
+            "Fire"
         ]
-    },
-    {
-        "name": "Black Ice",
-        "description": [
-            "A single large icicle of black ice with faint etchings",
-            "When thrown does devastating damage to a single enemy."
-        ],
-        "provides_skills": [
-            "Black Ice"
-        ],
-        "tags": [
-            "Ice"
-        ]
-    },
-    {
-        "name": "Extra Health Potion",
-        "description": [
-            "A backup health potion is a simple precaution for any",
-            "long duration expedition."
-        ],
-        "provides_skills": [
-            "Health Potion"
-        ],
-        "tags": []
     },
     {
         "name": "Rage Potion",
@@ -96,16 +69,30 @@
         ]
     },
     {
-        "name": "Defensive Bracers",
+        "name": "Wand of Venom",
         "description": [
-            "Cold iron braces with gold runes for Protection",
-            "and Force which can be activated at will"
+            "A dark wood rod carved with serpent motifs with a",
+            "Vipers fang attached to the end. Fires a bolt of poison",
+            "a short distance."
         ],
         "provides_skills": [
-            "Protection"
+            "Venom Blast"
         ],
         "tags": [
-            "Protection"
+            "Life"
+        ]
+    },
+    {
+        "name": "Soothing Breeze",
+        "description": [
+            "A cape knit from a fine green moss and gold thread",
+            "Providers an active regeneration effect upon activation"
+        ],
+        "provides_skills": [
+            "Soothing Breeze"
+        ],
+        "tags": [
+            "Life"
         ]
     }
 ]

@@ -8,9 +8,12 @@
 - Ignite Rod - Ranged burning status
 - Rage Potion - Potion Might
 
+
 # Life
 - Wand of Venom - Ranged dmg + short term blind
-- Soothing Breeze Cape - Activate Regen 
+- Soothing Breeze - Activate Regen 
+
+
 - Dagger of Sapping - Damage + on_hit weakness
 
 # Ice - Big damage but side effects
@@ -32,3 +35,76 @@
 - Headband of Will - Extra will
 - Foresight Lenses - Activate Lucky
 - Mind Spike - Ranged damage attack + stun
+
+    {
+        "name": "Headband of Will",
+        "description": [
+            "A simple cloth headband embroidered with conjugations of",
+            "'Mind', empowered the wearer with an iron determination",
+            "to complete their task."
+        ],
+        "added_will": 2,
+        "tags": [
+            "Mind"
+        ]
+    },
+
+    {
+        "name": "Black Ice",
+        "description": [
+            "A single large icicle of black ice with faint etchings",
+            "When thrown does devastating damage to a single enemy."
+        ],
+        "provides_skills": [
+            "Black Ice"
+        ],
+        "tags": [
+            "Ice"
+        ]
+    },
+
+
+    {
+        "name": "Defensive Bracers",
+        "description": [
+            "Cold iron braces with gold runes for Protection",
+            "and Force which can be activated at will"
+        ],
+        "provides_skills": [
+            "Protection"
+        ],
+        "tags": [
+            "Protection"
+        ]
+    }
+
+
+
+
+
+        {
+        "name": "Black Ice",
+        "cost": {
+            "Charges": {
+                "remaining": 1,
+                "total": 1
+            }
+        },
+        "effect": {
+            "ApplyDamage": {
+                "damage": 18
+            }
+        },
+        "targeting": {
+            "Ranged": {
+                "max_range": 5,
+                "sprite": {
+                    "Directional": {
+                        "x": 1,
+                        "y": 18
+                    }
+                }
+            }
+        }
+    },
+
