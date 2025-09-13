@@ -116,8 +116,11 @@ impl UpgradeState {
             self.campaign.character.weapon.damage += selection.added_damage as i32;
         }
         if selection.added_health > 0 {
-            self.campaign.character.health =
-                Health::new(self.campaign.character.health.max + selection.added_health as i32);
+            self.campaign.character.health = Health::new(
+                self.campaign.character.health.max
+                    + selection.added_health as i32
+                    + BASE_HEALTH_INCREASE_EVERY_MISSION,
+            );
         }
         if selection.added_will > 0 {
             self.campaign.character.will =
