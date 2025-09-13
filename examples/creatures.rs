@@ -43,13 +43,19 @@ async fn main() {
     loop {
         clear_background(BLACK);
 
-        if is_key_pressed(KeyCode::Key1) {
+        if is_key_pressed(KeyCode::Key0) {
+            level_filter = Some(0);
+        } else if is_key_pressed(KeyCode::Key1) {
             level_filter = Some(1);
         } else if is_key_pressed(KeyCode::Key2) {
             level_filter = Some(2);
         } else if is_key_pressed(KeyCode::Key3) {
             level_filter = Some(3);
-        } else if is_key_pressed(KeyCode::Key0) {
+        } else if is_key_pressed(KeyCode::Key4) {
+            level_filter = Some(4);
+        } else if is_key_pressed(KeyCode::Key5) {
+            level_filter = Some(5);
+        } else if is_key_pressed(KeyCode::Minus) {
             level_filter = None
         } else if is_key_pressed(KeyCode::Left) {
             if tag_filter.as_ref().is_none() {

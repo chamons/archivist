@@ -88,7 +88,7 @@ impl CampaignState {
             .is_none()
     }
 
-    pub fn mission_count(&self) -> u32 {
+    pub fn completed_mission_count(&self) -> u32 {
         self.collected_runes.len() as u32
     }
 }

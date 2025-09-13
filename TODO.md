@@ -1,8 +1,5 @@
-# Phase 3 Content
-- Passive upgrade each level?
-- Add enough enemy levels so we can do all six level (1-7)
-
 # Phase 5 - Get Ready
+- Add enough enemy levels so we can do all six level 0-5
 - Playtest a bunch! Win with each character
 - Juice?
 - Package for distribution

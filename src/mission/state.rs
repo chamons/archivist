@@ -22,7 +22,10 @@ pub struct MissionState {
 
 impl MissionState {
     pub fn new(campaign: CampaignState, active_rune: RuneKinds) -> MissionState {
-        let level = generate_random_map(campaign.character.clone(), campaign.mission_count() + 1);
+        let level = generate_random_map(
+            campaign.character.clone(),
+            Self::map_difficulty(campaign.completed_mission_count()),
+        );
 
         Self {
             level,
@@ -31,6 +34,15 @@ impl MissionState {
             mission_complete: false,
             campaign,
             active_rune,
+        }
+    }
+
+    fn map_difficulty(mission_count: u32) -> u32 {
+        match mission_count {
+            0 => 1,
+            1 | 2 => 2,
+            3 | 4 => 3,
+            _ => 4,
         }
     }
 

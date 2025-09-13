@@ -11,7 +11,7 @@
             "damage": 4
         },
         "is_intelligent": true,
-        "difficulty": 1,
+        "difficulty": 0,
         "tags": [
             "nature"
         ],
@@ -43,7 +43,7 @@
             }
         },
         "is_intelligent": true,
-        "difficulty": 1,
+        "difficulty": 0,
         "tags": [
             "nature"
         ]
