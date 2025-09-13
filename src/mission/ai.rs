@@ -134,8 +134,12 @@ fn find_ranged_target(
             None
         }
         Effect::AddStatus { effect } => {
+            let visibility = level.map.compute_visibility(enemy.position);
             for character in &level.characters {
-                if clear_line_between(level, enemy.position, character.position, max_range) {
+                // There must be a clear line of sight and they see each other (no going around the corner spells)
+                if clear_line_between(level, enemy.position, character.position, max_range)
+                    && visibility.get(character.position)
+                {
                     let is_negative_and_targets_player =
                         character.is_player() && !effect.is_positive();
                     let is_positive_and_targets_ally =
