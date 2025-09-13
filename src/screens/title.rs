@@ -20,7 +20,7 @@ impl TitleState {
     pub fn process_frame(&mut self) -> Option<GameFlow> {
         Screen::draw_centered_text("The Archivist", 48, 75.0, None);
 
-        let mut offset = 600.0;
+        let mut offset = 550.0;
         let mut next_option = 0;
         if self.has_save_game {
             let (color, background) = self.title_color_line(next_option);
