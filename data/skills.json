@@ -362,7 +362,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 14,
+                "damage": 16,
                 "on_hit_self": {
                     "ApplyDamage": {
                         "damage": 4

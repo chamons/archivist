@@ -53,8 +53,6 @@ async fn main() {
             level_filter = Some(3);
         } else if is_key_pressed(KeyCode::Key4) {
             level_filter = Some(4);
-        } else if is_key_pressed(KeyCode::Key5) {
-            level_filter = Some(5);
         } else if is_key_pressed(KeyCode::Minus) {
             level_filter = None
         } else if is_key_pressed(KeyCode::Left) {

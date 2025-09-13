@@ -39,10 +39,9 @@ impl MissionState {
 
     fn map_difficulty(mission_count: u32) -> u32 {
         match mission_count {
-            0 => 1,
-            1 | 2 => 2,
-            3 | 4 => 3,
-            _ => 4,
+            0 | 1 => 1,
+            2 | 3 => 2,
+            _ => 3,
         }
     }
 

@@ -602,7 +602,7 @@
         ]
     },
     {
-        "name": "Goblin Sage",
+        "name": "Dark Goblin Sage",
         "max_health": 28,
         "max_will": 5,
         "base_sprite_tile": {
@@ -695,7 +695,7 @@
         "max_will": 1,
         "defense": 2,
         "base_sprite_tile": {
-            "x": 6,
+            "x": 3,
             "y": 15
         },
         "weapon": {
@@ -713,7 +713,7 @@
         "max_health": 26,
         "max_will": 4,
         "base_sprite_tile": {
-            "x": 16,
+            "x": 17,
             "y": 17
         },
         "weapon": {
@@ -797,7 +797,7 @@
             }
         ],
         "is_intelligent": true,
-        "difficulty": 1,
+        "difficulty": 2,
         "tags": [
             "occult"
         ]
@@ -909,16 +909,18 @@
         "weapon": {
             "name": "Slash",
             "damage": 9,
-            "AddStatus": {
-                "effect": {
-                    "name": "Poison",
-                    "kind": "RepeatingNegative",
-                    "duration": 100,
-                    "on_complete": {
-                        "reapply_count": 2,
-                        "complete_effect": {
-                            "ApplyDamage": {
-                                "damage": 2
+            "on_hit": {
+                "AddStatus": {
+                    "effect": {
+                        "name": "Poison",
+                        "kind": "RepeatingNegative",
+                        "duration": 100,
+                        "on_complete": {
+                            "reapply_count": 2,
+                            "complete_effect": {
+                                "ApplyDamage": {
+                                    "damage": 2
+                                }
                             }
                         }
                     }
@@ -935,7 +937,7 @@
         "name": "Ogre",
         "max_health": 48,
         "max_will": 1,
-        "defense": 3,
+        "defense": 1,
         "base_sprite_tile": {
             "x": 9,
             "y": 15
@@ -964,7 +966,7 @@
         "name": "Clay Golem",
         "max_health": 42,
         "max_will": 1,
-        "defense": 4,
+        "defense": 2,
         "base_sprite_tile": {
             "x": 13,
             "y": 11
@@ -1040,7 +1042,287 @@
         "difficulty": 3,
         "tags": [
             "arcane",
+            "nature"
+        ]
+    },
+    {
+        "name": "Fire Knight",
+        "max_health": 50,
+        "max_will": 1,
+        "defense": 4,
+        "base_sprite_tile": {
+            "x": 13,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 11
+        },
+        "is_intelligent": true,
+        "difficulty": 4,
+        "eternal_status_effects": [
+            {
+                "name": "Might",
+                "kind": "Might"
+            }
+        ],
+        "tags": [
+            "knight",
+            "arcane"
+        ]
+    },
+    {
+        "name": "Iron Knight",
+        "max_health": 50,
+        "max_will": 1,
+        "defense": 4,
+        "base_sprite_tile": {
+            "x": 14,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 11
+        },
+        "is_intelligent": true,
+        "difficulty": 4,
+        "eternal_status_effects": [
+            {
+                "name": "Protection",
+                "kind": "Protection"
+            }
+        ],
+        "tags": [
+            "knight",
+            "arcane"
+        ]
+    },
+    {
+        "name": "Gold Knight",
+        "max_health": 50,
+        "max_will": 1,
+        "defense": 4,
+        "base_sprite_tile": {
+            "x": 15,
+            "y": 15
+        },
+        "weapon": {
+            "name": "Slash",
+            "damage": 11
+        },
+        "eternal_status_effects": [
+            {
+                "name": "Lucky",
+                "kind": "Lucky"
+            }
+        ],
+        "is_intelligent": true,
+        "difficulty": 4,
+        "tags": [
+            "knight",
+            "arcane"
+        ]
+    },
+    {
+        "name": "Rock Golem",
+        "max_health": 60,
+        "max_will": 1,
+        "defense": 3,
+        "base_sprite_tile": {
+            "x": 13,
+            "y": 11
+        },
+        "weapon": {
+            "name": "Smash",
+            "damage": 14
+        },
+        "eternal_status_effects": [
+            {
+                "name": "Slow",
+                "kind": "Slow"
+            }
+        ],
+        "is_intelligent": false,
+        "difficulty": 4,
+        "tags": [
+            "arcane",
             "golem"
+        ]
+    },
+    {
+        "name": "Stone Golem",
+        "max_health": 65,
+        "max_will": 1,
+        "defense": 5,
+        "base_sprite_tile": {
+            "x": 12,
+            "y": 11
+        },
+        "weapon": {
+            "name": "Smash",
+            "damage": 13
+        },
+        "eternal_status_effects": [
+            {
+                "name": "Slow",
+                "kind": "Slow"
+            }
+        ],
+        "is_intelligent": false,
+        "difficulty": 4,
+        "tags": [
+            "arcane",
+            "golem"
+        ]
+    },
+    {
+        "name": "Magma Golem",
+        "max_health": 60,
+        "max_will": 1,
+        "defense": 2,
+        "base_sprite_tile": {
+            "x": 14,
+            "y": 11
+        },
+        "weapon": {
+            "name": "Smash",
+            "damage": 13,
+            "on_hit": {
+                "AddStatus": {
+                    "effect": {
+                        "name": "Burning",
+                        "kind": "RepeatingNegative",
+                        "duration": 100,
+                        "on_complete": {
+                            "reapply_count": 2,
+                            "complete_effect": {
+                                "ApplyDamage": {
+                                    "damage": 2
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "is_intelligent": false,
+        "difficulty": 4,
+        "tags": [
+            "arcane",
+            "golem"
+        ]
+    },
+    {
+        "name": "Lich",
+        "max_health": 45,
+        "max_will": 4,
+        "base_sprite_tile": {
+            "x": 10,
+            "y": 17
+        },
+        "weapon": {
+            "name": "Touch of Death",
+            "damage": 7,
+            "on_hit": {
+                "AddStatus": {
+                    "effect": {
+                        "name": "Cursed",
+                        "kind": "Cursed",
+                        "duration": 800
+                    }
+                }
+            }
+        },
+        "skills": [
+            {
+                "name": "Deathbolt",
+                "cost": {
+                    "Will": 1
+                },
+                "effect": {
+                    "ApplyDamage": {
+                        "damage": 9,
+                        "on_hit": {
+                            "AddStatus": {
+                                "effect": {
+                                    "name": "Cursed",
+                                    "kind": "Cursed",
+                                    "duration": 200
+                                }
+                            }
+                        }
+                    }
+                },
+                "targeting": {
+                    "Ranged": {
+                        "max_range": 6,
+                        "sprite": {
+                            "Directional": {
+                                "x": 1,
+                                "y": 16
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "eternal_status_effects": [
+            {
+                "name": "Lifesteal",
+                "kind": "Lifesteal"
+            }
+        ],
+        "is_intelligent": true,
+        "difficulty": 4,
+        "tags": [
+            "occult",
+            "skeletons",
+            "undead"
+        ]
+    },
+    {
+        "name": "Ancient Mummy",
+        "max_health": 45,
+        "max_will": 4,
+        "base_sprite_tile": {
+            "x": 9,
+            "y": 17
+        },
+        "weapon": {
+            "name": "Rotting Touch",
+            "damage": 8,
+            "on_hit": {
+                "AddStatus": {
+                    "effect": {
+                        "name": "Poison",
+                        "kind": "RepeatingNegative",
+                        "duration": 100,
+                        "on_complete": {
+                            "reapply_count": 2,
+                            "complete_effect": {
+                                "ApplyDamage": {
+                                    "damage": 4
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "eternal_status_effects": [
+            {
+                "name": "Lifesteal",
+                "kind": "Lifesteal"
+            },
+            {
+                "name": "Cursed",
+                "kind": "Cursed"
+            }
+        ],
+        "is_intelligent": true,
+        "difficulty": 4,
+        "tags": [
+            "undead"
         ]
     }
 ]

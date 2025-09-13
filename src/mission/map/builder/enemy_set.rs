@@ -7,8 +7,10 @@ pub fn get_enemy_set_for_difficulty(data: &Data, difficulty: u32) -> Vec<String>
 
     let mut set = vec![];
 
-    set.append(&mut under.clone());
-    for _ in 0..4 {
+    for _ in 0..2 {
+        set.append(&mut under.clone());
+    }
+    for _ in 0..7 {
         set.append(&mut base.clone());
     }
     set.append(&mut advanced.clone());
