@@ -328,6 +328,7 @@
         "effect": {
             "ApplyDamage": {
                 "damage": 4,
+                "pierce": "Full",
                 "on_hit_self": {
                     "AddStatus": {
                         "effect": {
@@ -404,7 +405,8 @@
                 "damage": 16,
                 "on_hit_self": {
                     "ApplyDamage": {
-                        "damage": 4
+                        "damage": 4,
+                        "pierce": "Full"
                     }
                 }
             }
