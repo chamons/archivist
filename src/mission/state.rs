@@ -216,13 +216,16 @@ impl MissionState {
                         let close_tiles = tiles
                             .iter()
                             .filter(|t| {
-                                t.king_dist(player.position) == 6 && self.level.map.can_enter(**t)
+                                t.king_dist(player.position) == 6
+                                    && self.level.map.can_enter(**t)
+                                    && self.level.player_can_see(**t)
                             })
                             .collect::<Vec<_>>();
 
-                        let position = close_tiles.choose().unwrap();
-                        enemy.position = **position;
-                        self.level.characters.push(enemy);
+                        if let Some(position) = close_tiles.choose() {
+                            enemy.position = **position;
+                            self.level.characters.push(enemy);
+                        }
                     }
                 }
             }

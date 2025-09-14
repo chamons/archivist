@@ -55,6 +55,10 @@ impl LevelState {
             .expect("Action actor exists")
     }
 
+    pub fn player_can_see(&self, point: Point) -> bool {
+        self.visibility.get(point)
+    }
+
     pub fn find_character_at_position(&self, position: Point) -> Option<&Character> {
         self.characters.iter().find(|c| c.position == position)
     }
