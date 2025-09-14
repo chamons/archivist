@@ -100,6 +100,8 @@ pub enum DebugRequest {
     Load,
     DumpState,
     CompleteLevel,
+    Heal,
+    SpawnEnemy(u32),
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
@@ -126,6 +128,14 @@ impl MissionState {
         self.level
             .characters
             .iter()
+            .find(|c| c.is_player())
+            .expect("Player must still exist")
+    }
+
+    pub fn get_player_mut(&mut self) -> &mut Character {
+        self.level
+            .characters
+            .iter_mut()
             .find(|c| c.is_player())
             .expect("Player must still exist")
     }
@@ -178,6 +188,31 @@ impl MissionState {
                     }
                     DebugRequest::CompleteLevel => {
                         self.mission_complete = true;
+                    }
+                    DebugRequest::Heal => {
+                        let player = self.get_player_mut();
+                        player.health.current = player.health.max;
+                    }
+                    DebugRequest::SpawnEnemy(level) => {
+                        use adam_fov_rs::GridPoint;
+                        use macroquad::rand::ChooseRandom;
+
+                        let data = Data::load().unwrap();
+                        let enemies = data.get_enemies_at_level(level);
+                        let enemy = enemies.choose().unwrap();
+                        let mut enemy = data.get_character(enemy);
+                        let player = self.level.get_player();
+                        let tiles = self.level.map.tiles();
+                        let close_tiles = tiles
+                            .iter()
+                            .filter(|t| {
+                                t.king_dist(player.position) == 6 && self.level.map.can_enter(**t)
+                            })
+                            .collect::<Vec<_>>();
+
+                        let position = close_tiles.choose().unwrap();
+                        enemy.position = **position;
+                        self.level.characters.push(enemy);
                     }
                 }
             }

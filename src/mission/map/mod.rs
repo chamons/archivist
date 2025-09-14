@@ -235,6 +235,16 @@ impl Map {
         self.in_bounds(point) && self.get(point).can_enter()
     }
 
+    pub fn tiles(&self) -> Vec<Point> {
+        let mut tiles = vec![];
+        for x in 0..SCREEN_WIDTH {
+            for y in 0..SCREEN_HEIGHT {
+                tiles.push(Point::new(x, y))
+            }
+        }
+        tiles
+    }
+
     pub fn compute_visibility(&self, vision_point: Point) -> VisibilityMap {
         let mut visibility = VisibilityMap::new();
         compute_fov(

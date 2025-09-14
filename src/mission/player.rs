@@ -113,6 +113,70 @@ pub fn get_player_action(
         {
             HandleInputResponse::Action(None)
         }
+    } else if is_key_pressed(KeyCode::F5) {
+        #[cfg(debug_assertions)]
+        {
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::Heal)))
+        }
+        #[cfg(not(debug_assertions))]
+        {
+            HandleInputResponse::Action(None)
+        }
+    } else if is_key_pressed(KeyCode::F6) {
+        #[cfg(debug_assertions)]
+        {
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::SpawnEnemy(
+                0,
+            ))))
+        }
+        #[cfg(not(debug_assertions))]
+        {
+            HandleInputResponse::Action(None)
+        }
+    } else if is_key_pressed(KeyCode::F7) {
+        #[cfg(debug_assertions)]
+        {
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::SpawnEnemy(
+                1,
+            ))))
+        }
+        #[cfg(not(debug_assertions))]
+        {
+            HandleInputResponse::Action(None)
+        }
+    } else if is_key_pressed(KeyCode::F8) {
+        #[cfg(debug_assertions)]
+        {
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::SpawnEnemy(
+                2,
+            ))))
+        }
+        #[cfg(not(debug_assertions))]
+        {
+            HandleInputResponse::Action(None)
+        }
+    } else if is_key_pressed(KeyCode::F9) {
+        #[cfg(debug_assertions)]
+        {
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::SpawnEnemy(
+                3,
+            ))))
+        }
+        #[cfg(not(debug_assertions))]
+        {
+            HandleInputResponse::Action(None)
+        }
+    } else if is_key_pressed(KeyCode::F10) {
+        #[cfg(debug_assertions)]
+        {
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::SpawnEnemy(
+                4,
+            ))))
+        }
+        #[cfg(not(debug_assertions))]
+        {
+            HandleInputResponse::Action(None)
+        }
     } else {
         HandleInputResponse::Action(None)
     }
