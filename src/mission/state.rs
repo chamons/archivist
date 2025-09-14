@@ -199,6 +199,7 @@ impl MissionState {
                     DebugRequest::Heal => {
                         let player = self.get_player_mut();
                         player.health.current = player.health.max;
+                        player.will.current = player.will.max;
                     }
                     DebugRequest::ClearLevel => {
                         self.level.characters.retain(|c| c.is_player());
