@@ -53,9 +53,7 @@ impl Options {
     }
 
     #[cfg(not(feature = "desktop"))]
-    pub fn save() {
-        &self
-    }
+    pub fn save(&self) {}
 
     #[cfg(feature = "desktop")]
     pub fn options_path() -> PathBuf {
