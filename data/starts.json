@@ -15,9 +15,9 @@
             "name": "Sword",
             "damage": 6
         },
-        "health": 30,
+        "health": 40,
         "will": 1,
-        "defense": 1
+        "defense": 2
     },
     {
         "name": "Staff",
@@ -34,7 +34,7 @@
             "name": "Staff",
             "damage": 4
         },
-        "health": 22,
+        "health": 32,
         "will": 2,
         "defense": 0,
         "provides_skills": [
@@ -57,9 +57,9 @@
             "name": "Bow & Dagger",
             "damage": 5
         },
-        "health": 28,
+        "health": 38,
         "will": 1,
-        "defense": 0,
+        "defense": 1,
         "provides_skills": [
             "Shoot Bow"
         ]

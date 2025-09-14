@@ -146,13 +146,13 @@
         "name": "Health Potion",
         "cost": {
             "Charges": {
-                "remaining": 3,
-                "total": 3
+                "remaining": 5,
+                "total": 5
             }
         },
         "effect": {
             "Heal": {
-                "amount": 15
+                "amount": 30
             }
         },
         "targeting": "Caster"

@@ -70,7 +70,7 @@
         "name": "Skeleton",
         "max_health": 12,
         "max_will": 1,
-        "defense": 3,
+        "defense": 2,
         "base_sprite_tile": {
             "x": 3,
             "y": 17
@@ -134,7 +134,7 @@
     {
         "name": "Goblin Sage",
         "max_health": 20,
-        "max_will": 4,
+        "max_will": 3,
         "base_sprite_tile": {
             "x": 5,
             "y": 15
@@ -168,9 +168,7 @@
             },
             {
                 "name": "Bless",
-                "cost": {
-                    "Will": 1
-                },
+                "cost": "None",
                 "effect": {
                     "AddStatus": {
                         "effect": {
@@ -223,7 +221,7 @@
         "name": "Skeleton Archer",
         "max_health": 12,
         "max_will": 1,
-        "defense": 3,
+        "defense": 2,
         "base_sprite_tile": {
             "x": 4,
             "y": 17
@@ -510,7 +508,7 @@
     },
     {
         "name": "Giant Spider",
-        "max_health": 26,
+        "max_health": 22,
         "max_will": 2,
         "base_sprite_tile": {
             "x": 7,
@@ -518,7 +516,7 @@
         },
         "weapon": {
             "name": "Bite",
-            "damage": 7
+            "damage": 6
         },
         "skills": [
             {
@@ -809,7 +807,7 @@
         "name": "Skeleton Warrior",
         "max_health": 22,
         "max_will": 1,
-        "defense": 5,
+        "defense": 3,
         "base_sprite_tile": {
             "x": 5,
             "y": 17

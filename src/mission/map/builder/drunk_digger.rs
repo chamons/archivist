@@ -21,7 +21,7 @@ impl DrunkDigger {
         let center = find_map_center(&builder.map);
 
         let mut characters =
-            spawn_monster_randomly(rng, &builder.map, 50, center, difficulty, &builder.data);
+            spawn_monster_randomly(rng, &builder.map, 30, center, difficulty, &builder.data);
         setup_entrance(player, &mut characters, &mut builder.map, center);
 
         let items = spawn_rune_far_away(&builder.map, center, &builder.data);
