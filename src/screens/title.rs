@@ -1,3 +1,6 @@
+use macroquad::text::draw_text;
+use macroquad::window::{screen_height, screen_width};
+
 use crate::campaign::CampaignScreenState;
 use crate::mission::MissionState;
 use crate::prelude::*;
@@ -58,6 +61,14 @@ impl TitleState {
             let (color, background) = self.title_color_line(next_option);
             Screen::draw_centered_text_with_color("Quit", 48, offset, color, background);
         }
+
+        draw_text(
+            &format!("Version: {VERSION}"),
+            screen_width() - 120.0,
+            screen_height() - 20.0,
+            16.0,
+            WHITE,
+        );
 
         if is_key_pressed(KeyCode::Down) {
             if self.selection < self.max_options() {

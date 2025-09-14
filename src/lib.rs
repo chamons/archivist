@@ -129,4 +129,6 @@ pub mod prelude {
     pub const BASE_DEFENSE_INCREASE_EVERY_MISSION: i32 = 0;
 
     pub const DEFENSE_IGNORED_SOME_PIERCE: i32 = 2;
+
+    pub const VERSION: &str = "0.1";
 }
