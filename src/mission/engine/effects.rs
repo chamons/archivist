@@ -220,6 +220,11 @@ fn apply_damage(
     damage: i32,
     pierce: DamagePierce,
 ) {
+    // HACK: There is a chance the player died due to a tick
+    if !level.does_character_exist(target) {
+        return;
+    }
+
     let (final_damage, damage_description) =
         calculate_damage(level, &source, target, damage, pierce);
     level.push_turn_log(damage_description);

@@ -85,7 +85,8 @@
                         "reapply_count": 3,
                         "complete_effect": {
                             "ApplyDamage": {
-                                "damage": 2
+                                "damage": 2,
+                                "pierce": "Full"
                             }
                         }
                     }

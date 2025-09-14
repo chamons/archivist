@@ -5,10 +5,16 @@ pub fn spend_ticks(state: &mut MissionState, id: CharacterId, amount: i32) {
     state.level.find_character_mut(id).ticks -= amount;
 
     if let Some(next) = find_next_actor(&mut state.level) {
-        if state.level.find_character(next).is_player() {
-            state.current_actor = CurrentActor::PlayerStandardAction;
+        // There is a chance the next actor died when time moved forward
+        if state.level.does_character_exist(next) {
+            if state.level.find_character(next).is_player() {
+                state.current_actor = CurrentActor::PlayerStandardAction;
+            } else {
+                state.current_actor = CurrentActor::EnemyAction(next);
+            }
         } else {
-            state.current_actor = CurrentActor::EnemyAction(next);
+            // Spend zero ticks to pick the next valid entry
+            spend_ticks(state, id, 0);
         }
     }
 }

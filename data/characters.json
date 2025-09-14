@@ -287,7 +287,8 @@
                             "reapply_count": 2,
                             "complete_effect": {
                                 "ApplyDamage": {
-                                    "damage": 2
+                                    "damage": 2,
+                                    "pierce": "Full"
                                 }
                             }
                         }
@@ -535,7 +536,8 @@
                                 "reapply_count": 3,
                                 "complete_effect": {
                                     "ApplyDamage": {
-                                        "damage": 2
+                                        "damage": 2,
+                                        "pierce": "Full"
                                     }
                                 }
                             }
@@ -588,7 +590,8 @@
                         "reapply_count": 2,
                         "complete_effect": {
                             "ApplyDamage": {
-                                "damage": 2
+                                "damage": 2,
+                                "pierce": "Full"
                             }
                         }
                     }
@@ -919,7 +922,8 @@
                             "reapply_count": 2,
                             "complete_effect": {
                                 "ApplyDamage": {
-                                    "damage": 2
+                                    "damage": 2,
+                                    "pierce": "Full"
                                 }
                             }
                         }
@@ -1030,7 +1034,8 @@
                             "reapply_count": 2,
                             "complete_effect": {
                                 "ApplyDamage": {
-                                    "damage": 4
+                                    "damage": 4,
+                                    "pierce": "Full"
                                 }
                             }
                         }
@@ -1197,7 +1202,8 @@
                             "reapply_count": 2,
                             "complete_effect": {
                                 "ApplyDamage": {
-                                    "damage": 2
+                                    "damage": 2,
+                                    "pierce": "Full"
                                 }
                             }
                         }
@@ -1301,7 +1307,8 @@
                             "reapply_count": 2,
                             "complete_effect": {
                                 "ApplyDamage": {
-                                    "damage": 4
+                                    "damage": 4,
+                                    "pierce": "Full"
                                 }
                             }
                         }

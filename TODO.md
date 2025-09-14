@@ -4,6 +4,7 @@
 
 
 # Cut / Later Ideas
+- Remove unwraps in finding character/player and make all code handle it correctly
 - Fancy tab
 
 - List of all enemies in game from title screen

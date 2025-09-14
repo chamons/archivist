@@ -41,6 +41,10 @@ impl LevelState {
             .expect("Player must still exist")
     }
 
+    pub fn does_character_exist(&self, id: CharacterId) -> bool {
+        self.characters.iter().any(|c| c.id == id)
+    }
+
     pub fn find_character(&self, id: CharacterId) -> &Character {
         self.characters
             .iter()
