@@ -3,8 +3,8 @@
         "name": "Shoot Bow",
         "cost": {
             "Charges": {
-                "remaining": 12,
-                "total": 12
+                "remaining": 40,
+                "total": 40
             }
         },
         "effect": {
@@ -29,7 +29,8 @@
         "cost": "None",
         "effect": {
             "ApplyDamage": {
-                "damage": 4
+                "damage": 4,
+                "pierce": "Some"
             }
         },
         "targeting": {

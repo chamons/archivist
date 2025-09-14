@@ -105,6 +105,7 @@ mod tests {
                     damage: 2,
                     on_hit: None,
                     on_hit_self: None,
+                    pierce: DamagePierce::None,
                 })),
             }),
         });
@@ -193,6 +194,7 @@ mod tests {
                 damage: 2,
                 on_hit: None,
                 on_hit_self: None,
+                pierce: DamagePierce::None,
             },
             targeting: SkillTargeting::Ranged {
                 max_range: 1,

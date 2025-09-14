@@ -8,10 +8,15 @@ use crate::prelude::*;
 pub enum Effect {
     ApplyDamage {
         damage: i32,
+
         #[serde(default)]
         on_hit: Option<Box<Effect>>,
+
         #[serde(default)]
         on_hit_self: Option<Box<Effect>>,
+
+        #[serde(default)]
+        pierce: DamagePierce,
     },
     AddStatus {
         effect: StatusEffect,
@@ -79,6 +84,7 @@ pub fn weapon_attack<S: ScreenInterface>(
         &EffectSource::Character(source),
         target,
         weapon.damage,
+        weapon.pierce,
     );
 
     match gen_range(0, 3) {
@@ -103,6 +109,7 @@ fn calculate_damage(
     source: &EffectSource,
     target: CharacterId,
     base_damage: i32,
+    pierce: DamagePierce,
 ) -> (i32, String) {
     let mut damage_description = String::new();
     let source_name = source.name(level);
@@ -151,7 +158,15 @@ fn calculate_damage(
     }
 
     // Then finally subtract the defense (plus any protection) from the damage
-    let defense = get_target_defense(level, target);
+    let mut defense = get_target_defense(level, target);
+    match pierce {
+        DamagePierce::None => {}
+        DamagePierce::Some => {
+            defense -= DEFENSE_IGNORED_SOME_PIERCE;
+            defense = defense.max(0);
+        }
+        DamagePierce::Full => defense = 0,
+    }
     damage -= defense;
 
     damage_description.push_str(&format!(" - {defense}(defense)"));
@@ -198,8 +213,15 @@ fn get_luck_defensive_rolls(level: &LevelState, target: CharacterId) -> i32 {
     *die.choose().unwrap()
 }
 
-fn apply_damage(level: &mut LevelState, source: &EffectSource, target: CharacterId, damage: i32) {
-    let (final_damage, damage_description) = calculate_damage(level, &source, target, damage);
+fn apply_damage(
+    level: &mut LevelState,
+    source: &EffectSource,
+    target: CharacterId,
+    damage: i32,
+    pierce: DamagePierce,
+) {
+    let (final_damage, damage_description) =
+        calculate_damage(level, &source, target, damage, pierce);
     level.push_turn_log(damage_description);
 
     let target_character = level.find_character_mut(target);
@@ -374,8 +396,9 @@ pub fn apply_effect(
             damage,
             on_hit,
             on_hit_self,
+            pierce,
         } => {
-            apply_damage(level, &source, target, *damage);
+            apply_damage(level, &source, target, *damage, *pierce);
             if let Some(on_hit) = &on_hit {
                 apply_effect(level, source, target, on_hit);
             }

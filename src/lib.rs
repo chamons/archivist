@@ -126,4 +126,6 @@ pub mod prelude {
     pub const STATUS_EFFECT_CHANCE_ROOT_STAY_STILL: f64 = 0.33;
 
     pub const BASE_HEALTH_INCREASE_EVERY_MISSION: i32 = 2;
+
+    pub const DEFENSE_IGNORED_SOME_PIERCE: i32 = 2;
 }

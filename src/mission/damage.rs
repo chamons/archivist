@@ -2,25 +2,20 @@ use serde::{Deserialize, Serialize};
 
 use crate::mission::Effect;
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
-pub enum DamageKind {
-    Physical,
-    Fire,
-    Lightning,
-    Ice,
-    Poison,
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone, Copy, Default)]
+pub enum DamagePierce {
+    #[default]
+    None,
+    Some,
+    Full,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Weapon {
     pub name: String,
     pub damage: i32,
-    #[serde(default = "default_damage_kind")]
-    pub kinds: Vec<DamageKind>,
     #[serde(default)]
     pub on_hit: Option<Effect>,
-}
-
-fn default_damage_kind() -> Vec<DamageKind> {
-    vec![DamageKind::Physical]
+    #[serde(default)]
+    pub pierce: DamagePierce,
 }
