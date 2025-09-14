@@ -177,6 +177,15 @@ pub fn get_player_action(
         {
             HandleInputResponse::Action(None)
         }
+    } else if is_key_pressed(KeyCode::F11) {
+        #[cfg(debug_assertions)]
+        {
+            HandleInputResponse::Action(Some(RequestedAction::DebugMenu(DebugRequest::ClearLevel)))
+        }
+        #[cfg(not(debug_assertions))]
+        {
+            HandleInputResponse::Action(None)
+        }
     } else {
         HandleInputResponse::Action(None)
     }

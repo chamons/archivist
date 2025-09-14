@@ -108,6 +108,7 @@ pub enum DebugRequest {
     CompleteLevel,
     Heal,
     SpawnEnemy(u32),
+    ClearLevel,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
@@ -198,6 +199,9 @@ impl MissionState {
                     DebugRequest::Heal => {
                         let player = self.get_player_mut();
                         player.health.current = player.health.max;
+                    }
+                    DebugRequest::ClearLevel => {
+                        self.level.characters.retain(|c| c.is_player());
                     }
                     DebugRequest::SpawnEnemy(level) => {
                         use adam_fov_rs::GridPoint;
