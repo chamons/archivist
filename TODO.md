@@ -1,9 +1,9 @@
 # Phase 5 - Get Ready
-- Add enough enemy levels so we can do all six level 0-5
+- Difficulty
+- Update victory to mention difficulty
+- Make a dev button to spawn debug map and is completed
+- Automated balancing?
 - Playtest a bunch! Win with each character
-- Juice?
-- Package for distribution
-
 
 
 # Cut / Later Ideas
