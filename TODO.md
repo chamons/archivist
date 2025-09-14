@@ -1,9 +1,5 @@
 # Phase 5 - Get Ready
-- Difficulty
-- Update victory to mention difficulty
-- Make a dev button to spawn debug map and is completed
-- Automated balancing?
-
+- Balance
 - Playtest a bunch! Win with each character
 
 

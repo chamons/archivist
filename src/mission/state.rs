@@ -8,6 +8,7 @@ use crate::campaign::RuneKinds;
 use crate::mission::*;
 use crate::prelude::*;
 use crate::screens::death::DeathState;
+use crate::screens::help::HelpState;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MissionState {
@@ -48,7 +49,7 @@ impl MissionState {
     pub fn process_frame(&mut self, screen: &mut Screen) -> Option<GameFlow> {
         if self.frame == 0 {
             screen.push_extended_floating_text(&format!(
-                "Retrieve the {} rune and return",
+                "Retrieve the {} rune and return. 'h' for help",
                 self.active_rune
             ));
         }
@@ -64,6 +65,11 @@ impl MissionState {
                     self.save_to_disk();
                     return Some(GameFlow::Quitting);
                 }
+            }
+            if is_key_pressed(KeyCode::H) {
+                return Some(GameFlow::Help(HelpState::new(GameFlow::Gameplay(
+                    self.clone(),
+                ))));
             }
 
             if let Some(action) = self.current_actor.act(&mut self.level, screen) {

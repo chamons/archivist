@@ -32,6 +32,7 @@ Movement/Attack:
 - Rest until Healed/Danger: r
 - Numbers (1, 2, etc): Use the associated skill
 - Less Than (<): Exit level
+- Help: h
 - Shift + Q: Save and quit (Desktop only)
 
 Skills:

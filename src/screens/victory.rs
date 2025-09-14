@@ -4,6 +4,7 @@ use macroquad::window::clear_background;
 use crate::prelude::*;
 use crate::screens::title::TitleState;
 
+#[derive(Debug, Clone)]
 pub struct VictoryState {
     frame: usize,
 }

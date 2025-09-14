@@ -6,6 +6,7 @@ use crate::mission::MissionState;
 use crate::prelude::*;
 use crate::screens::title::TitleState;
 
+#[derive(Debug, Clone)]
 pub struct DeathState {
     frame: usize,
     mission_state: MissionState,

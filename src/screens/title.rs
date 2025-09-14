@@ -4,6 +4,7 @@ use crate::prelude::*;
 use crate::screens::help::HelpState;
 use crate::screens::options::OptionsState;
 
+#[derive(Debug, Clone)]
 pub struct TitleState {
     has_save_game: bool,
     selection: usize,
@@ -76,7 +77,11 @@ impl TitleState {
                         return Some(GameFlow::Campaign(CampaignScreenState::new()));
                     }
                     2 => return Some(GameFlow::Options(OptionsState::new())),
-                    3 => return Some(GameFlow::Help(HelpState::new())),
+                    3 => {
+                        return Some(GameFlow::Help(HelpState::new(GameFlow::Title(
+                            self.clone(),
+                        ))));
+                    }
                     4 => return Some(GameFlow::Credits),
                     5 | _ => return Some(GameFlow::Quitting),
                 }
@@ -86,7 +91,11 @@ impl TitleState {
                         return Some(GameFlow::Campaign(CampaignScreenState::new()));
                     }
                     1 => return Some(GameFlow::Options(OptionsState::new())),
-                    2 => return Some(GameFlow::Help(HelpState::new())),
+                    2 => {
+                        return Some(GameFlow::Help(HelpState::new(GameFlow::Title(
+                            self.clone(),
+                        ))));
+                    }
                     3 => return Some(GameFlow::Credits),
                     4 | _ => return Some(GameFlow::Quitting),
                 }

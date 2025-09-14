@@ -1,5 +1,6 @@
 use crate::{prelude::*, screens::title::TitleState};
 
+#[derive(Debug, Clone)]
 pub struct OptionsState {
     selection: usize,
 }

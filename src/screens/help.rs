@@ -1,16 +1,21 @@
 use macroquad::text::draw_text;
 
-use crate::{prelude::*, screens::title::TitleState};
+use crate::prelude::*;
 
 const HELP_TEXT: &str = include_str!("../../data/help.txt");
 
+#[derive(Debug, Clone)]
 pub struct HelpState {
     line: usize,
+    parent: Box<GameFlow>,
 }
 
 impl HelpState {
-    pub fn new() -> Self {
-        HelpState { line: 0 }
+    pub fn new(parent: GameFlow) -> Self {
+        HelpState {
+            line: 0,
+            parent: Box::new(parent),
+        }
     }
 
     pub fn process_frame(&mut self) -> Option<GameFlow> {
@@ -37,7 +42,7 @@ impl HelpState {
             || is_key_pressed(KeyCode::Enter)
             || is_key_pressed(KeyCode::KpEnter)
         {
-            return Some(GameFlow::Title(TitleState::new()));
+            return Some(*self.parent.clone());
         }
         None
     }

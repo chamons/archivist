@@ -13,6 +13,7 @@ use crate::{
     },
 };
 
+#[derive(Debug, Clone)]
 pub enum GameFlow {
     Campaign(CampaignScreenState),
     Title(TitleState),
