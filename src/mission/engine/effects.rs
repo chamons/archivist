@@ -396,6 +396,11 @@ pub fn apply_effect(
     target: CharacterId,
     effect: &Effect,
 ) {
+    // HACK - See if target was killed before we got here
+    if !level.does_character_exist(target) {
+        return;
+    }
+
     match effect {
         Effect::ApplyDamage {
             damage,
