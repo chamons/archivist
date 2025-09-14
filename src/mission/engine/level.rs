@@ -277,7 +277,7 @@ impl LevelState {
             };
             draw_text(
                 &format!("{} - {} {cost}", Self::skill_index_to_key(i), skill.name),
-                screen_width() - 250.0,
+                screen_width() - 300.0,
                 offset,
                 22.0,
                 color,
