@@ -146,8 +146,8 @@
         "name": "Health Potion",
         "cost": {
             "Charges": {
-                "remaining": 5,
-                "total": 5
+                "remaining": 7,
+                "total": 7
             }
         },
         "effect": {
@@ -466,7 +466,7 @@
                         "effect": {
                             "name": "Stun",
                             "kind": "Stun",
-                            "duration": 400
+                            "duration": 300
                         }
                     }
                 }
