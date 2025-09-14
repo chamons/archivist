@@ -38,7 +38,6 @@ pub fn get_player_action(
     } else if let Some(index) = skill_index_from_number_key_pressed() {
         if let Some(skill) = player.skills.get(index) {
             if skill.cost.can_pay(player) {
-                screen.push_floating_text(&format!("Targeting {}", skill.name));
                 match &skill.targeting {
                     SkillTargeting::Caster => {
                         HandleInputResponse::Action(Some(RequestedAction::UseSkill {
@@ -48,6 +47,8 @@ pub fn get_player_action(
                         }))
                     }
                     SkillTargeting::Ranged { max_range, sprite } => {
+                        screen.push_floating_text(&format!("Targeting {}", skill.name));
+
                         HandleInputResponse::ChangeActor(CurrentActor::PlayerTargeting(
                             TargetingInfo::new(
                                 player.position,
