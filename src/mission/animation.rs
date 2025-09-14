@@ -14,6 +14,7 @@ pub struct AnimationInfo {
     pub action: RequestedAction,
     pub ticks: usize,
     pub direction_offset: i32,
+    pub is_player: bool,
 }
 
 impl AnimationInfo {
@@ -23,6 +24,7 @@ impl AnimationInfo {
         level: &LevelState,
         kind: AnimationSpriteKind,
         action: RequestedAction,
+        is_player: bool,
     ) -> Self {
         let mut path = path_between_points(source, target, level, PathCharacterOptions::All)
             .expect("Created animation but no path?");
@@ -35,6 +37,7 @@ impl AnimationInfo {
                 action,
                 ticks: ANIMATION_TICKS_PER_TILE,
                 direction_offset: 0,
+                is_player,
             };
         }
 
@@ -50,6 +53,7 @@ impl AnimationInfo {
             action,
             ticks: ANIMATION_TICKS_PER_TILE,
             direction_offset,
+            is_player,
         }
     }
 

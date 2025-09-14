@@ -40,8 +40,15 @@ impl CurrentActor {
                 self.process_input_response(response)
             }
             CurrentActor::Animation(animation_info) => {
+                let is_player = animation_info.is_player;
                 let response = animation_info.handle_input();
-                self.process_input_response(response)
+                let action = self.process_input_response(response);
+
+                // When the player makes a real action clear the per-turn log
+                if action.is_some() && is_player {
+                    level.turn_log.clear();
+                }
+                action
             }
         }
     }

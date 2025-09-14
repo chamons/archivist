@@ -95,6 +95,7 @@ impl TargetingInfo {
                             target: target.id,
                             skill_name: self.target_skill.skill_name.clone(),
                         },
+                        true,
                     )))
                 } else {
                     HandleInputResponse::Action(None)

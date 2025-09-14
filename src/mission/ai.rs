@@ -88,6 +88,7 @@ pub fn check_skill_usage(level: &LevelState, id: CharacterId) -> Option<HandleIn
                                     target: target_id,
                                     skill_name: skill.name.clone(),
                                 },
+                                false,
                             ),
                         )));
                     }
