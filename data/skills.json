@@ -294,7 +294,7 @@
                 "damage": 9,
                 "on_hit_self": {
                     "Heal": {
-                        "amount": 2
+                        "amount": 3
                     }
                 }
             }
@@ -309,13 +309,7 @@
                     }
                 }
             }
-        },
-        "eternal_status_effects": [
-            {
-                "name": "Cursed",
-                "kind": "Cursed"
-            }
-        ]
+        }
     },
     {
         "name": "Dark Waters",

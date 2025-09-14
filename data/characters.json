@@ -1052,7 +1052,7 @@
         "name": "Fire Knight",
         "max_health": 50,
         "max_will": 1,
-        "defense": 4,
+        "defense": 3,
         "base_sprite_tile": {
             "x": 13,
             "y": 15
@@ -1078,7 +1078,7 @@
         "name": "Iron Knight",
         "max_health": 50,
         "max_will": 1,
-        "defense": 4,
+        "defense": 3,
         "base_sprite_tile": {
             "x": 14,
             "y": 15
@@ -1104,7 +1104,7 @@
         "name": "Gold Knight",
         "max_health": 50,
         "max_will": 1,
-        "defense": 4,
+        "defense": 3,
         "base_sprite_tile": {
             "x": 15,
             "y": 15

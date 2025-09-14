@@ -135,6 +135,12 @@
         ],
         "tags": [
             "Ice"
+        ],
+        "eternal_status_effects": [
+            {
+                "name": "Cursed",
+                "kind": "Cursed"
+            }
         ]
     },
     {
