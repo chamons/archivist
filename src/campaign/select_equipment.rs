@@ -6,6 +6,7 @@ use macroquad::{
 };
 
 use crate::{
+    Difficulty,
     campaign::{CampaignState, CampaignStep},
     mission::{Character, CharacterId, Data, Health, Weapon, Will},
     prelude::*,
@@ -63,13 +64,13 @@ impl SelectEquipmentState {
             }
         } else if is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::KpEnter) {
             return Some(CampaignStep::MissionReady(CampaignState::new(
-                self.outfit_character(),
+                self.outfit_character(screen.options.difficulty),
             )));
         }
         None
     }
 
-    fn outfit_character(&self) -> Character {
+    fn outfit_character(&self, difficulty: Difficulty) -> Character {
         let selection = &self.options[self.selection];
 
         let data = Data::load().expect("Mission data should load");
@@ -80,20 +81,29 @@ impl SelectEquipmentState {
             .collect();
         skills.push(data.get_skill("Health Potion"));
 
+        let mut health = selection.health as i32;
+        let mut will = selection.will as i32;
+        let mut defense = selection.defense as i32;
+        if difficulty == Difficulty::Easy {
+            health = (health as f32 * 1.5) as i32;
+            will += 2;
+            defense += 1;
+        }
+
         Character {
             name: "Player".to_string(),
             position: Point::zero(),
             id: CharacterId::next(),
             ticks: TICKS_TO_ACT, // Start off ready to go, since first move is always player
-            health: Health::new(selection.health as i32),
-            will: Will::new(selection.will as i32),
+            health: Health::new(health),
+            will: Will::new(will),
             base_sprite_tile: selection.sprite,
             weapon: selection.weapon.clone(),
             skills,
             carried_items: vec![],
             enemy_memory: None,
             status_effects: vec![],
-            defense: selection.defense as i32,
+            defense,
         }
     }
 

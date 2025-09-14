@@ -15,7 +15,10 @@ pub fn process_credits_frame() -> Option<GameFlow> {
 
     draw_text("Press Enter to exit", 20.0, 780.0, 22.0, WHITE);
 
-    if is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::KpEnter) {
+    if is_key_pressed(KeyCode::Escape)
+        || is_key_pressed(KeyCode::Enter)
+        || is_key_pressed(KeyCode::KpEnter)
+    {
         return Some(GameFlow::Title(TitleState::new()));
     }
     None

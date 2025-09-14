@@ -9,10 +9,17 @@ mod screen;
 pub mod screens;
 mod util;
 
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Difficulty {
+    Normal,
+    Easy,
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Options {
     pub music: f32,
     pub sound: f32,
+    pub difficulty: Difficulty,
 }
 
 impl Default for Options {
@@ -20,6 +27,7 @@ impl Default for Options {
         Self {
             music: 0.35,
             sound: 0.3,
+            difficulty: Difficulty::Normal,
         }
     }
 }

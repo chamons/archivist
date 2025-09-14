@@ -20,14 +20,14 @@ Each runestone contains a new noun or verb, which improves your equipment betwee
 
 Controls:
 
-- Up: k or Up or Keypad 8
-- Down: j or Down or Keypad 2
-- Left: h or Left or Keypad 4
-- Right: l or Right or Keypad 6
-- Up and Left: y or Keypad 7
-- Up and Right: u or Keypad 9
-- Down and Left: b or Keypad 1
-- Down and Right: n or Keypad 3
+Movement/Attack:
+   
+   Arrows               Keypad            vi Keys
+
+      Up             KP7  KP8  KP9        y  k  u
+ Left    Right       KP4       KP6        h     l
+     Down            KP1  KP2  KP3        b  j  n
+
 - Rest Single Turn: . or Keypad 5
 - Rest until Healed/Danger: r
 - Numbers (1, 2, etc): Use the associated skill
@@ -46,3 +46,4 @@ Hints:
 - Intelligent enemies will track you to your last visible location, 
 use that to separate larger groups of enemies.
 - Mouse over enemies to get more information about them
+- If you are having difficulty, consider enabling the Easy difficulty in options. 

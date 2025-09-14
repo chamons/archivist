@@ -1,5 +1,5 @@
 use macroquad::input::get_keys_pressed;
-use macroquad::window::{clear_background, screen_height};
+use macroquad::window::clear_background;
 
 use crate::prelude::*;
 use crate::screens::title::TitleState;
@@ -13,16 +13,32 @@ impl VictoryState {
         Self { frame: 0 }
     }
 
-    pub fn process_frame(&mut self) -> Option<GameFlow> {
+    pub fn process_frame(&mut self, screen: &Screen) -> Option<GameFlow> {
         self.frame += 1;
         clear_background(BLACK);
 
+        let mut offset = 350.0;
+
         Screen::draw_centered_text(
-            "You have won. Press any key.",
+            "Retrieving the final rune has completed the archive.",
             22,
-            screen_height() / 2.0,
+            offset,
             Some(GRAY),
         );
+        offset += 40.0;
+
+        Screen::draw_centered_text(
+            &format!(
+                "You have won on {:?} difficulty. Well Done!",
+                screen.options.difficulty
+            ),
+            22,
+            offset,
+            Some(GRAY),
+        );
+        offset += 40.0;
+
+        Screen::draw_centered_text("Press any key", 22, offset, Some(GRAY));
 
         if self.frame > 10 && get_keys_pressed().iter().len() > 0 {
             Some(GameFlow::Title(TitleState::new()))

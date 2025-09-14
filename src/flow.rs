@@ -36,7 +36,7 @@ impl GameFlow {
             GameFlow::Campaign(state) => state.process_frame(screen),
             GameFlow::Gameplay(state) => state.process_frame(screen),
             GameFlow::Dead(state) => state.process_frame(screen),
-            GameFlow::Victory(state) => state.process_frame(),
+            GameFlow::Victory(state) => state.process_frame(screen),
             GameFlow::Options(state) => state.process_frame(screen),
             GameFlow::Help(state) => state.process_frame(),
             GameFlow::Credits => process_credits_frame(),

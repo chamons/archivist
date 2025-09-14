@@ -3,8 +3,6 @@
 - Update victory to mention difficulty
 - Make a dev button to spawn debug map and is completed
 - Automated balancing?
-- Add a button to set is_winning 
-- Add a button to spawn us in a test map
 
 - Playtest a bunch! Win with each character
 

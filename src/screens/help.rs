@@ -33,7 +33,10 @@ impl HelpState {
                 self.line -= 1;
             }
         }
-        if is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::KpEnter) {
+        if is_key_pressed(KeyCode::Escape)
+            || is_key_pressed(KeyCode::Enter)
+            || is_key_pressed(KeyCode::KpEnter)
+        {
             return Some(GameFlow::Title(TitleState::new()));
         }
         None

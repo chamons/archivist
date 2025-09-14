@@ -39,11 +39,23 @@ impl OptionsState {
         }
         {
             let (color, background) = self.title_color_line(next_option);
+            Screen::draw_centered_text_with_color(
+                &format!("Difficulty: {:?}", screen.options.difficulty),
+                48,
+                offset,
+                color,
+                background,
+            );
+            offset += 50.0;
+            next_option += 1;
+        }
+        {
+            let (color, background) = self.title_color_line(next_option);
             Screen::draw_centered_text_with_color("Exit", 48, offset, color, background);
         }
 
         if is_key_pressed(KeyCode::Down) {
-            if self.selection < 2 {
+            if self.selection < 3 {
                 self.selection += 1;
             }
         } else if is_key_pressed(KeyCode::Up) {
@@ -59,6 +71,8 @@ impl OptionsState {
                 screen.options.sound -= 0.05;
                 screen.options.sound = screen.options.sound.max(0.0);
                 screen.play_sound("drip");
+            } else if self.selection == 2 {
+                screen.options.difficulty = crate::Difficulty::Normal;
             }
         } else if is_key_pressed(KeyCode::Right) || is_key_pressed(KeyCode::Kp6) {
             if self.selection == 0 {
@@ -69,9 +83,14 @@ impl OptionsState {
                 screen.options.sound += 0.05;
                 screen.options.sound = screen.options.sound.min(1.0);
                 screen.play_sound("drip");
+            } else if self.selection == 2 {
+                screen.options.difficulty = crate::Difficulty::Easy;
             }
-        } else if is_key_pressed(KeyCode::Enter) || is_key_pressed(KeyCode::KpEnter) {
-            if self.selection == 2 {
+        } else if is_key_pressed(KeyCode::Escape)
+            || is_key_pressed(KeyCode::Enter)
+            || is_key_pressed(KeyCode::KpEnter)
+        {
+            if self.selection == 3 {
                 screen.options.save();
                 return Some(GameFlow::Title(TitleState::new()));
             }
