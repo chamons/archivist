@@ -49,13 +49,31 @@
         "name": "Firebolt",
         "cost": {
             "Charges": {
-                "remaining": 6,
-                "total": 6
+                "remaining": 10,
+                "total": 10
             }
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 8
+                "damage": 9,
+                "on_hit": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Burning",
+                            "kind": "RepeatingNegative",
+                            "duration": 100,
+                            "on_complete": {
+                                "reapply_count": 2,
+                                "complete_effect": {
+                                    "ApplyDamage": {
+                                        "damage": 1,
+                                        "pierce": "Full"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "targeting": {
@@ -109,8 +127,8 @@
         "name": "Rage Potion",
         "cost": {
             "Charges": {
-                "remaining": 2,
-                "total": 2
+                "remaining": 3,
+                "total": 3
             }
         },
         "effect": {
@@ -146,7 +164,25 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 4
+                "damage": 4,
+                "on_hit": {
+                    "AddStatus": {
+                        "effect": {
+                            "name": "Poison",
+                            "kind": "RepeatingNegative",
+                            "duration": 100,
+                            "on_complete": {
+                                "reapply_count": 2,
+                                "complete_effect": {
+                                    "ApplyDamage": {
+                                        "damage": 2,
+                                        "pierce": "Full"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "targeting": {
@@ -173,7 +209,7 @@
                     "kind": "RepeatingPositive",
                     "duration": 100,
                     "on_complete": {
-                        "reapply_count": 3,
+                        "reapply_count": 5,
                         "complete_effect": {
                             "Heal": {
                                 "amount": 2
@@ -195,7 +231,8 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 4,
+                "damage": 6,
+                "pierce": "Full",
                 "on_hit": {
                     "AddStatus": {
                         "effect": {
@@ -229,7 +266,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 18
+                "damage": 32
             }
         },
         "targeting": {
@@ -249,7 +286,7 @@
         "cost": {
             "Cooldown": {
                 "ticks": 0,
-                "cost": 400
+                "cost": 300
             }
         },
         "effect": {
@@ -330,7 +367,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 6,
+                "damage": 8,
                 "on_hit": {
                     "AddStatus": {
                         "effect": {
@@ -423,13 +460,13 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 2,
+                "damage": 4,
                 "on_hit": {
                     "AddStatus": {
                         "effect": {
                             "name": "Stun",
                             "kind": "Stun",
-                            "duration": 500
+                            "duration": 400
                         }
                     }
                 }

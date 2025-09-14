@@ -1,0 +1,52 @@
+Level 0
+
+- Bat
+   - Warrior: 17/30, 13/22
+   - Wizard: 6/22
+   - Archer: 16/28
+- Rat
+   - Warrior: 20/30
+   - Wizard: 9/22
+   - Archer 17/28
+- Goblin Warrior
+   - Warrior: 16/30
+   - Wizard: 22/22, 16/22
+   - Archer: 14/28
+- Skeleton
+   - Warrior: 19/30
+   - Wizard: 15/22
+   - Archer: 10/28
+
+Level 1 - No Upgrade
+- Witch
+   - Warrior: 16/30
+   - Wizard: 11
+   - Archer: 
+- Goblin Sage
+   - Warrior: 13/30
+   - Wizard: Dead
+   - Archer: 6/28
+- Wolf
+   - Warrior: 3/30
+   - Wizard: 7/22
+   - Archer: 21/28
+- Skeleton Archer
+   - Warrior: 1/30
+   - Wizard: 10/22
+   - Archer: 3/28
+- Goblin Archer
+   - Warrior: 1/30
+   - Wizard: Dead
+   - Archer: 9/28
+- Zombie
+   - Warrior: 3/30
+   - Wizard: Full Life
+   - Archer: 11/28
+- Blood Bat
+   - Warrior: Dead
+   - Wizard: 6/22
+   - Archer: 18/28
+- Crow
+   - Warrior: Dead
+   - Wizard: Dead
+   - Archer: 20/28
