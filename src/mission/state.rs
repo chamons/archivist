@@ -99,6 +99,7 @@ pub enum DebugRequest {
     Save,
     Load,
     DumpState,
+    CompleteLevel,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
@@ -174,6 +175,9 @@ impl MissionState {
                         let log = serde_json::to_string_pretty(&self.level)
                             .expect("Unable to dump state");
                         std::fs::write("dev.log", log).expect("Unable to write dump");
+                    }
+                    DebugRequest::CompleteLevel => {
+                        self.mission_complete = true;
                     }
                 }
             }
