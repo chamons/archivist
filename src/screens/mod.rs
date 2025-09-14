@@ -1,3 +1,4 @@
+pub mod credits;
 pub mod death;
 pub mod help;
 pub mod options;

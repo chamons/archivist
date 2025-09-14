@@ -1,0 +1,9 @@
+Developed by Chris Hamons
+
+Source code is available at https://github.com/chamons/Archivist
+
+Graphics are from Oryx Design Labs (https://www.oryxdesignlab.com/) 16 Bit Fantasy
+Music is by Bert Coleí (bitbybitsound.com | @BitByBitSound)
+Sounds are from Oryx Design Labs (https://www.oryxdesignlab.com/) 8-Bit Sounds
+
+Game is powered by Macroquad (https://macroquad.rs/)

@@ -20,7 +20,7 @@ impl TitleState {
     pub fn process_frame(&mut self) -> Option<GameFlow> {
         Screen::draw_centered_text("The Archivist", 48, 75.0, None);
 
-        let mut offset = 550.0;
+        let mut offset = 500.0;
         let mut next_option = 0;
         if self.has_save_game {
             let (color, background) = self.title_color_line(next_option);
@@ -49,6 +49,12 @@ impl TitleState {
         }
         {
             let (color, background) = self.title_color_line(next_option);
+            Screen::draw_centered_text_with_color("Credits", 48, offset, color, background);
+            offset += 50.0;
+            next_option += 1;
+        }
+        {
+            let (color, background) = self.title_color_line(next_option);
             Screen::draw_centered_text_with_color("Quit", 48, offset, color, background);
         }
 
@@ -71,7 +77,8 @@ impl TitleState {
                     }
                     2 => return Some(GameFlow::Options(OptionsState::new())),
                     3 => return Some(GameFlow::Help(HelpState::new())),
-                    4 | _ => return Some(GameFlow::Quitting),
+                    4 => return Some(GameFlow::Credits),
+                    5 | _ => return Some(GameFlow::Quitting),
                 }
             } else {
                 match self.selection {
@@ -80,7 +87,8 @@ impl TitleState {
                     }
                     1 => return Some(GameFlow::Options(OptionsState::new())),
                     2 => return Some(GameFlow::Help(HelpState::new())),
-                    3 | _ => return Some(GameFlow::Quitting),
+                    3 => return Some(GameFlow::Credits),
+                    4 | _ => return Some(GameFlow::Quitting),
                 }
             }
         }
@@ -89,7 +97,7 @@ impl TitleState {
     }
 
     fn max_options(&self) -> usize {
-        if self.has_save_game { 4 } else { 3 }
+        if self.has_save_game { 5 } else { 4 }
     }
 
     fn title_color_line(&self, current: usize) -> (Color, Option<Color>) {

@@ -8,8 +8,8 @@ use crate::{
     mission::MissionState,
     prelude::*,
     screens::{
-        death::DeathState, help::HelpState, options::OptionsState, title::TitleState,
-        victory::VictoryState,
+        credits::process_credits_frame, death::DeathState, help::HelpState, options::OptionsState,
+        title::TitleState, victory::VictoryState,
     },
 };
 
@@ -22,6 +22,7 @@ pub enum GameFlow {
     Help(HelpState),
     Quitting,
     Victory(VictoryState),
+    Credits,
 }
 
 impl GameFlow {
@@ -38,6 +39,7 @@ impl GameFlow {
             GameFlow::Victory(state) => state.process_frame(),
             GameFlow::Options(state) => state.process_frame(screen),
             GameFlow::Help(state) => state.process_frame(),
+            GameFlow::Credits => process_credits_frame(),
             GameFlow::Quitting => return,
         };
         if let Some(next) = maybe_next {
