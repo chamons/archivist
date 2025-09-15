@@ -13,7 +13,7 @@
         },
         "weapon": {
             "name": "Sword",
-            "damage": 6
+            "damage": 7
         },
         "health": 40,
         "will": 1,
@@ -32,7 +32,7 @@
         },
         "weapon": {
             "name": "Staff",
-            "damage": 4
+            "damage": 5
         },
         "health": 32,
         "will": 2,
@@ -55,7 +55,7 @@
         },
         "weapon": {
             "name": "Bow & Dagger",
-            "damage": 5
+            "damage": 6
         },
         "health": 38,
         "will": 1,

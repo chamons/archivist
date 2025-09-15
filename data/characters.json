@@ -134,7 +134,7 @@
     {
         "name": "Goblin Sage",
         "max_health": 20,
-        "max_will": 3,
+        "max_will": 2,
         "base_sprite_tile": {
             "x": 5,
             "y": 15
@@ -422,7 +422,7 @@
     },
     {
         "name": "Crow",
-        "max_health": 22,
+        "max_health": 18,
         "base_sprite_tile": {
             "x": 18,
             "y": 13
@@ -449,14 +449,14 @@
     },
     {
         "name": "Giant Bird",
-        "max_health": 28,
+        "max_health": 22,
         "base_sprite_tile": {
             "x": 16,
             "y": 13
         },
         "weapon": {
             "name": "Claw",
-            "damage": 9
+            "damage": 8
         },
         "is_intelligent": true,
         "difficulty": 2,

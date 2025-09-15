@@ -9,7 +9,7 @@
         },
         "effect": {
             "ApplyDamage": {
-                "damage": 7
+                "damage": 8
             }
         },
         "targeting": {
@@ -29,7 +29,7 @@
         "cost": "None",
         "effect": {
             "ApplyDamage": {
-                "damage": 4,
+                "damage": 5,
                 "pierce": "Some"
             }
         },
