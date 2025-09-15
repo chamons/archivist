@@ -17,7 +17,7 @@
         },
         "health": 40,
         "will": 1,
-        "defense": 2
+        "defense": 3
     },
     {
         "name": "Staff",
@@ -36,7 +36,7 @@
         },
         "health": 32,
         "will": 2,
-        "defense": 0,
+        "defense": 1,
         "provides_skills": [
             "Forcebolt"
         ]
@@ -59,7 +59,7 @@
         },
         "health": 38,
         "will": 1,
-        "defense": 1,
+        "defense": 2,
         "provides_skills": [
             "Shoot Bow"
         ]

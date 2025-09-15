@@ -130,5 +130,5 @@ pub mod prelude {
 
     pub const DEFENSE_IGNORED_SOME_PIERCE: i32 = 2;
 
-    pub const VERSION: &str = "0.22";
+    pub const VERSION: &str = "0.23";
 }
